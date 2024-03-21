@@ -6,6 +6,12 @@
 
 ## Braden Hynes
 
-## Note
+## Desctiption
 
-You can start the Express server and the React client by running `npm run stack`.
+### Invoices
+
+A simple invoice manager.
+
+## Notes
+
+- You can start the Express server and the React client by running `npm run stack`.
