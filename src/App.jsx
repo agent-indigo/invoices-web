@@ -4,6 +4,7 @@ import {Provider} from 'react-redux'
 import {ToastContainer} from 'react-toastify'
 import store from './store'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import SetupRoute from './security/SetupRoute'
 import ProductionRoute from './security/ProductionRoute'
 import PrivateRoute from './security/PrivateRoute'
@@ -42,9 +43,7 @@ const App = () => {
             </Routes>
           </Container>
         </main>
-        <footer className="bg-light text-center py-3">
-          {Date.now()}
-        </footer>
+        <Footer/>
         <ToastContainer/>
       </BrowserRouter>
     </Provider>
