@@ -10,7 +10,13 @@ userModel.init({
     },
     name: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notContains: {
+                args: [' '],
+                msg: 'Spaces prohibited.'
+            }
+        }
     },
     shadow: {
         type: DataTypes.STRING,
