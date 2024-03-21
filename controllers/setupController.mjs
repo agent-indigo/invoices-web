@@ -9,7 +9,7 @@ import userModel from '../models/userModel.mjs'
  */
 export const getStatus = asyncHandler(async (request, response) => {
     const root = await userModel.findOne({where: {role: 'root'}})
-    const firstRun = root ? false : true
+    const firstRun = !root
     response.json(firstRun)
 })
 /**

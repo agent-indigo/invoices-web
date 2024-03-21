@@ -13,7 +13,8 @@ import userModel from '../models/userModel.mjs'
 export const login = (async (request, response) => {
     const {name, password} = request.body
     const user = await userModel.findOne({where: {name, password}})
-    if (!user) {
+    const isCorrect = await compare(password, user.shadow)
+    if (!user || !isCorrect) {
         response.status(401)
         throw new Error('Invalid credentials.')
     } else {

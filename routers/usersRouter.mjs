@@ -8,7 +8,10 @@ import {
     listUsers,
     deleteUser
 } from '../controllers/usersController.mjs'
-import {authenticate, authorize} from '../middleware/securityHandler.mjs'
+import {
+    authenticate,
+    authorize
+} from '../middleware/securityHandler.mjs'
 const usersRouter = Router()
 usersRouter.post('/login', login)
 usersRouter.use(authenticate)

@@ -5,7 +5,10 @@ import {
     editinvoice,
     deleteInvoice
 } from '../controllers/invoicesController.mjs'
-import {authenticate, authorize} from '../middleware/securityHandler.mjs'
+import {
+    authenticate,
+    authorize
+} from '../middleware/securityHandler.mjs'
 const invoicesRouter = Router()
 invoicesRouter.use(authenticate)
 invoicesRouter.use(authorize('user', 'root'))

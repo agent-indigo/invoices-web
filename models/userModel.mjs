@@ -35,8 +35,16 @@ userModel.init({
     hooks: {
         async beforeCreate(user) {
             if (user.role === 'root') {
-                const root = await userModel.findOne({where: {role: 'root'}})
-                if (root) throw new Error('There can be only one root user.')
+                const root = await userModel.findOne({
+                    where: {
+                        role: 'root'
+                    }
+                })
+                if (root) {
+                    throw new Error(
+                        'There can be only one root user.'
+                    )
+                }
             }
         }
     }

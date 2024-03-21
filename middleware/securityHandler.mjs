@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import asyncHandler from './asyncHandler.mjs'
 import userModel from '../models/userModel.mjs'
 export const authenticate = asyncHandler(async (request, response, next) => {
-    const token = request.cookies.token || request.header('Authorization').substring(7)
+    const token = request.cookies.token || request.header('Authorization')?.substring(7)
     if (token) {
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
         const user = await userModel.findByPk(decoded.pk)

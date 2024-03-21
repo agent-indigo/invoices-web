@@ -27,9 +27,14 @@ export const listInvoices = asyncHandler(async (request, response) => {
  * @access  private
  */
 export const editinvoice = asyncHandler(async (request, response) => {
-    const invoice = invoiceModel.findByPk(request.params.pk)
-    await invoice.update(request.body)
-    response.status(200).json(invoice)
+    const invoice = await invoiceModel.findByPk(request.params.pk)
+    if (!invoice) {
+        response.status(404)
+        throw new Error('Invoice not found.')
+    } else {
+        await invoice.update(request.body)
+        response.status(200).json(invoice)
+    }
 })
 /**
  * @name    deleteInvoice
@@ -39,7 +44,12 @@ export const editinvoice = asyncHandler(async (request, response) => {
  */
 export const deleteInvoice = asyncHandler(async (request, response) => {
     const invoice = invoiceModel.findByPk(request.params.pk)
-    await invoice.destroy()
-    await invoiceModel.bulkD
-    response.status(204).json({message: 'Deleted invoice.'})
+    if (!invoice) {
+        response.status(404)
+        throw new Error('Invoice not found.')
+    } else {
+        await invoice.destroy()
+        await invoiceModel.bulkD
+        response.status(204).json({message: 'Deleted invoice.'})
+    }
 })
