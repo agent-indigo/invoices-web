@@ -50,7 +50,7 @@ export const changePassword = asyncHandler(async(request, response) => {
         response.status(401)
         throw new Error('Incorrect password.')
     } else if (newPassword !== confirmNewPassword) {
-        response.status(401)
+        response.status(403)
         throw new Error('New passwords do not match.')
     } else {
         const newShadow = await hash(newPassword, 10)
@@ -88,14 +88,19 @@ export const resetPassword = asyncHandler(async (request, response) => {
  * @access  private/root
  */
 export const addUser = asyncHandler(async (request, response) => {
-    const {name, password} = request.body
-    const shadow = await hash(password, 10)
-    await userModel.create({
-        name,
-        shadow,
-        role: 'user'
-    })
-    response.status(201).json({message: 'Created new user.'})
+    const {name, password, confirmPassword} = request.body
+    if (password !== confirmPassword) {
+        response.status(403)
+        throw new Error('Passwords do not match.')
+    } else {
+        const shadow = await hash(password, 10)
+        await userModel.create({
+            name,
+            shadow,
+            role: 'user'
+        })
+        response.status(201).json({message: 'Created new user.'})
+    }
 })
 /**
  * @name    listUsers
@@ -121,7 +126,7 @@ export const deleteUser = asyncHandler(async (request, response) => {
     const user = await userModel.findByPk(request.params.pk)
     if (user.role === 'root') {
         response.status(403)
-        throw new Error('The root user must never be deleted.')
+        throw new Error('The root user shouldn\'t be deleted.')
     } else {
         await user.destroy()
         response.status(204).json({message: 'Deleted user.'})

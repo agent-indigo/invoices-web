@@ -25,6 +25,18 @@ userModel.init({
     sequelize,
     modelName: 'user',
     tableName: 'users',
-    timestamps: true
+    timestamps: true,
+    hooks: {
+        async beforeCreate(user) {
+            try {
+                if (user.role === 'root') {
+                    const root = await userModel.findOne({where: {role: 'root'}})
+                    if (root) throw new Error('There can be only one root user.')
+                }
+            } catch (error) {
+                throw new Error(error.message)
+            }
+        }
+    }
 })
 export default userModel

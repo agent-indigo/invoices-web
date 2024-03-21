@@ -23,7 +23,7 @@ export const listInvoices = asyncHandler(async (request, response) => {
 /**
  * @name    editInvoice
  * @desc    Edit a Invoice
- * @route   PUT /api/invoices/:entry
+ * @route   PUT /api/invoices/:pk
  * @access  private
  */
 export const editinvoice = asyncHandler(async (request, response) => {
@@ -34,11 +34,12 @@ export const editinvoice = asyncHandler(async (request, response) => {
 /**
  * @name    deleteInvoice
  * @desc    Delete a invoice
- * @route   DELETE /api/invoices/:entry
+ * @route   DELETE /api/invoices/:pk
  * @access  private
  */
 export const deleteInvoice = asyncHandler(async (request, response) => {
     const invoice = invoiceModel.findByPk(request.params.pk)
     await invoice.destroy()
-    response.status(204).json({message: 'invoice deleted.'})
+    await invoiceModel.bulkD
+    response.status(204).json({message: 'Deleted invoice.'})
 })
