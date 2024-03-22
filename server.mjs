@@ -1,5 +1,9 @@
 import 'dotenv/config'
+import {createWriteStream} from 'fs'
+import {dirname, join} from 'path'
+import {fileURLToPath} from 'url'
 import express from 'express'
+import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
 import helmet from 'helmet'
 import hpp from 'hpp'
@@ -13,6 +17,13 @@ const MODE = process.env.NODE_ENV || 'production'
 const PORT = process.env.EXPRESS_PORT || 5000
 connectToSQLdb()
 const server = express()
+server.use(morgan(
+    ':url\t:method\t:status\t:response-time\t:remote-user\t:date[web]', {
+        stream: createWriteStream(join(dirname(fileURLToPath(import.meta.url)), 'log.tsv'), {
+            flags: 'a'
+        })
+    }
+))
 server.use(express.json())
 server.use(express.urlencoded({extended: true}))
 server.use(cookieParser())

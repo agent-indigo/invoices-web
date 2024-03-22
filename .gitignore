@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/react,node,dotenv,windows,macos,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=react,node,dotenv,windows,macos,visualstudiocode
 
+### custom morgan log ###
+log.tsv
+
 ### dotenv ###
 .env
 
