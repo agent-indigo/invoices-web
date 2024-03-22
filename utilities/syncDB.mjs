@@ -7,7 +7,6 @@ const syncDb = async () => {
         await invoiceModel.sync()
         await userModel.sync()
         console.log('Database synchronization successful.')
-        process.exit()
     } catch(error) {
         console.error(`Error synchronizing models:\n${error}`)
         process.exit(1)
