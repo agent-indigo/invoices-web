@@ -6,12 +6,14 @@ import hpp from 'hpp'
 import cors from 'cors'
 import rateLimit from 'express-rate-limit'
 import {notFound, errorHandler} from './middleware/errorHandler.mjs'
-import SQLconnector from './utilities/SQLconnector.mjs'
+import connectToSQLdb from './utilities/connectToSQLdb.mjs'
+// import syncDb from './utilities/syncDB.mjs'
 import invoicesRouter from './routers/invoicesRouter.mjs'
 import usersRouter from './routers/usersRouter.mjs'
 const MODE = process.env.NODE_ENV || 'production'
 const PORT = process.env.EXPRESS_PORT || 5000
-SQLconnector()
+// syncDb()
+connectToSQLdb()
 const server = express()
 server.use(express.json())
 server.use(express.urlencoded({extended: true}))

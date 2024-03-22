@@ -1,4 +1,4 @@
-import {hash} from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 import asyncHandler from '../middleware/asyncHandler.mjs'
 import userModel from '../models/userModel.mjs'
 /**
@@ -29,7 +29,7 @@ export const createRoot = asyncHandler(async (request, response) => {
             response.status(403)
             throw new Error('Passwords do not match')
         } else {
-            const shadow = await hash(password, 10)
+            const shadow = await bcrypt.hash(password, 10)
             await userModel.create({
                 name: 'root',
                 shadow,

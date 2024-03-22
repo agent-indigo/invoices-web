@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import {compare, hash} from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import asyncHandler from '../middleware/asyncHandler.mjs'
 import createToken from '../utilities/createToken.mjs'
@@ -13,7 +13,7 @@ import userModel from '../models/userModel.mjs'
 export const login = (async (request, response) => {
     const {name, password} = request.body
     const user = await userModel.findOne({where: {name, password}})
-    const isCorrect = await compare(password, user.shadow)
+    const isCorrect = await bcrypt.compare(password, user.shadow)
     if (!user || !isCorrect) {
         response.status(401)
         throw new Error('Invalid credentials.')
@@ -46,7 +46,7 @@ export const changePassword = asyncHandler(async(request, response) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
     const {currentPassword, newPassword, confirmNewPassword} = request.body
     const user = await userModel.findByPk(decoded.pk)
-    const isCorrect = await compare(currentPassword, user.shadow)
+    const isCorrect = await bcrypt.compare(currentPassword, user.shadow)
     if (!isCorrect) {
         response.status(401)
         throw new Error('Incorrect password.')
@@ -54,7 +54,7 @@ export const changePassword = asyncHandler(async(request, response) => {
         response.status(403)
         throw new Error('New passwords do not match.')
     } else {
-        const newShadow = await hash(newPassword, 10)
+        const newShadow = await bcrypt.hash(newPassword, 10)
         user.shadow = newShadow
         await user.save()
         response.status(202).json({message: 'Password changed.'})
@@ -76,7 +76,7 @@ export const resetPassword = asyncHandler(async (request, response) => {
         response.status(403)
         throw new Error('You can\'t change your own password this way.')
     } else {
-        const newShadow = await hash(newPassword, 10)
+        const newShadow = await bcrypt.hash(newPassword, 10)
         user.shadow = newShadow
         await user.save()
         response.status(202).json({message: 'Password changed.'})
@@ -94,7 +94,7 @@ export const addUser = asyncHandler(async (request, response) => {
         response.status(403)
         throw new Error('Passwords do not match.')
     } else {
-        const shadow = await hash(password, 10)
+        const shadow = await bcrypt.hash(password, 10)
         await userModel.create({
             name,
             shadow,

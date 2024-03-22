@@ -1,5 +1,5 @@
 import {Model, DataTypes} from 'sequelize'
-import {sequelize} from '../utilities/SQLconnector.mjs'
+import sequelize from '../utilities/sequelize.mjs'
 class userModel extends Model {}
 userModel.init({
     pk: {

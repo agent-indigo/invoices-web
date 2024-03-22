@@ -19,8 +19,8 @@ export const authenticate = asyncHandler(async (request, response, next) => {
         throw new Error('Token not found.')
     }
 })
-export const authorize = async (...roles) => {
-    return async (request, response, next) => {
+export const authorize = (...roles) => {
+    return asyncHandler(async (request, response, next) => {
         const user = await userModel.findByPk(request.pk)
         if (!roles.includes(user.role)) {
             response.status(401)
@@ -28,5 +28,5 @@ export const authorize = async (...roles) => {
         } else {
             next()
         }
-    }
+    })
 }
