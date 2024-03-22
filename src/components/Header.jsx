@@ -1,4 +1,4 @@
-import {Navbar, Nav, Container} from 'react-bootstrap'
+import {Navbar, Nav, Container, Button} from 'react-bootstrap'
 import {FaUser, FaKey, FaArrowLeft} from 'react-icons/fa'
 import {useNavigate} from 'react-router-dom'
 import {LinkContainer} from 'react-router-bootstrap'
@@ -19,6 +19,9 @@ const Header = () => {
       console.error(error)
     }
   }
+  const changePasswordHandler = () => {
+    navigate('/users/changePassword')
+  }
   return (
     <header>
       <Navbar bg='primary' variant='primary' expand='sm' collapseOnSelect>
@@ -35,17 +38,18 @@ const Header = () => {
                   <Nav className='ms-auto'>
                     <FaUser/>
                     {`${user.name} `}
-                    <LinkContainer to='/users/changePassword'>
-                      <Nav.Link className='text-white'>
-                        <FaKey/>Change Password
-                      </Nav.Link>
-                    </LinkContainer>
-                    {' '}
-                    <LinkContainer to='/users/logout'>
-                      <Nav.Link className='text-white' onClick={logoutHandler}>
-                        <FaArrowLeft/>Log Out
-                      </Nav.Link>
-                    </LinkContainer>
+                    <Button
+                      type='submit'
+                      variant='dark'
+                      className='mt-2 mx-auto text-white'
+                      onClick={changePasswordHandler}
+                    ><FaKey/>Change password</Button>
+                    <Button
+                      type='submit'
+                      variant='dark'
+                      className='mt-2 mx-auto text-white'
+                      onClick={logoutHandler}
+                    ><FaArrowLeft/>Log out</Button>
                   </Nav>
                 </Navbar.Collapse>
               </>
