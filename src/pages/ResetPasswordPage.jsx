@@ -5,17 +5,16 @@ import {Helmet} from 'react-helmet'
 import {FaKey, FaTimes, FaCheck, FaEdit} from 'react-icons/fa'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
-import {useChangePasswordMutation} from '../slices/usersApiSlice'
+import {useResetPasswordMutation} from '../slices/usersApiSlice'
 import {toast} from 'react-toastify'
-const ChangePasswordPage = () => {
-  const [currentPassword, setCurrentPassword] = useState('')
+const ResetPasswordPage = () => {
   const [newPassword, setNewPassword] = useState('')
   const [confirmNewPassword, setConfirmNewPassword] = useState('')
   const navigate = useNavigate()
-  const [changePassword, {isLoading}] = useChangePasswordMutation()
+  const [resetPassword, {isLoading}] = useResetPasswordMutation()
   const {search} = useLocation()
   const searchParams = new URLSearchParams(search)
-  const redirect = searchParams.get('redirect') || '/home'
+  const redirect = searchParams.get('redirect') || '/users/list'
   const submitHandler = async event => {
     event.preventDefault()
     if (newPassword !== confirmNewPassword) {
@@ -23,7 +22,7 @@ const ChangePasswordPage = () => {
       return
     } else {
       try {
-        await changePassword({currentPassword, newPassword, confirmNewPassword}).unwrap()
+        await resetPassword({newPassword, confirmNewPassword}).unwrap()
         navigate(redirect)
       } catch (error) {
         toast.error(error?.data?.message || error.error)
@@ -36,20 +35,11 @@ const ChangePasswordPage = () => {
   return (
     <>
       <Helmet>
-        <title>Change password | Invoices</title>
+        <title>Reset password | Invoices</title>
       </Helmet>
       <FormContainer>
-        <h1><FaKey/>Change password</h1>
+        <h1><FaKey/>Reset password</h1>
         <Form onSubmit={submitHandler}>
-          <Form.Group controlId='currentPassword' className='my-3'>
-            <Form.Label><FaEdit/><FaKey/>Current password</Form.Label>
-            <Form.Control
-              type='password'
-              placeholder='Enter current password'
-              value={currentPassword}
-              onChange={event => setCurrentPassword(event.target.value)}
-            ></Form.Control>
-          </Form.Group>
           <Form.Group controlId='newPassword' className='my-3'>
             <Form.Label><FaEdit/>New password</Form.Label>
             <Form.Control
@@ -73,7 +63,7 @@ const ChangePasswordPage = () => {
             variant='primary'
             className='mt-2 mx-auto'
             disabled={isLoading}
-          ><FaCheck/>Change</Button>
+          ><FaCheck/>Reset</Button>
           <Button
             type='submit'
             variant='dark'
@@ -86,4 +76,4 @@ const ChangePasswordPage = () => {
     </>
   )
 }
-export default ChangePasswordPage
+export default ResetPasswordPage

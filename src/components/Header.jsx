@@ -1,5 +1,5 @@
 import {Navbar, Nav, Container} from 'react-bootstrap'
-import {FaUser} from 'react-icons/fa'
+import {FaUser, FaKey, FaArrowLeft} from 'react-icons/fa'
 import {useNavigate} from 'react-router-dom'
 import {LinkContainer} from 'react-router-bootstrap'
 import {useSelector, useDispatch} from 'react-redux'
@@ -37,13 +37,13 @@ const Header = () => {
                     {`${user.name} `}
                     <LinkContainer to='/users/changePassword'>
                       <Nav.Link className='text-white'>
-                        Change Password
+                        <FaKey/>Change Password
                       </Nav.Link>
                     </LinkContainer>
                     {' '}
                     <LinkContainer to='/users/logout'>
                       <Nav.Link className='text-white' onClick={logoutHandler}>
-                        Log Out
+                        <FaArrowLeft/>Log Out
                       </Nav.Link>
                     </LinkContainer>
                   </Nav>

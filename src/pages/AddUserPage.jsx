@@ -1,25 +1,21 @@
 import {useState} from 'react'
 import {useLocation, useNavigate} from 'react-router-dom'
-import {useDispatch} from 'react-redux'
 import {Form, Button} from 'react-bootstrap'
 import {Helmet} from 'react-helmet'
-import {FaSetup, FaKey, FaCheck} from 'react-icons/fa'
+import {FaUser, FaPlus, FaKey, FaTimes, FaCheck, FaUserTag} from 'react-icons/fa'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
-import {useCreateRootMutation} from '../slices/setupApiSlice'
-import {useLoginMutation} from '../slices/usersApiSlice'
-import {setCredentials} from '../slices/authenticationSlice'
+import {useAddUserMutation} from '../slices/usersApiSlice'
 import {toast} from 'react-toastify'
-const SetupPage = () => {
+const AddUserPage = () => {
   const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const navigate = useNavigate()
-  const [createRoot, {isLoading}] = useCreateRootMutation()
-  const [login] = useLoginMutation()
-  const dispatch = useDispatch()
+  const [addUser, {isLoading}] = useAddUserMutation()
   const {search} = useLocation()
   const searchParams = new URLSearchParams(search)
-  const redirect = searchParams.get('redirect') || '/home'
+  const redirect = searchParams.get('redirect') || '/users/list'
   const submitHandler = async event => {
     event.preventDefault()
     if (password !== confirmPassword) {
@@ -27,27 +23,33 @@ const SetupPage = () => {
       return
     } else {
       try {
-        await createRoot({password, confirmPassword}).unwrap()
-        const response = await login('root', password).unwrap()
-        dispatch(setCredentials({...response}))
+        await addUser({name, password, confirmPassword}).unwrap()
         navigate(redirect)
       } catch (error) {
         toast.error(error?.data?.message || error.error)
       }
     }
   }
+  const cancelHandler = () => {
+    navigate(redirect)
+  }
   return (
     <>
       <Helmet>
-        <title>Setup | Invoices</title>
+        <title>Add user | Invoices</title>
       </Helmet>
       <FormContainer>
-        <h1><FaSetup/>Setup</h1>
-        <p>
-          You are running this application for the first time.
-          Please provide a password for <strong>root</strong>.
-        </p>
+        <h1><FaPlus/><FaUser/>Add user</h1>
         <Form onSubmit={submitHandler}>
+          <Form.Group controlId='name' className='my-3'>
+            <Form.Label><FaUserTag/>User name</Form.Label>
+            <Form.Control
+              type='text'
+              placeholder='Enter name'
+              value={name}
+              onChange={event => setName(event.target.value)}
+            ></Form.Control>
+          </Form.Group>
           <Form.Group controlId='password' className='my-3'>
             <Form.Label><FaKey/>Password</Form.Label>
             <Form.Control
@@ -72,10 +74,16 @@ const SetupPage = () => {
             className='mt-2 mx-auto'
             disabled={isLoading}
           ><FaCheck/>Add</Button>
+          <Button
+            type='submit'
+            variant='dark'
+            className='mt-2 mx-auto'
+            onClick={cancelHandler}
+        ><FaTimes/>Cancel</Button>
           {isLoading && <Loader/>}
         </Form>
       </FormContainer>
     </>
   )
 }
-export default SetupPage
+export default AddUserPage

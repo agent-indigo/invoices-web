@@ -3,6 +3,7 @@ import {useLocation, useNavigate} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import {Form, Button} from 'react-bootstrap'
 import {Helmet} from 'react-helmet'
+import {FaKey, FaArrowRight, FaUser, FaUserTag} from 'react-icons/fa'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
 import {useLoginMutation} from '../slices/usersApiSlice'
@@ -39,10 +40,10 @@ const LoginPage = () => {
         <title>Log In | Invoices</title>
       </Helmet>
       <FormContainer>
-        <h1>Log in</h1>
+        <h1><FaUser/>Log in</h1>
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='name' className='my-3'>
-            <Form.Label>User name</Form.Label>
+            <Form.Label><FaUserTag/>User name</Form.Label>
             <Form.Control
               type='name'
               placeholder='Enter user name...'
@@ -51,7 +52,7 @@ const LoginPage = () => {
             ></Form.Control>
           </Form.Group>
           <Form.Group controlId='password' className='my-3'>
-            <Form.Label>Password</Form.Label>
+            <Form.Label><FaKey/>Password</Form.Label>
             <Form.Control
               type='password'
               placeholder='Enter password...'
@@ -65,7 +66,7 @@ const LoginPage = () => {
             className='mt-2'
             disabled={isLoading}
           >
-            Log in
+            <FaArrowRight/>Log in
           </Button>
           {isLoading && <Loader/>}
         </Form>

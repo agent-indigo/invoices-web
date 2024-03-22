@@ -1,4 +1,4 @@
-# QAP 3
+# Invoices (QAP 3)
 
 ## Semester 3
 
@@ -8,19 +8,22 @@
 
 ## Description
 
-### Invoices
+A simple invoice manager built on the PERN stack using Sequelize, Bootstrap, and Redux Toolkit.
 
-A simple invoice manager built on the PERN stack.
+## User Roles
 
-### Not suitable for production
+- Root: Can do everything but delete itself and reset its password without providing its current one.
 
-## Extra Scripts
+- User: Can only perform CRUD ops on invoices.
 
-- `server`: Starts only the server
-- `stack` : Starts both the server and the client.
+## Setup
 
-## Preparations
+- Create a new SQL database and leave it empty.
 
-Before starting the server for the first time, create a new SQL database and leave it empty.
-Also copy `environmentTemplate.txt` to `.env` and fill in the values.
-The schema will be built or updated automatically when you start the server.
+- Copy `environmentTemplate.txt` to `.env` and fill in the values.
+
+- Start the application and server simultaneously by running `npm run stack`.
+
+- When running the application for the first time, you will be prompted to create a password for `root`.
+
+- The SQL schema will synchronize automatically every time you start the server.
