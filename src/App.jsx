@@ -3,6 +3,7 @@ import {Container} from 'react-bootstrap'
 import {Provider} from 'react-redux'
 import {ToastContainer} from 'react-toastify'
 import store from './store'
+import ConfigStatusFetcher from './components/ConfigStatusFetcher'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import SetupRoute from './security/SetupRoute'
@@ -44,6 +45,7 @@ const App = () => {
           </Container>
         </main>
         <Footer/>
+        <ConfigStatusFetcher/>
         <ToastContainer/>
       </BrowserRouter>
     </Provider>
