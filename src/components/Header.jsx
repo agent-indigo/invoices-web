@@ -1,5 +1,5 @@
 import {Navbar, Nav, Container, Button} from 'react-bootstrap'
-import {FaUser, FaKey, FaArrowLeft} from 'react-icons/fa'
+import {FaUser, FaKey, FaArrowLeft, FaFileInvoiceDollar, FaEdit} from 'react-icons/fa'
 import {useNavigate} from 'react-router-dom'
 import {LinkContainer} from 'react-router-bootstrap'
 import {useSelector, useDispatch} from 'react-redux'
@@ -28,7 +28,7 @@ const Header = () => {
         <Container>
           <LinkContainer to='/home'>
             <Navbar.Brand className='text-white'>
-              Invoices
+              <FaFileInvoiceDollar/>Invoices
             </Navbar.Brand>
           </LinkContainer>
             {user && (
@@ -43,7 +43,7 @@ const Header = () => {
                       variant='dark'
                       className='mt-2 mx-auto text-white'
                       onClick={changePasswordHandler}
-                    ><FaKey/>Change password</Button>
+                    ><FaEdit/><FaKey/>Change password</Button>
                     <Button
                       type='submit'
                       variant='dark'

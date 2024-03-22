@@ -45,7 +45,7 @@ const LoginPage = () => {
           <Form.Group controlId='name' className='my-3'>
             <Form.Label><FaUserTag/>User name</Form.Label>
             <Form.Control
-              type='name'
+              type='text'
               placeholder='Enter user name...'
               value={name}
               onChange={event => setName(event.target.value)}
@@ -62,8 +62,8 @@ const LoginPage = () => {
           </Form.Group>
           <Button
             type='submit'
-            variant='primary'
-            className='mt-2'
+            variant='success'
+            className='mt-2 text-white'
             disabled={isLoading}
           >
             <FaArrowRight/>Log in

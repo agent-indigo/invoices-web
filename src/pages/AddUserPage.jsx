@@ -70,14 +70,14 @@ const AddUserPage = () => {
           </Form.Group>
           <Button
             type='submit'
-            variant='primary'
-            className='mt-2 mx-auto'
+            variant='success'
+            className='mt-2 mx-auto text-white'
             disabled={isLoading}
           ><FaCheck/>Add</Button>
           <Button
             type='submit'
-            variant='dark'
-            className='mt-2 mx-auto'
+            variant='danger'
+            className='mt-2 mx-auto text-white'
             onClick={cancelHandler}
         ><FaTimes/>Cancel</Button>
           {isLoading && <Loader/>}

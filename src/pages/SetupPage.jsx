@@ -45,7 +45,7 @@ const SetupPage = () => {
         <h1><FaSetup/>Setup</h1>
         <p>
           You are running this application for the first time.
-          Please provide a password for <strong>root</strong>.
+          Please create a password for <strong>root</strong>.
         </p>
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='password' className='my-3'>
@@ -68,10 +68,10 @@ const SetupPage = () => {
           </Form.Group>
           <Button
             type='submit'
-            variant='primary'
-            className='mt-2 mx-auto'
+            variant='success'
+            className='mt-2 mx-auto text-white'
             disabled={isLoading}
-          ><FaCheck/>Add</Button>
+          ><FaCheck/>Confirm</Button>
           {isLoading && <Loader/>}
         </Form>
       </FormContainer>
