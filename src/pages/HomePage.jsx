@@ -19,17 +19,19 @@ const HomePage = () => {
             <FaFileInvoiceDollar/>Invoices
           </Card>
         </LinkContainer>
-        {user.role === 'root' && (
-          <LinkContainer to='/users/list'>
-            <Card
-              bg='dark'
-              className='m-auto p-auto text-white hover:bg-primary'
-            >
-              <FaUser/>Users
-            </Card>
-          </LinkContainer>
-        )}
       </Row>
+        {user.role === 'root' && (
+          <Row>
+            <LinkContainer to='/users/list'>
+              <Card
+                bg='dark'
+                className='m-auto p-auto text-white hover:bg-primary'
+              >
+                <FaUser/>Users
+              </Card>
+            </LinkContainer>
+          </Row>
+        )}
     </>
   )
 }
