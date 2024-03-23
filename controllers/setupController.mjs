@@ -28,6 +28,9 @@ export const createRoot = asyncHandler(async (request, response) => {
         if (password !== confirmPassword) {
             response.status(403)
             throw new Error('Passwords do not match')
+        } else if (!password || !confirmPassword) {
+            response.status(403)
+            throw new Error('At least one field is empty')
         } else {
             const shadow = await bcrypt.hash(password, 10)
             await userModel.create({

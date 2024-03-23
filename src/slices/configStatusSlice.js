@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit'
 const initialState = {
-    firstRun: JSON.parse(localStorage.getItem('firstRun')) || false
+    firstRun: JSON.parse(localStorage.getItem('firstRun')) || null
 }
 const configStatusSlice = createSlice({
     name: 'firstRun',

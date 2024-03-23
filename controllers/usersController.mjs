@@ -53,7 +53,13 @@ export const changePassword = asyncHandler(async(request, response) => {
     } else if (newPassword !== confirmNewPassword) {
         response.status(403)
         throw new Error('New passwords do not match.')
-    } else {
+    } else if (!currentPassword || !newPassword || !confirmNewPassword) {
+        response.status(403)
+        throw new Error('At least one field is empty.')
+    }
+    
+    
+    else {
         const newShadow = await bcrypt.hash(newPassword, 10)
         user.shadow = newShadow
         await user.save()
@@ -77,7 +83,10 @@ export const resetPassword = asyncHandler(async (request, response) => {
         throw new Error('You can\'t change your own password this way.')
     } else if (newPassword !== confirmNewPassword) {
         response.status(403)
-        throw new Error('New password do not match.')
+        throw new Error('New passwords do not match.')
+    } else if (!newPassword || !confirmNewPassword) {
+        response.status(403)
+        throw new Error('At least one field is empty.')
     } else {
         const newShadow = await bcrypt.hash(newPassword, 10)
         user.shadow = newShadow
@@ -96,6 +105,9 @@ export const addUser = asyncHandler(async (request, response) => {
     if (password !== confirmPassword) {
         response.status(403)
         throw new Error('Passwords do not match.')
+    } else if (!name || !password || !confirmPassword) {
+        response.status(403)
+        throw new Error('At least one field is empty.')
     } else {
         const shadow = await bcrypt.hash(password, 10)
         await userModel.create({

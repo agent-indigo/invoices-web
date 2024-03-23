@@ -22,18 +22,13 @@ const SetupPage = () => {
   const redirect = searchParams.get('redirect') || '/home'
   const submitHandler = async event => {
     event.preventDefault()
-    if (password !== confirmPassword) {
-      toast.error('Passwords do not match.')
-      return
-    } else {
-      try {
-        await createRoot({password, confirmPassword}).unwrap()
-        const response = await login('root', password).unwrap()
-        dispatch(setCredentials({...response}))
-        navigate(redirect)
-      } catch (error) {
-        toast.error(error?.data?.message || error.error)
-      }
+    try {
+      await createRoot({password, confirmPassword}).unwrap()
+      const response = await login('root', password).unwrap()
+      dispatch(setCredentials({...response}))
+      navigate(redirect)
+    } catch (error) {
+      toast.error(error?.data?.message || error.error)
     }
   }
   return (

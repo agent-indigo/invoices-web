@@ -18,16 +18,11 @@ const ChangePasswordPage = () => {
   const redirect = searchParams.get('redirect') || '/home'
   const submitHandler = async event => {
     event.preventDefault()
-    if (newPassword !== confirmNewPassword) {
-      toast.error('Passwords do not match.')
-      return
-    } else {
-      try {
-        await changePassword({currentPassword, newPassword, confirmNewPassword}).unwrap()
-        navigate(redirect)
-      } catch (error) {
-        toast.error(error?.data?.message || error.error)
-      }
+    try {
+      await changePassword({currentPassword, newPassword, confirmNewPassword}).unwrap()
+      navigate(redirect)
+    } catch (error) {
+      toast.error(error?.data?.message || error.error)
     }
   }
   const cancelHandler = () => {

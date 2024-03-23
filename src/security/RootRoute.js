@@ -7,7 +7,6 @@ const RootRoute = () => {
         return <Outlet/>
     } else {
         toast.error('You are not logged in as the root user.')
-        console.error('You are not logged in as the root user.')
         return <Navigate to='/home' replace/>
     }
 }
