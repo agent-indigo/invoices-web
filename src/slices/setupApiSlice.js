@@ -18,7 +18,6 @@ const setupApiSlice = apiSlice.injectEndpoints({
     })
 })
 export const {
-    useGetStatusQuery,
     useLazyGetStatusQuery,
     useCreateRootMutation
 } = setupApiSlice
