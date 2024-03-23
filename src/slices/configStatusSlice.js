@@ -12,5 +12,5 @@ const configStatusSlice = createSlice({
         }
     }
 })
-export const setConfigStatus = configStatusSlice.actions
+export const {setConfigStatus} = configStatusSlice.actions
 export default configStatusSlice.reducer

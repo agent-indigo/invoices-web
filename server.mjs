@@ -13,6 +13,7 @@ import {notFound, errorHandler} from './middleware/errorHandler.mjs'
 import connectToSQLdb from './utilities/connectToSQLdb.mjs'
 import invoicesRouter from './routers/invoicesRouter.mjs'
 import usersRouter from './routers/usersRouter.mjs'
+import setupRouter from './routers/setupRouter.mjs'
 const MODE = process.env.NODE_ENV || 'production'
 const PORT = process.env.EXPRESS_PORT || 5000
 connectToSQLdb()
@@ -36,6 +37,7 @@ server.use(rateLimit({
 }))
 server.use('/api/users', usersRouter)
 server.use('/api/invoices', invoicesRouter)
+server.use('/api/setup', setupRouter)
 server.use(notFound)
 server.use(errorHandler)
 server.listen(PORT, () => console.log(`Server running on localhost:${PORT} in ${MODE} mode.`))
