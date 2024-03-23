@@ -3,7 +3,7 @@ import {useLocation, useNavigate} from 'react-router-dom'
 import {useDispatch} from 'react-redux'
 import {Form, Button} from 'react-bootstrap'
 import {Helmet} from 'react-helmet'
-import {FaSetup, FaKey, FaCheck} from 'react-icons/fa'
+import {FaWrench, FaKey, FaCheck} from 'react-icons/fa'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
 import {useCreateRootMutation} from '../slices/setupApiSlice'
@@ -42,7 +42,7 @@ const SetupPage = () => {
         <title>Setup | Invoices</title>
       </Helmet>
       <FormContainer>
-        <h1><FaSetup/>Setup</h1>
+        <h1><FaWrench/>Setup</h1>
         <p>
           You are running this application for the first time.
           Please create a password for <strong>root</strong>.
