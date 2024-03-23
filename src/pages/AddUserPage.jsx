@@ -61,6 +61,12 @@ const AddUserPage = () => {
               placeholder='Confirm password'
               value={confirmPassword}
               onChange={event => setConfirmPassword(event.target.value)}
+              onKeyDown={event => {
+                if (event.key === 'Enter') {
+                  event.preventDefault();
+                  submitHandler(event);
+                }
+              }}
             ></Form.Control>
           </Form.Group>
           <Button

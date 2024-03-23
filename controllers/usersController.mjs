@@ -51,10 +51,10 @@ export const changePassword = asyncHandler(async(request, response) => {
         response.status(401)
         throw new Error('Incorrect password.')
     } else if (newPassword !== confirmNewPassword) {
-        response.status(403)
+        response.status(400)
         throw new Error('New passwords do not match.')
     } else if (!currentPassword || !newPassword || !confirmNewPassword) {
-        response.status(403)
+        response.status(400)
         throw new Error('At least one field is empty.')
     }
     
@@ -82,10 +82,10 @@ export const resetPassword = asyncHandler(async (request, response) => {
         response.status(403)
         throw new Error('You can\'t change your own password this way.')
     } else if (newPassword !== confirmNewPassword) {
-        response.status(403)
+        response.status(400)
         throw new Error('New passwords do not match.')
     } else if (!newPassword || !confirmNewPassword) {
-        response.status(403)
+        response.status(400)
         throw new Error('At least one field is empty.')
     } else {
         const newShadow = await bcrypt.hash(newPassword, 10)
@@ -103,10 +103,10 @@ export const resetPassword = asyncHandler(async (request, response) => {
 export const addUser = asyncHandler(async (request, response) => {
     const {name, password, confirmPassword} = request.body
     if (password !== confirmPassword) {
-        response.status(403)
+        response.status(400)
         throw new Error('Passwords do not match.')
     } else if (!name || !password || !confirmPassword) {
-        response.status(403)
+        response.status(400)
         throw new Error('At least one field is empty.')
     } else {
         const shadow = await bcrypt.hash(password, 10)
@@ -140,7 +140,10 @@ export const listUsers = asyncHandler(async (request, response) => {
  */
 export const deleteUser = asyncHandler(async (request, response) => {
     const user = await userModel.findByPk(request.params.pk)
-    if (user.role === 'root') {
+    if (!user) {
+        response.status(404)
+        throw new Error('User not found.')
+    } else if (user.role === 'root') {
         response.status(403)
         throw new Error('The root user shouldn\'t be deleted.')
     } else {

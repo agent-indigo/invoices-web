@@ -7,6 +7,12 @@ import invoiceModel from '../models/invoiceModel.mjs'
  * @access  private
  */
 export const addInvoice = asyncHandler(async (request, response) => {
+    for (const key in request.body) {
+        if (!request.body[key]) {
+            response.status(400)
+            throw new Error(`Field "${key}" is empty.`)
+        }
+    }
     const invoice = await invoiceModel.create(request.body)
     response.status(201).json(invoice)
 })
@@ -32,6 +38,12 @@ export const editinvoice = asyncHandler(async (request, response) => {
         response.status(404)
         throw new Error('Invoice not found.')
     } else {
+        for (const key in request.body) {
+            if (!request.body[key]) {
+                response.status(400)
+                throw new Error(`Field "${key}" if empty.`)
+            }
+        }
         await invoice.update(request.body)
         response.status(200).json(invoice)
     }
@@ -49,7 +61,6 @@ export const deleteInvoice = asyncHandler(async (request, response) => {
         throw new Error('Invoice not found.')
     } else {
         await invoice.destroy()
-        await invoiceModel.bulkD
         response.status(204).json({message: 'Deleted invoice.'})
     }
 })
