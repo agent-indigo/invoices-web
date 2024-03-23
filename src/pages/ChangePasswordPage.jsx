@@ -37,7 +37,7 @@ const ChangePasswordPage = () => {
         <h1><FaKey/>Change password</h1>
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='currentPassword' className='my-3'>
-            <Form.Label><FaEdit/><FaKey/>Current password</Form.Label>
+            <Form.Label><FaKey/>Current password</Form.Label>
             <Form.Control
               type='password'
               placeholder='Enter current password'
