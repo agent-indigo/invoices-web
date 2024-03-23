@@ -1,6 +1,6 @@
 const Footer = () => {
     return (
-        <footer className="bg-light text-center py-3">
+        <footer className="bg-light text-center p-auto">
             {Date.now()}
         </footer>
     )

@@ -10,7 +10,7 @@ const ConfigStatusFetcher = () => {
         const fetchConfigStatus = async () => {
             try {
                 const response = await getConfigStatusApiCall().unwrap()
-                dispatch(setConfigStatus(response))
+                dispatch(setConfigStatus(...response))
             } catch (error) {
                 toast.error(error?.data?.message || error.error)
                 console.error(error)

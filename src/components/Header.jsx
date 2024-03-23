@@ -41,13 +41,13 @@ const Header = () => {
                     <Button
                       type='submit'
                       variant='dark'
-                      className='mt-2 mx-auto text-white'
+                      className='m-auto p-auto text-white'
                       onClick={changePasswordHandler}
                     ><FaEdit/><FaKey/>Change password</Button>
                     <Button
                       type='submit'
                       variant='dark'
-                      className='mt-2 mx-auto text-white'
+                      className='m-auto p-auto text-white'
                       onClick={logoutHandler}
                     ><FaArrowLeft/>Log out</Button>
                   </Nav>

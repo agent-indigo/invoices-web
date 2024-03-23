@@ -71,13 +71,13 @@ const AddUserPage = () => {
           <Button
             type='submit'
             variant='success'
-            className='mt-2 mx-auto text-white'
+            className='m-auto p-auto text-white'
             disabled={isLoading}
           ><FaCheck/>Add</Button>
           <Button
             type='submit'
             variant='danger'
-            className='mt-2 mx-auto text-white'
+            className='m-auto p-auto text-white'
             onClick={cancelHandler}
         ><FaTimes/>Cancel</Button>
           {isLoading && <Loader/>}

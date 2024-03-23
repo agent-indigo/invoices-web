@@ -63,7 +63,7 @@ const LoginPage = () => {
           <Button
             type='submit'
             variant='success'
-            className='mt-2 text-white'
+            className='m-auto p-auto text-white'
             disabled={isLoading}
           >
             <FaArrowRight/>Log in
