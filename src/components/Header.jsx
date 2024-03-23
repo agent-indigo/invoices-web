@@ -1,5 +1,5 @@
 import {Navbar, Nav, Container, Button} from 'react-bootstrap'
-import {FaUser, FaKey, FaArrowLeft, FaFileInvoiceDollar, FaEdit} from 'react-icons/fa'
+import {FaUser, FaKey, FaArrowLeft, FaFileInvoiceDollar} from 'react-icons/fa'
 import {useNavigate} from 'react-router-dom'
 import {LinkContainer} from 'react-router-bootstrap'
 import {useSelector, useDispatch} from 'react-redux'
@@ -37,13 +37,13 @@ const Header = () => {
                 <Navbar.Collapse id='basic-navbar-nav'>
                   <Nav className='ms-auto'>
                     <FaUser/>
-                    {`${user.name} `}
+                    {user.name}
                     <Button
                       type='submit'
                       variant='dark'
                       className='m-auto p-auto text-white'
                       onClick={changePasswordHandler}
-                    ><FaEdit/><FaKey/>Change password</Button>
+                    ><FaKey/>Change password</Button>
                     <Button
                       type='submit'
                       variant='dark'

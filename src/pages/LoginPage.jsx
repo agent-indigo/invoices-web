@@ -72,7 +72,7 @@ const LoginPage = () => {
             className='m-auto p-auto text-white'
             disabled={isLoading}
           >
-            <FaArrowRight/>Log in
+            Log in <FaArrowRight/>
           </Button>
           {isLoading && <Loader/>}
         </Form>
