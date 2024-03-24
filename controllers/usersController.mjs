@@ -69,7 +69,7 @@ export const changePassword = asyncHandler(async(request, response) => {
 /**
  * @name    resetPassword
  * @desc    Change a user's password
- * @route   PATCH /api/users/:pk
+ * @route   PATCH /api/users/resetPassword/:pk
  * @access  private/root
  */
 export const resetPassword = asyncHandler(async (request, response) => {
