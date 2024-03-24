@@ -75,9 +75,9 @@ export const changePassword = asyncHandler(async(request, response) => {
 export const resetPassword = asyncHandler(async (request, response) => {
     const token = request.cookies.token || request.header('Authorization').substring(7)
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
-    const {newPassword, confirmNewPassword} = request.body
+    const {pk, newPassword, confirmNewPassword} = request.body
     const currentUser = await userModel.findByPk(decoded.pk)
-    const user = await userModel.findByPk(request.params.pk)
+    const user = await userModel.findByPk(pk)
     if (currentUser.pk === user.pk) {
         response.status(403)
         throw new Error('You can\'t change your own password this way.')

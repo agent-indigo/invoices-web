@@ -14,11 +14,12 @@ const ResetPasswordPage = () => {
   const [resetPassword, {isLoading}] = useResetPasswordMutation()
   const {search} = useLocation()
   const searchParams = new URLSearchParams(search)
+  const pk = searchParams.get('pk')
   const redirect = searchParams.get('redirect') || '/users/list'
   const submitHandler = async event => {
     event.preventDefault()
     try {
-      await resetPassword({newPassword, confirmNewPassword}).unwrap()
+      await resetPassword({pk, newPassword, confirmNewPassword}).unwrap()
       navigate(redirect)
     } catch (error) {
       toast.error(error?.data?.message || error.error)
