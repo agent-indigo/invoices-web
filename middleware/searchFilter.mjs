@@ -9,11 +9,10 @@ const searchFilter = (model, populate) => asyncHandler(async (request, response,
         const sortFields = sort.split(',')
         queryOptions.order = sortFields.map(field => field.split(':'))
     } else {
-        queryOptions.order = [['createdOn', 'DESC']]
+        queryOptions.order = [['createdAt', 'ASC']]
     }
     const offset = (page - 1) * limit
     const totalCount = await model.count()
-    queryOptions.offset = offset
     queryOptions.limit = limit
     const results = await model.findAll({where: requestQuery, ...queryOptions})
     const pagination = {}
