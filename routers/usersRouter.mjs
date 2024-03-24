@@ -12,15 +12,19 @@ import {
     authenticate,
     authorize
 } from '../middleware/securityHandler.mjs'
+import userModel from '../models/userModel.mjs'
+import searchFilter from '../middleware/searchFilter.mjs'
 const usersRouter = Router()
 usersRouter.post('/login', login)
 usersRouter.use(authenticate)
 usersRouter.use(authorize('root'))
 usersRouter.post('/', addUser)
-usersRouter.get('/', listUsers)
+usersRouter.get('/', searchFilter(userModel, {
+    select: 'name'
+}), listUsers)
 usersRouter.delete('/:pk', deleteUser)
-usersRouter.patch('/:pk/resetPassword', resetPassword)
-usersRouter.use(authorize('user'))
+usersRouter.patch('/resetPassword/?pk', resetPassword)
+usersRouter.use(authorize('user', 'root'))
 usersRouter.get('/logout', logout)
-usersRouter.patch('/:pk/changePassword', changePassword)
+usersRouter.patch('/changePassword', changePassword)
 export default usersRouter

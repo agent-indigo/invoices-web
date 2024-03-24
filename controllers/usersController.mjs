@@ -12,7 +12,7 @@ import userModel from '../models/userModel.mjs'
  */
 export const login = (async (request, response) => {
     const {name, password} = request.body
-    const user = await userModel.findOne({where: {name, password}})
+    const user = await userModel.findOne({where: {name}})
     const isCorrect = await bcrypt.compare(password, user.shadow)
     if (!user || !isCorrect) {
         response.status(401)
@@ -38,7 +38,7 @@ export const logout = (request, response) => {
 /**
  * @name    changePassword
  * @desc    Change the current user's password
- * @route   PATCH /api/users/:pk/changePassword
+ * @route   PATCH /api/users/changePassword
  * @access  private
  */
 export const changePassword = asyncHandler(async(request, response) => {
@@ -68,8 +68,8 @@ export const changePassword = asyncHandler(async(request, response) => {
 })
 /**
  * @name    resetPassword
- * @desc    Change a user's password
- * @route   PATCH /api/users/:pk/resetPassword
+ * @desc    Reset a user's password
+ * @route   PATCH /api/users/resetPassword/?pk
  * @access  private/root
  */
 export const resetPassword = asyncHandler(async (request, response) => {
@@ -91,7 +91,7 @@ export const resetPassword = asyncHandler(async (request, response) => {
         const newShadow = await bcrypt.hash(newPassword, 10)
         user.shadow = newShadow
         await user.save()
-        response.status(202).json({message: 'Password changed.'})
+        response.status(202).json({message: 'Password reset.'})
     }
 })
 /**
@@ -115,7 +115,7 @@ export const addUser = asyncHandler(async (request, response) => {
             shadow,
             role: 'user'
         })
-        response.status(201).json({message: 'Created new user.'})
+        response.status(201).json({message: 'User created.'})
     }
 })
 /**
@@ -148,6 +148,6 @@ export const deleteUser = asyncHandler(async (request, response) => {
         throw new Error('The root user shouldn\'t be deleted.')
     } else {
         await user.destroy()
-        response.status(204).json({message: 'Deleted user.'})
+        response.status(204).json({message: 'User deleted.'})
     }
 })

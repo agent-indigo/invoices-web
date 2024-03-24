@@ -17,14 +17,14 @@ const usersApiSlice = apiSlice.injectEndpoints({
         }),
         changePassword: builder.mutation({
             query: data => ({
-                url: `${USERS_URL}/:pk/changePassword`,
+                url: `${USERS_URL}/changePassword`,
                 method: 'PATCH',
                 body: data
             })
         }),
         resetPassword: builder.mutation({
             query: data => ({
-                url: `${USERS_URL}/:pk/resetPassword`,
+                url: `${USERS_URL}/resetPassword/?pk`,
                 method: 'PATCH',
                 body: data
             })

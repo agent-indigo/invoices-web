@@ -10,7 +10,7 @@ import userModel from '../models/userModel.mjs'
 export const getStatus = asyncHandler(async (request, response) => {
     const root = await userModel.findOne({where: {role: 'root'}})
     const firstRun = !root
-    response.json(firstRun)
+    response.status(200).json(firstRun)
 })
 /**
  * @name    createRoot
@@ -38,7 +38,7 @@ export const createRoot = asyncHandler(async (request, response) => {
                 shadow,
                 role: 'root'
             })
-            response.status(201).json({message: 'Created root user.'})
+            response.status(201).json({message: 'User "root" created.'})
         }
     }
 })

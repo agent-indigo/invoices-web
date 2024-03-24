@@ -61,6 +61,6 @@ export const deleteInvoice = asyncHandler(async (request, response) => {
         throw new Error('Invoice not found.')
     } else {
         await invoice.destroy()
-        response.status(204).json({message: 'Deleted invoice.'})
+        response.status(204).json({message: 'Invoice deleted.'})
     }
 })

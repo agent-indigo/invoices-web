@@ -1,9 +1,10 @@
-import {LinkContainer} from 'react-router-bootstrap'
-import {Card, Row} from 'react-bootstrap'
-import {FaFileInvoiceDollar, FaUser} from 'react-icons/fa'
+import {Button, Row} from 'react-bootstrap'
+import {FaFileInvoiceDollar, FaUsers} from 'react-icons/fa'
+import {useNavigate} from 'react-router-dom'
 import {useSelector} from 'react-redux'
 import {Helmet} from 'react-helmet'
 const HomePage = () => {
+  const navigate = useNavigate()
   const {user} = useSelector(state => state.authentication)
   return (
     <>
@@ -11,25 +12,26 @@ const HomePage = () => {
         <title>Home | Invoices</title>
       </Helmet>
       <Row>
-        <LinkContainer to='/invoices/list'>
-          <Card
-            bg='dark'
-            className='m-auto p-auto text-white hover:bg-primary'
-          >
-            <FaFileInvoiceDollar/>Invoices
-          </Card>
-        </LinkContainer>
+        <Button
+          type='button'
+          variant='secondary'
+          className='m-auto p-auto text-white'
+          onClick={() => navigate('/invoices/list')}
+        >
+          <FaFileInvoiceDollar/> Invoices
+        </Button>
       </Row>
         {user.role === 'root' && (
           <Row>
-            <LinkContainer to='/users/list'>
-              <Card
-                bg='dark'
-                className='m-auto p-auto text-white hover:bg-primary'
-              >
-                <FaUser/>Users
-              </Card>
-            </LinkContainer>
+            <div className="py-1"></div>
+            <Button
+              type='button'
+              variant='secondary'
+              className='m-auto p-auto text-white'
+              onClick={() => navigate('/users/list')}
+            >
+              <FaUsers/> Users
+            </Button>
           </Row>
         )}
     </>

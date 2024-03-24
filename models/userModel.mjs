@@ -11,6 +11,7 @@ userModel.init({
     name: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
         validate: {
             notContains: {
                 args: [' '],

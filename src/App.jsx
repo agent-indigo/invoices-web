@@ -40,8 +40,8 @@ const App = () => {
                   <Route path='/invoices/list' element={<InvoicesPage/>}/>
                   <Route path='' element={<RootRoute/>}>
                     <Route path='/users/list' element={<UsersPage/>}/>
-                    <Route path='/users/addUser' element={<AddUserPage/>}/>
-                    <Route path='/users/:pk/resetPassword' element={<ResetPasswordPage/>}/>
+                    <Route path='/users/add' element={<AddUserPage/>}/>
+                    <Route path='/users/resetPassword/?pk' element={<ResetPasswordPage/>}/>
                   </Route>
                 </Route>
               </Route>

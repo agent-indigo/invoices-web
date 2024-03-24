@@ -1,37 +1,34 @@
 import {useState, useEffect} from 'react'
-import {useLocation, useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import {Helmet} from 'react-helmet'
 import {Table, Form, Button, Row, Col} from 'react-bootstrap'
-import {FaKey, FaTrash, FaSearch, FaUsers} from 'react-icons/fa'
+import {FaKey, FaPlus, FaTrash, FaSearch, FaUsers} from 'react-icons/fa'
 import {toast} from 'react-toastify'
 import {useListUsersQuery, useDeleteUserMutation} from '../slices/usersApiSlice'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 const UsersPage = () => {
-  const {data: users, isLoading, isError, error, refetch} = useListUsersQuery()
+  const {data, isLoading, isError, error, refetch} = useListUsersQuery()
+  const users = JSON.parse(data)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedUsers, setSelectedUsers] = useState([])
   const [deleteUser, {isLoading: deleteLoading}] = useDeleteUserMutation()
   const navigate = useNavigate()
-  const {search} = useLocation()
-  const searchParams = new URLSearchParams(search)
-  const handleResetPassword = pk => {
-    const redirect = searchParams.get('redirect') || `/users/?pk=${pk}/resetPassword`
-    navigate(redirect)
-  }
-  const handleDeleteUser = async pk => {
+  const deleteHandler = async pk => {
     try {
-      await deleteUser(pk).unwrap()
+      const response = await deleteUser(pk).unwrap()
       refetch()
+      toast.success(response.message)
     } catch (error) {
       toast.error(error?.data?.message || error.error)
     }
   }
-  const handleBulkDelete = async () => {
+  const bulkDeleteHandler = async () => {
     try {
       await Promise.all(selectedUsers.map(pk => deleteUser(pk).unwrap()))
       refetch()
       setSelectedUsers([])
+      toast.success('Users deleted.')
     } catch (error) {
       toast.error(error?.data?.message || error.error)
     }
@@ -43,7 +40,7 @@ const UsersPage = () => {
     return (
       <>
         <Helmet>
-          <title>Loading... | Invoices</title>
+          <title>Processing... | Invoices</title>
         </Helmet>
         <Loader/>
       </>
@@ -59,15 +56,25 @@ const UsersPage = () => {
         </Message>
       </>
     )
+  } else if (!users) {
+    return (
+      <>
+        <Helmet>
+          <title>Error | Invoices</title>
+        </Helmet>
+        <h1>Error retrieving users.</h1>
+      </>
+    )
   } else {
     return (
       <>
         <Helmet>
           <title>Users | Invoices</title>
         </Helmet>
-        <h1><FaUsers/>Users</h1>
+        <h1><FaUsers/> Users</h1>
+        <p>Note: <strong>root</strong> is not listed here.</p>
         <Row className="mb-3">
-          <Col md={6}>
+          <Col md={4}>
             <FaSearch/>
             <Form.Control
               type="text"
@@ -76,23 +83,31 @@ const UsersPage = () => {
               onChange={event => setSearchTerm(event.target.value)}
             />
           </Col>
-          <Col md={6}>
+          <Col md={4}>
             <Button
+              type='button'
+              variant='primary'
+              onClick={() => navigate('/users/add')}
+            >
+              <FaPlus/> Add User
+            </Button>
+          </Col>
+          <Col md={4}>
+            <Button
+              type='button'
               variant="danger"
               disabled={selectedUsers.length === 0}
-              onClick={handleBulkDelete}
+              onClick={bulkDeleteHandler}
             >
-              <FaTrash/>Delete Selected
+              <FaTrash/> Delete Selected
             </Button>
           </Col>
         </Row>
         <Table striped bordered hover responsive>
           <thead>
             <tr>
-              <th></th>
+              <th>ID</th>
               <th>Name</th>
-              <th>Action</th>
-              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -120,16 +135,24 @@ const UsersPage = () => {
                   </td>
                   <td>{user.name}</td>
                   <td>
-                    <Button onClick={() => handleResetPassword(user.pk)}>
-                      <FaKey/>Reset Password
+                    <Button
+                      type='button'
+                      variant='secondary'
+                      className='m-auto p-auto text-white'
+                      onClick={() => navigate(`/users/resetPassword/?pk=${user.pk}`)}
+                    >
+                      <FaKey/> Reset password
                     </Button>
                   </td>
                   <td>
                     <Button
-                      onClick={() => handleDeleteUser(user.pk)}
+                      type='button'
+                      variant='secondary'
+                      className='m-auto p-auto text-white'
+                      onClick={() => deleteHandler(user.pk)}
                       disabled={deleteLoading}
                     >
-                      <FaTrash/>Delete
+                      <FaTrash/> Delete
                     </Button>
                   </td>
                 </tr>

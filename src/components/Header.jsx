@@ -3,6 +3,7 @@ import {FaUser, FaKey, FaArrowLeft, FaFileInvoiceDollar} from 'react-icons/fa'
 import {useNavigate} from 'react-router-dom'
 import {LinkContainer} from 'react-router-bootstrap'
 import {useSelector, useDispatch} from 'react-redux'
+import {toast} from 'react-toastify'
 import {useLazyLogoutQuery} from '../slices/usersApiSlice'
 import {logout} from '../slices/authenticationSlice'
 const Header = () => {
@@ -16,11 +17,8 @@ const Header = () => {
       dispatch(logout())
       navigate('/users/login')
     } catch (error) {
-      console.error(error)
+      toast.error(error?.data?.message || error.error)
     }
-  }
-  const changePasswordHandler = () => {
-    navigate('/users/changePassword')
   }
   return (
     <header>
@@ -28,7 +26,7 @@ const Header = () => {
         <Container>
           <LinkContainer to='/home'>
             <Navbar.Brand className='text-white'>
-              <FaFileInvoiceDollar/>Invoices
+              <FaFileInvoiceDollar/> Invoices
             </Navbar.Brand>
           </LinkContainer>
             {user && (
@@ -36,20 +34,22 @@ const Header = () => {
                 <Navbar.Toggle aria-controls='basic-navbar-nav'/>
                 <Navbar.Collapse id='basic-navbar-nav'>
                   <Nav className='ms-auto'>
-                    <FaUser/>
-                    {user.name}
+                    <Navbar.Brand className='text-white'>
+                      <FaUser/> {user.name}
+                    </Navbar.Brand>
                     <Button
-                      type='submit'
-                      variant='dark'
+                      type='button'
+                      variant='secondary'
                       className='m-auto p-auto text-white'
-                      onClick={changePasswordHandler}
-                    ><FaKey/>Change password</Button>
+                      onClick={() => navigate('/users/changePassword')}
+                    ><FaKey/> Change password</Button>
+                    <div className="px-1"></div>
                     <Button
-                      type='submit'
-                      variant='dark'
+                      type='button'
+                      variant='secondary'
                       className='m-auto p-auto text-white'
                       onClick={logoutHandler}
-                    ><FaArrowLeft/>Log out</Button>
+                    ><FaArrowLeft/> Log out</Button>
                   </Nav>
                 </Navbar.Collapse>
               </>
