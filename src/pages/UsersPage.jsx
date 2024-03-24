@@ -8,8 +8,7 @@ import {useListUsersQuery, useDeleteUserMutation} from '../slices/usersApiSlice'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 const UsersPage = () => {
-  const {data, isLoading, isError, error, refetch} = useListUsersQuery()
-  const users = JSON.parse(data)
+  const {data: users, isLoading, isError, error, refetch} = useListUsersQuery()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedUsers, setSelectedUsers] = useState([])
   const [deleteUser, {isLoading: deleteLoading}] = useDeleteUserMutation()
@@ -54,15 +53,6 @@ const UsersPage = () => {
         <Message variant="danger">
           {error?.data?.message || error.error}
         </Message>
-      </>
-    )
-  } else if (!users) {
-    return (
-      <>
-        <Helmet>
-          <title>Error | Invoices</title>
-        </Helmet>
-        <h1>Error retrieving users.</h1>
       </>
     )
   } else {
