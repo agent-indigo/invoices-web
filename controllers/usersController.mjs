@@ -38,7 +38,7 @@ export const logout = (request, response) => {
 /**
  * @name    changePassword
  * @desc    Change the current user's password
- * @route   PATCH /api/users/changePassword
+ * @route   PATCH /api/users/:pk/changePassword
  * @access  private
  */
 export const changePassword = asyncHandler(async(request, response) => {
@@ -69,7 +69,7 @@ export const changePassword = asyncHandler(async(request, response) => {
 /**
  * @name    resetPassword
  * @desc    Change a user's password
- * @route   PATCH /api/users/resetPassword/:pk
+ * @route   PATCH /api/users/:pk/resetPassword
  * @access  private/root
  */
 export const resetPassword = asyncHandler(async (request, response) => {
