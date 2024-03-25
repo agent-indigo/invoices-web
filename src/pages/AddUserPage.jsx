@@ -16,7 +16,7 @@ const AddUserPage = () => {
   const submitHandler = async event => {
     event.preventDefault()
     try {
-      const response = await addUser({password, confirmPassword}).unwrap()
+      const response = await addUser({name, password, confirmPassword}).unwrap()
       navigate('/users/list')
       toast.success(response.message)
     } catch (error) {

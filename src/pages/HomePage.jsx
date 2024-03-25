@@ -37,7 +37,7 @@ const HomePage = () => {
                 className='m-auto p-auto text-white'
                 onClick={() => navigate('/users/list')}
               >
-                <FaUsers/> Users <FaUsers/>
+                <FaUsers/> Users
               </Button>
             </Col>
             <Col sm={5}/>

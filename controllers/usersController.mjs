@@ -56,10 +56,7 @@ export const changePassword = asyncHandler(async(request, response) => {
     } else if (!currentPassword || !newPassword || !confirmNewPassword) {
         response.status(400)
         throw new Error('At least one field is empty.')
-    }
-    
-    
-    else {
+    } else {
         const newShadow = await bcrypt.hash(newPassword, 10)
         user.shadow = newShadow
         await user.save()
