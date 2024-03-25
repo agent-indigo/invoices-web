@@ -22,7 +22,7 @@ const Header = () => {
   }
   return (
     <header>
-      <Navbar bg='primary' variant='primary' expand='sm' collapseOnSelect>
+      <Navbar bg='dark' variant='dark' expand='sm' collapseOnSelect>
         <Container>
           <LinkContainer to='/home'>
             <Navbar.Brand className='text-white'>
@@ -39,14 +39,14 @@ const Header = () => {
                     </Navbar.Brand>
                     <Button
                       type='button'
-                      variant='secondary'
+                      variant='primary'
                       className='m-auto p-auto text-white'
                       onClick={() => navigate('/users/changePassword')}
                     ><FaKey/> Change password</Button>
                     <div className="px-1"></div>
                     <Button
                       type='button'
-                      variant='secondary'
+                      variant='primary'
                       className='m-auto p-auto text-white'
                       onClick={logoutHandler}
                     ><FaArrowLeft/> Log out</Button>

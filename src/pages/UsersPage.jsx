@@ -56,24 +56,26 @@ const UsersPage = () => {
       </>
     )
   } else {
+    const filteredUsers = users.filter(user =>
+      user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
     return (
       <>
         <Helmet>
           <title>Users | Invoices</title>
         </Helmet>
         <h1><FaUsers/> Users</h1>
-        <p>Note: <strong>root</strong> is not listed here.</p>
         <Row className="mb-3">
-          <Col md={4}>
-            <FaSearch/>
+          <Col xs={8} className='d-flex align-items-center'>
+            <FaSearch className='mx-1'/>
             <Form.Control
               type="text"
-              placeholder="Search Users"
+              placeholder="Search users"
               value={searchTerm}
               onChange={event => setSearchTerm(event.target.value)}
             />
           </Col>
-          <Col md={4}>
+          <Col xs={2}>
             <Button
               type='button'
               variant='primary'
@@ -82,7 +84,7 @@ const UsersPage = () => {
               <FaPlus/> Add User
             </Button>
           </Col>
-          <Col md={4}>
+          <Col xs={2}>
             <Button
               type='button'
               variant="danger"
@@ -93,60 +95,81 @@ const UsersPage = () => {
             </Button>
           </Col>
         </Row>
-        <Table striped bordered hover responsive>
+        <Table striped hover responsive>
           <thead>
             <tr>
+              <th>
+                <Form.Check
+                  type="checkbox"
+                  checked={filteredUsers.length > 0 && selectedUsers.length === filteredUsers.length}
+                  onChange={event => {
+                    if (event.target.checked) {
+                      setSelectedUsers(
+                        filteredUsers.map(user => user.role).filter(
+                          role => role !== 'root'
+                        )
+                      )
+                    } else {
+                      setSelectedUsers([])
+                    }
+                  }}
+                />
+              </th>
               <th>ID</th>
               <th>Name</th>
+              <th>Created</th>
+              <th>Last password change</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {users
-              .filter(user => user.role !== 'root' && user.name
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase()))
-              .map(user => (
-                <tr key={user.pk}>
-                  <td>
-                    <Form.Check
-                      type="checkbox"
-                      checked={selectedUsers.includes(user.pk)}
-                      onChange={event => {
-                        const pk = user.pk
-                        if (event.target.checked) {
-                          setSelectedUsers([...selectedUsers, pk])
-                        } else {
-                          setSelectedUsers(selectedUsers.filter(
-                            id => id !== pk
-                          ))
-                        }
-                      }}
-                    />
-                  </td>
-                  <td>{user.name}</td>
-                  <td>
-                    <Button
-                      type='button'
-                      variant='secondary'
-                      className='m-auto p-auto text-white'
-                      onClick={() => navigate(`/users/resetPassword/?pk=${user.pk}`)}
-                    >
-                      <FaKey/> Reset password
-                    </Button>
-                  </td>
-                  <td>
-                    <Button
-                      type='button'
-                      variant='secondary'
-                      className='m-auto p-auto text-white'
-                      onClick={() => deleteHandler(user.pk)}
-                      disabled={deleteLoading}
-                    >
-                      <FaTrash/> Delete
-                    </Button>
-                  </td>
-                </tr>
-              ))}
+            {users.map(user => (
+              <tr key={user.pk}>
+                <td>
+                  <Form.Check
+                    type="checkbox"
+                    checked={selectedUsers.includes(user.pk)}
+                    disabled={user.role === 'root'}
+                    onChange={event => {
+                      const pk = user.pk
+                      if (event.target.checked) {
+                        setSelectedUsers([...selectedUsers, pk])
+                      } else {
+                        setSelectedUsers(selectedUsers.filter(
+                          id => id !== pk
+                        ))
+                      }
+                    }}
+                  />
+                </td>
+                <td>{user.pk}</td>
+                <td>{user.name}</td>
+                <td>{new Date(user.createdAt).toLocaleString()}</td>
+                <td>{new Date(user.updatedAt).toLocaleString()}</td>
+                <td>
+                  <Button
+                    type='button'
+                    variant='secondary'
+                    className='m-auto p-auto text-white'
+                    disabled={user.role === 'root'}
+                    onClick={() => navigate(`/users/resetPassword/?pk=${user.pk}`)}
+                  >
+                    <FaKey/> Reset password
+                  </Button>
+                </td>
+                <td>
+                  <Button
+                    type='button'
+                    variant='secondary'
+                    className='m-auto p-auto text-white'
+                    onClick={() => deleteHandler(user.pk)}
+                    disabled={deleteLoading || user.role === 'root'}
+                  >
+                    <FaTrash/> Delete
+                  </Button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </Table>
       </>

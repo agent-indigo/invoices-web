@@ -1,12 +1,7 @@
 const Footer = () => {
     return (
-        <footer className="bg-light text-center py-3">
-            {Date().toLocaleString('en-CA', {
-                weekday: 'long',
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric'
-            })}
+        <footer className="bg-secondary text-white text-center py-3">
+            {new Date().toLocaleString()}
         </footer>
     )
 }

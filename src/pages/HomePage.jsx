@@ -1,4 +1,4 @@
-import {Button, Row} from 'react-bootstrap'
+import {Button, Card, Col, Row} from 'react-bootstrap'
 import {FaFileInvoiceDollar, FaUsers} from 'react-icons/fa'
 import {useNavigate} from 'react-router-dom'
 import {useSelector} from 'react-redux'
@@ -11,29 +11,39 @@ const HomePage = () => {
       <Helmet>
         <title>Home | Invoices</title>
       </Helmet>
-      <Row>
-        <Button
-          type='button'
-          variant='secondary'
-          className='m-auto p-auto text-white'
-          onClick={() => navigate('/invoices/list')}
-        >
-          <FaFileInvoiceDollar/> Invoices
-        </Button>
-      </Row>
+      <Card bg='light' className='py-3'>
+        <Row>
+          <Col sm={5}/>
+          <Col xs={2}>
+            <Button
+              type='button'
+              variant='primary'
+              className='m-auto p-auto text-white'
+              onClick={() => navigate('/invoices/list')}
+            >
+              <FaFileInvoiceDollar/> Invoices
+            </Button>
+          </Col>
+          <Col sm={5}/>
+        </Row>
         {user.role === 'root' && (
           <Row>
             <div className="py-1"></div>
-            <Button
-              type='button'
-              variant='secondary'
-              className='m-auto p-auto text-white'
-              onClick={() => navigate('/users/list')}
-            >
-              <FaUsers/> Users
-            </Button>
+            <Col sm={5}/>
+            <Col xs={2}>
+              <Button
+                type='button'
+                variant='primary'
+                className='m-auto p-auto text-white'
+                onClick={() => navigate('/users/list')}
+              >
+                <FaUsers/> Users <FaUsers/>
+              </Button>
+            </Col>
+            <Col sm={5}/>
           </Row>
-        )}
+        )}        
+      </Card>
     </>
   )
 }
