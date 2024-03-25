@@ -45,7 +45,7 @@ const AddUserPage = () => {
               <Form.Label><FaUserTag/>User name</Form.Label>
               <Form.Control
                 type='text'
-                placeholder='Enter name'
+                placeholder='Enter user name'
                 value={name}
                 onChange={event => setName(event.target.value)}
                 onKeyDown={event => {
