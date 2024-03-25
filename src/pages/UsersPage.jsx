@@ -5,14 +5,25 @@ import {Table, Form, Button, Row, Col} from 'react-bootstrap'
 import {FaKey, FaPlus, FaTrash, FaSearch, FaUsers} from 'react-icons/fa'
 import {toast} from 'react-toastify'
 import {useListUsersQuery, useDeleteUserMutation} from '../slices/usersApiSlice'
+import ResetPasswordModal from '../components/ResetPasswordModal'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 const UsersPage = () => {
   const {data: users, isLoading, isError, error, refetch} = useListUsersQuery()
   const [searchTerm, setSearchTerm] = useState('')
+  const [showResetPasswordModal, setShowResetPasswordModal] = useState(false)
+  const [selectedUserPk, setSelectedUserPk] = useState(null)
   const [selectedUsers, setSelectedUsers] = useState([])
   const [deleteUser, {isLoading: deleteLoading}] = useDeleteUserMutation()
   const navigate = useNavigate()
+  const openResetPAsswordModal = pk => {
+    setSelectedUserPk(pk)
+    setShowResetPasswordModal(true)
+  }
+  const closeResetPasswordModal = () => {
+    setSelectedUserPk(null)
+    setShowResetPasswordModal(false)
+  }
   const deleteHandler = async pk => {
     try {
       const response = await deleteUser(pk).unwrap()
@@ -153,7 +164,7 @@ const UsersPage = () => {
                     variant='secondary'
                     className='m-auto p-auto text-white'
                     disabled={user.role === 'root'}
-                    onClick={() => navigate(`/users/resetPassword/?pk=${user.pk}`)}
+                    onClick={() => openResetPAsswordModal(user.pk)}
                   >
                     <FaKey/> Reset password
                   </Button>
@@ -173,6 +184,12 @@ const UsersPage = () => {
             ))}
           </tbody>
         </Table>
+        {showResetPasswordModal && (
+          <ResetPasswordModal
+            pk={selectedUserPk}
+            closeModal={closeResetPasswordModal}
+          />
+        )}
       </>
     )
   }

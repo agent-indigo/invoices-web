@@ -5,7 +5,7 @@ import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
 import {useResetPasswordMutation} from '../slices/usersApiSlice'
 import {toast} from 'react-toastify'
-const ResetPasswordModal = pk => {
+const ResetPasswordModal = ({pk, closeModal}) => {
     const [newPassword, setNewPassword] = useState('')
     const [confirmNewPassword, setConfirmNewPassword] = useState('')
     const [resetPassword, {isLoading}] = useResetPasswordMutation()
@@ -13,17 +13,17 @@ const ResetPasswordModal = pk => {
       event.preventDefault()
       try {
         const response = await resetPassword({pk, newPassword, confirmNewPassword}).unwrap()
-        Modal.close()
+        closeModal()
         toast.success(response.message)
       } catch (error) {
         toast.error(error?.data?.message || error.error)
       }
     }
   return (
-    <Modal>
+    <Modal show={true} onHide={closeModal}>
         <FormContainer>
             <h1><FaKey/> Reset password</h1>
-            <Form onSubmit={submitHandler}>
+            <Form onSubmit={submitHandler} className='py-1'>
                 <Form.Group controlId='newPassword' className='my-3'>
                 <Form.Label><FaEdit/> New password</Form.Label>
                 <Form.Control
@@ -61,7 +61,7 @@ const ResetPasswordModal = pk => {
                     variant='danger'
                     className='m-auto p-auto text-white'
                     disabled={isLoading}
-                    onClick={Modal.close()}
+                    onClick={() => closeModal()}
                 ><FaTimes/> Cancel</Button>
                 {isLoading && <Loader/>}
             </Form>

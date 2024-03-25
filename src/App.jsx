@@ -17,7 +17,6 @@ import ChangePasswordPage from './pages/ChangePasswordPage'
 import InvoicesPage from './pages/InvoicesPage'
 import UsersPage from './pages/UsersPage'
 import AddUserPage from './pages/AddUserPage'
-import ResetPasswordPage from './pages/ResetPasswordPage'
 import 'bootswatch/dist/united/bootstrap.css'
 import 'react-toastify/dist/ReactToastify.css'
 const App = () => {
@@ -41,7 +40,6 @@ const App = () => {
                   <Route path='' element={<RootRoute/>}>
                     <Route path='/users/list' element={<UsersPage/>}/>
                     <Route path='/users/add' element={<AddUserPage/>}/>
-                    <Route path='/users/resetPassword/?pk' element={<ResetPasswordPage/>}/>
                   </Route>
                 </Route>
               </Route>
