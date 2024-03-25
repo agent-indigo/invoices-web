@@ -18,7 +18,7 @@ const HomePage = () => {
             <Button
               type='button'
               variant='primary'
-              className='m-auto p-auto text-white'
+              className='p-auto text-white'
               onClick={() => navigate('/invoices/list')}
             >
               <FaFileInvoiceDollar/> Invoices
@@ -34,7 +34,7 @@ const HomePage = () => {
               <Button
                 type='button'
                 variant='primary'
-                className='m-auto p-auto text-white'
+                className='p-auto text-white'
                 onClick={() => navigate('/users/list')}
               >
                 <FaUsers/> Users

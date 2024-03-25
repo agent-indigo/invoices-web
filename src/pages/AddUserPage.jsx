@@ -87,14 +87,14 @@ const AddUserPage = () => {
             <Button
               type='submit'
               variant='success'
-              className='m-auto p-auto text-white'
+              className='p-auto text-white'
               disabled={isLoading}
             ><FaCheck/>Add</Button>
             {' '}
             <Button
               type='button'
               variant='danger'
-              className='m-auto p-auto text-white'
+              className='p-auto text-white'
               disabled={isLoading}
               onClick={() => navigate('/users/list')}
           ><FaTimes/>Cancel</Button>

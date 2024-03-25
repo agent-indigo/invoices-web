@@ -80,14 +80,14 @@ const ChangePasswordPage = () => {
             <Button
               type='submit'
               variant='success'
-              className='mt-2 mx-auto text-white'
+              className='p-auto text-white'
               disabled={isLoading}
             ><FaCheck/> Change</Button>
             {' '}
             <Button
               type='button'
               variant='danger'
-              className='mt-2 mx-auto text-white'
+              className='p-auto text-white'
               disabled={isLoading}
               onClick={() => navigate('/home')}
           ><FaTimes/> Cancel</Button>

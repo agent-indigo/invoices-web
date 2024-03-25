@@ -25,7 +25,7 @@ const UsersPage = () => {
   const [selectedUsers, setSelectedUsers] = useState([])
   const [allUsers, setAllUsers] = useState([])
   const [sortCriteria, setSortCriteria] = useState({field: 'name', order: 'asc'})
-  const [deleteUser, {isLoading: deleteLoading}] = useDeleteUserMutation()
+  const [deleteUser, {isLoading: deleting}] = useDeleteUserMutation()
   const navigate = useNavigate()
   const sortHandler = (field, order) => {
     setSortCriteria({field, order})
@@ -82,18 +82,17 @@ const UsersPage = () => {
     )
   } else {
     const sortedUsers = [...users].sort((a, b) => {
-      const orderFactor = sortCriteria.order === 'asc' ? 1 : -1;
-      if (a[sortCriteria.field] < b[sortCriteria.field]) return -1 * orderFactor;
-      if (a[sortCriteria.field] > b[sortCriteria.field]) return 1 * orderFactor;
-      return 0;
+      const orderFactor = sortCriteria.order === 'asc' ? 1 : -1
+      if (a[sortCriteria.field] < b[sortCriteria.field]) return -1 * orderFactor
+      if (a[sortCriteria.field] > b[sortCriteria.field]) return 1 * orderFactor
+      return 0
     })
     const filteredUsers = sortedUsers.filter(user =>
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.pk.toString().includes(searchTerm)
+      user.name.toLowerCase().includes(searchTerm.toLowerCase())
     )
     const userIsRoot = pk => {
-      const user = allUsers.find(user => user.pk === pk);
-      return user && user.role === 'root';
+      const user = allUsers.find(user => user.pk === pk)
+      return user && user.role === 'root'
     }
     const checkAllHandler = event => {
       if (event.target.checked) {
@@ -113,7 +112,7 @@ const UsersPage = () => {
         </Helmet>
         <h1><FaUsers/> Users</h1>
         <Row className="mb-3">
-          <Col xs={8} className='d-flex align-items-center'>
+          <Col sm={8} className='d-flex align-items-center'>
             <FaSearch className='mx-1'/>
             <Form.Control
               type="text"
@@ -122,23 +121,23 @@ const UsersPage = () => {
               onChange={event => setSearchTerm(event.target.value)}
             />
           </Col>
-          <Col xs={2}>
+          <Col sm={2}>
             <Button
               type='button'
               variant='primary'
               onClick={() => navigate('/users/add')}
             >
-              <FaPlus/> Add User
+              <FaPlus/> Add user
             </Button>
           </Col>
-          <Col xs={2}>
+          <Col sm={2}>
             <Button
               type='button'
               variant="danger"
               disabled={selectedUsers.length === 0}
               onClick={bulkDeleteHandler}
             >
-              <FaTrash/> Delete Selected
+              <FaTrash/> Delete selected
             </Button>
           </Col>
         </Row>
@@ -146,15 +145,14 @@ const UsersPage = () => {
           <thead>
             <tr>
               <th>
-                <div className="d-flex">
-                  <Form.Check
-                    type="checkbox"
-                    checked={
-                      filteredUsers.length > 0 && selectedUsers.length === filteredUsers.filter(
-                        user => !userIsRoot(user.pk)).length}
-                    onChange={event => checkAllHandler(event)}
-                  /><div className="px-1"/><FaCheckDouble/>
-                </div>
+                <FaCheckDouble/>
+                <Form.Check
+                  type="checkbox"
+                  checked={filteredUsers.length > 0 &&
+                    selectedUsers.length === filteredUsers.filter(
+                      user => !userIsRoot(user.pk)).length}
+                  onChange={event => checkAllHandler(event)}
+                />
               </th>
               <th>
                 Name
@@ -179,7 +177,7 @@ const UsersPage = () => {
                 </div>
               </th>
               <th>
-                Last password change
+                Password last changed
                 <div className="d-flex">
                   <Link to={'#'} onClick={() => sortHandler('updatedAt', 'asc')}>
                     <FaArrowUp/>
@@ -214,12 +212,14 @@ const UsersPage = () => {
                 </td>
                 <td>{user.name}</td>
                 <td>{new Date(user.createdAt).toLocaleString()}</td>
-                <td>{new Date(user.updatedAt).toLocaleString()}</td>
+                <td>{user.createdAt === user.updatedAt ? null : new Date(
+                    user.updatedAt).toLocaleString()
+                }</td>
                 <td>
                   <Button
                     type='button'
-                    variant='secondary'
-                    className='m-auto p-auto text-white'
+                    variant='primary'
+                    className='p-auto text-white'
                     disabled={user.role === 'root'}
                     onClick={() => openResetPAsswordModal(user.pk)}
                   >
@@ -229,10 +229,10 @@ const UsersPage = () => {
                 <td>
                   <Button
                     type='button'
-                    variant='secondary'
-                    className='m-auto p-auto text-white'
+                    variant='danger'
+                    className='p-auto text-white'
                     onClick={() => deleteHandler(user.pk)}
-                    disabled={deleteLoading || user.role === 'root'}
+                    disabled={deleting || user.role === 'root'}
                   >
                     <FaTrash/> Delete
                   </Button>

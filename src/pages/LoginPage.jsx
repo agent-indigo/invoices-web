@@ -82,7 +82,7 @@ const LoginPage = () => {
             <Button
               type='submit'
               variant='success'
-              className='m-auto p-auto text-white'
+              className='p-auto text-white'
               disabled={isLoading}
             >
               Log in <FaArrowRight/>

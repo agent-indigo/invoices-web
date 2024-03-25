@@ -54,14 +54,14 @@ const ResetPasswordModal = ({pk, closeModal}) => {
                 <Button
                     type='submit'
                     variant='success'
-                    className='m-auto p-auto text-white'
+                    className='p-auto text-white'
                     disabled={isLoading}
                 ><FaCheck/> Reset</Button>
                 {' '}
                 <Button
                     type='button'
                     variant='danger'
-                    className='m-auto p-auto text-white'
+                    className='p-auto text-white'
                     disabled={isLoading}
                     onClick={() => closeModal()}
                 ><FaTimes/> Cancel</Button>

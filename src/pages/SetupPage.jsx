@@ -81,7 +81,7 @@ const SetupPage = () => {
             <Button
               type='submit'
               variant='success'
-              className='m-auto p-auto text-white'
+              className='p-auto text-white'
               disabled={isLoading}
             ><FaCheck/> Confirm</Button>
             {isLoading && <Loader/>}

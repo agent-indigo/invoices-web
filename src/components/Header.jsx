@@ -44,14 +44,14 @@ const Header = () => {
                     <Button
                       type='button'
                       variant='primary'
-                      className='m-auto p-auto text-white'
+                      className='p-auto text-white'
                       onClick={() => navigate('/users/changePassword')}
                     ><FaKey/> Change password</Button>
                     <div className="px-1"/>
                     <Button
                       type='button'
                       variant='primary'
-                      className='m-auto p-auto text-white'
+                      className='p-auto text-white'
                       onClick={logoutHandler}
                     ><FaArrowLeft/> Log out</Button>
                   </Nav>
