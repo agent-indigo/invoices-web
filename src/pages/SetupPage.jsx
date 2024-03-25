@@ -30,6 +30,12 @@ const SetupPage = () => {
       toast.error(error?.data?.message || error.error)
     }
   }
+  const enterKeyHandler = event => {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        submitHandler(event);
+    }
+  }
   if (isLoading) {
     return (
       <>
@@ -69,12 +75,7 @@ const SetupPage = () => {
                 placeholder='Confirm password'
                 value={confirmPassword}
                 onChange={event => setConfirmPassword(event.target.value)}
-                onKeyDown={event => {
-                  if (event.key === 'Enter') {
-                    event.preventDefault();
-                    submitHandler(event);
-                  }
-                }}
+                onKeyDown={event => enterKeyHandler(event)}
               ></Form.Control>
             </Form.Group>
             <Button

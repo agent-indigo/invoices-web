@@ -31,6 +31,12 @@ const LoginPage = () => {
       toast.error(error?.data?.message || error.error)
     }
   }
+  const enterKeyHandler = event => {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        submitHandler(event);
+    }
+  }
   if (isLoading) {
     return (
       <>
@@ -66,12 +72,7 @@ const LoginPage = () => {
                 placeholder='Enter password'
                 value={password}
                 onChange={event => setPassword(event.target.value)}
-                onKeyDown={event => {
-                  if (event.key === 'Enter') {
-                    event.preventDefault();
-                    submitHandler(event);
-                  }
-                }}
+                onKeyDown={event => enterKeyHandler(event)}
               ></Form.Control>
             </Form.Group>
             <Button

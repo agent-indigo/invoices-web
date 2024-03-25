@@ -43,7 +43,7 @@ const Header = () => {
                       className='m-auto p-auto text-white'
                       onClick={() => navigate('/users/changePassword')}
                     ><FaKey/> Change password</Button>
-                    <div className="px-1"></div>
+                    <div className="px-1"/>
                     <Button
                       type='button'
                       variant='primary'

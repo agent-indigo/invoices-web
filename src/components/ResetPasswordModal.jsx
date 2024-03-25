@@ -19,6 +19,12 @@ const ResetPasswordModal = ({pk, closeModal}) => {
         toast.error(error?.data?.message || error.error)
       }
     }
+    const enterKeyHandler = event => {
+      if (event.key === 'Enter') {
+          event.preventDefault();
+          submitHandler(event);
+      }
+    }
   return (
     <Modal show={true} onHide={closeModal}>
         <FormContainer>
@@ -41,12 +47,7 @@ const ResetPasswordModal = ({pk, closeModal}) => {
                     placeholder='Confirm new password'
                     value={confirmNewPassword}
                     onChange={event => setConfirmNewPassword(event.target.value)}
-                    onKeyDown={event => {
-                    if (event.key === 'Enter') {
-                        event.preventDefault();
-                        submitHandler(event);
-                    }
-                    }}
+                    onKeyDown={event => enterKeyHandler(event)}
                 ></Form.Control>
                 </Form.Group>
                 <Button
