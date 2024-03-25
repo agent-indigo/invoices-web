@@ -57,7 +57,8 @@ const UsersPage = () => {
     )
   } else {
     const filteredUsers = users.filter(user =>
-      user.name.toLowerCase().includes(searchTerm.toLowerCase())
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.pk.toString().includes(searchTerm)
     )
     return (
       <>
@@ -123,7 +124,7 @@ const UsersPage = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map(user => (
+            {filteredUsers.map(user => (
               <tr key={user.pk}>
                 <td>
                   <Form.Check

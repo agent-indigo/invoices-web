@@ -19,15 +19,15 @@ const invoicesApiSlice = apiSlice.injectEndpoints({
         }),
         editInvoice: builder.mutation({
             query: data => ({
-                url: `${INVOICES_URL}/:pk`,
+                url: `${INVOICES_URL}/${data.pk}`,
                 method: 'PUT',
                 body: data
             }),
             invalidatesTags: ['invoice']
         }),
         deleteInvoice: builder.mutation({
-            query: () => ({
-                url: `${INVOICES_URL}/:pk`,
+            query: pk => ({
+                url: `${INVOICES_URL}/${pk}`,
                 method: 'DELETE'
             }),
             invalidatesTags: ['invoice']
@@ -37,7 +37,6 @@ const invoicesApiSlice = apiSlice.injectEndpoints({
 export const {
     useAddInvoiceMutation,
     useListInvoicesQuery,
-    useLazyListInvoicesQuery,
     useEditInvoiceMutation,
     useDeleteInvoiceMutation
 } = invoicesApiSlice

@@ -22,5 +22,5 @@ usersRouter.use(authorize('root'))
 usersRouter.post('/', addUser)
 usersRouter.get('/', listUsers)
 usersRouter.delete('/:pk', deleteUser)
-usersRouter.patch('/resetPassword/?pk', resetPassword)
+usersRouter.patch('/resetPassword/:pk', resetPassword)
 export default usersRouter
