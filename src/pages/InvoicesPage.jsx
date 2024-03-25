@@ -20,6 +20,7 @@ import {
   useEditInvoiceMutation,
   useDeleteInvoiceMutation
 } from '../slices/invoicesApiSlice'
+import floatify from '../floatify'
 import {Helmet} from 'react-helmet'
 const InvoicesPage = () => {
   const {data: invoices, isLoading, isError, error, refetch} = useListInvoicesQuery()
@@ -256,9 +257,9 @@ const InvoicesPage = () => {
                 </td>
                 <td>{invoice.vendor}</td>
                 <td>{new Date(invoice.date).toLocaleString()}</td>
-                <td>{invoice.subtotal}</td>
-                <td>{invoice.hst}</td>
-                <td>{invoice.total}</td>
+                <td>${floatify(invoice.subtotal)}</td>
+                <td>${floatify(invoice.hst)}</td>
+                <td>${floatify(invoice.total)}</td>
                 <td>{invoice.invoiceId}</td>
                 <td>{new Date(invoice.createdAt).toLocaleString()}</td>
                 <td>{invoice.createdAt === invoice.updatedAt ? null : new Date(
