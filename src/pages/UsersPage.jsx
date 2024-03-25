@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {Helmet} from 'react-helmet'
 import {Table, Form, Button, Row, Col} from 'react-bootstrap'
-import {FaKey, FaPlus, FaTrash, FaSearch, FaUsers} from 'react-icons/fa'
+import {FaKey, FaPlus, FaTrash, FaSearch, FaUsers, FaArrowUp, FaArrowDown} from 'react-icons/fa'
 import {toast} from 'react-toastify'
 import {useListUsersQuery, useDeleteUserMutation} from '../slices/usersApiSlice'
 import ResetPasswordModal from '../components/ResetPasswordModal'
@@ -14,6 +14,7 @@ const UsersPage = () => {
   const [showResetPasswordModal, setShowResetPasswordModal] = useState(false)
   const [selectedUserPk, setSelectedUserPk] = useState(null)
   const [selectedUsers, setSelectedUsers] = useState([])
+  const [sortCriteria, setSortCriteria] = useState({field: 'name', order: 'asc'})
   const [deleteUser, {isLoading: deleteLoading}] = useDeleteUserMutation()
   const navigate = useNavigate()
   const openResetPAsswordModal = pk => {
@@ -67,7 +68,13 @@ const UsersPage = () => {
       </>
     )
   } else {
-    const filteredUsers = users.filter(user =>
+    const sortedUsers = [...users].sort((a, b) => {
+      const orderFactor = sortCriteria.order === 'asc' ? 1 : -1;
+      if (a[sortCriteria.field] < b[sortCriteria.field]) return -1 * orderFactor;
+      if (a[sortCriteria.field] > b[sortCriteria.field]) return 1 * orderFactor;
+      return 0;
+    })
+    const filteredUsers = sortedUsers.filter(user =>
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.pk.toString().includes(searchTerm)
     )
@@ -127,10 +134,14 @@ const UsersPage = () => {
                   }}
                 />
               </th>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Created</th>
-              <th>Last password change</th>
+              <th>ID <FaArrowUp onClick={() => setSortCriteria({field: 'pk', order: 'asc'})}/>
+              <FaArrowDown onClick={() => setSortCriteria({field: 'pk', order: 'desc'})}/></th>
+              <th>Name <FaArrowUp onClick={() => setSortCriteria({field: 'name', order: 'asc'})}/>
+              <FaArrowDown onClick={() => setSortCriteria({field: 'name', order: 'desc'})}/></th>
+              <th>Created <FaArrowUp onClick={() => setSortCriteria({field: 'createdAt', order: 'asc'})}/>
+              <FaArrowDown onClick={() => setSortCriteria({field: 'createdAt', order: 'desc'})}/></th>
+              <th>Last password change <FaArrowUp onClick={() => setSortCriteria({field: 'updatedAt', order: 'asc'})}/>
+              <FaArrowDown onClick={() => setSortCriteria({field: 'updatedAt', order: 'desc'})}/></th>
               <th>Actions</th>
             </tr>
           </thead>
