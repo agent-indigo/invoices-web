@@ -1,5 +1,9 @@
 import {Navbar, Nav, Container, Button} from 'react-bootstrap'
-import {FaUser, FaKey, FaArrowLeft, FaFileInvoiceDollar} from 'react-icons/fa'
+import {
+  FaUser,
+  FaKey,
+  FaArrowLeft,
+  FaFileInvoiceDollar} from 'react-icons/fa'
 import {useNavigate} from 'react-router-dom'
 import {LinkContainer} from 'react-router-bootstrap'
 import {useSelector, useDispatch} from 'react-redux'
@@ -22,7 +26,7 @@ const Header = () => {
   }
   return (
     <header>
-      <Navbar bg='dark' variant='dark' expand='sm' collapseOnSelect>
+      <Navbar bg='dark' expand='sm' collapseOnSelect>
         <Container>
           <LinkContainer to='/home'>
             <Navbar.Brand className='text-white'>

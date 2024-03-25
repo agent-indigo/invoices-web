@@ -16,7 +16,8 @@ const ChangePasswordPage = () => {
   const submitHandler = async event => {
     event.preventDefault()
     try {
-      const response = await changePassword({currentPassword, newPassword, confirmNewPassword}).unwrap()
+      const response = await changePassword({
+        currentPassword, newPassword, confirmNewPassword}).unwrap()
       navigate('/home')
       toast.success(response.message)
     } catch (error) {

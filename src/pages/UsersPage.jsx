@@ -3,7 +3,15 @@ import {useNavigate} from 'react-router-dom'
 import {Helmet} from 'react-helmet'
 import {Table, Form, Button, Row, Col} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
-import {FaKey, FaPlus, FaTrash, FaSearch, FaUsers, FaArrowUp, FaArrowDown, FaCheckDouble} from 'react-icons/fa'
+import {
+  FaKey,
+  FaPlus,
+  FaTrash,
+  FaSearch,
+  FaUsers,
+  FaArrowUp,
+  FaArrowDown,
+  FaCheckDouble} from 'react-icons/fa'
 import {toast} from 'react-toastify'
 import {useListUsersQuery, useDeleteUserMutation} from '../slices/usersApiSlice'
 import ResetPasswordModal from '../components/ResetPasswordModal'

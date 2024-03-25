@@ -3,7 +3,11 @@ import {useNavigate} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
 import {Form, Button} from 'react-bootstrap'
 import {Helmet} from 'react-helmet'
-import {FaKey, FaArrowRight, FaUser, FaUserTag} from 'react-icons/fa'
+import {
+  FaKey,
+  FaArrowRight,
+  FaUser,
+  FaUserTag} from 'react-icons/fa'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
 import {useLoginMutation} from '../slices/usersApiSlice'

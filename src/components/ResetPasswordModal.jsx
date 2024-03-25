@@ -12,7 +12,8 @@ const ResetPasswordModal = ({pk, closeModal}) => {
     const submitHandler = async event => {
       event.preventDefault()
       try {
-        const response = await resetPassword({pk, newPassword, confirmNewPassword}).unwrap()
+        const response = await resetPassword({
+          pk, newPassword, confirmNewPassword}).unwrap()
         closeModal()
         toast.success(response.message)
       } catch (error) {

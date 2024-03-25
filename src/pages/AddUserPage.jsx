@@ -2,7 +2,13 @@ import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {Form, Button} from 'react-bootstrap'
 import {Helmet} from 'react-helmet'
-import {FaUser, FaPlus, FaKey, FaTimes, FaCheck, FaUserTag} from 'react-icons/fa'
+import {
+  FaUser,
+  FaPlus,
+  FaKey,
+  FaTimes,
+  FaCheck,
+  FaUserTag} from 'react-icons/fa'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
 import {useAddUserMutation} from '../slices/usersApiSlice'
@@ -16,7 +22,8 @@ const AddUserPage = () => {
   const submitHandler = async event => {
     event.preventDefault()
     try {
-      const response = await addUser({name, password, confirmPassword}).unwrap()
+      const response = await addUser({
+        name, password, confirmPassword}).unwrap()
       navigate('/users/list')
       toast.success(response.message)
     } catch (error) {
@@ -54,12 +61,7 @@ const AddUserPage = () => {
                 placeholder='Enter user name'
                 value={name}
                 onChange={event => setName(event.target.value)}
-                onKeyDown={event => {
-                  if (event.key === 'Enter') {
-                    event.preventDefault();
-                    submitHandler(event);
-                  }
-                }}
+                onKeyDown={event => enterKeyHandler(event)}
                 autoFocus
               ></Form.Control>
             </Form.Group>

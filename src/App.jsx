@@ -27,19 +27,56 @@ const App = () => {
         <main className="py-3">
           <Container>
             <Routes>
-              <Route path='' element={<SetupRoute/>}>
-                <Route path='/setup' element={<SetupPage/>}/>
+              <Route
+                path=''
+                element={<SetupRoute/>}
+              >
+                <Route
+                  path='/setup'
+                  element={<SetupPage/>}
+                />
               </Route>
-              <Route path='' element={<ProductionRoute/>}>
-                <Route path='/users/login' element={<LoginPage/>}/>
-                <Route path='' element={<PrivateRoute/>}>
-                  <Route path='/users/logout' element={<LoginPage/>}/>
-                  <Route index={true} path='/home' element={<HomePage/>}/>
-                  <Route path='/users/changePassword' element={<ChangePasswordPage/>}/>
-                  <Route path='/invoices/list' element={<InvoicesPage/>}/>
-                  <Route path='' element={<RootRoute/>}>
-                    <Route path='/users/list' element={<UsersPage/>}/>
-                    <Route path='/users/add' element={<AddUserPage/>}/>
+              <Route
+                path=''
+                element={<ProductionRoute/>}
+              >
+                <Route
+                  path='/users/login'
+                  element={<LoginPage/>}
+                />
+                <Route
+                  path=''
+                  element={<PrivateRoute/>}
+                >
+                  <Route
+                    path='/users/logout'
+                    element={<LoginPage/>}
+                  />
+                  <Route
+                    index={true}
+                    path='/home'
+                    element={<HomePage/>}
+                  />
+                  <Route
+                    path='/users/changePassword'
+                    element={<ChangePasswordPage/>}
+                  />
+                  <Route
+                    path='/invoices/list'
+                    element={<InvoicesPage/>}
+                  />
+                  <Route
+                    path=''
+                    element={<RootRoute/>}
+                  >
+                    <Route
+                      path='/users/list'
+                      element={<UsersPage/>}
+                    />
+                    <Route
+                      path='/users/add'
+                      element={<AddUserPage/>}
+                    />
                   </Route>
                 </Route>
               </Route>
