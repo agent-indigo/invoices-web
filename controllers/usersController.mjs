@@ -10,19 +10,24 @@ import userModel from '../models/userModel.mjs'
  * @route   POST /api/users/login
  * @access  public
  */
-export const login = (async (request, response) => {
+export const login = asyncHandler(async (request, response) => {
     const {name, password} = request.body
     const user = await userModel.findOne({where: {name}})
-    const isCorrect = await bcrypt.compare(password, user.shadow)
-    if (!user || !isCorrect) {
+    if (!user) {
         response.status(401)
         throw new Error('Invalid credentials.')
     } else {
-        response.status(202).json({
-            name: user.name,
-            role: user.role,
-            token: createToken(response, user.pk)
-        })
+        const isCorrect = await bcrypt.compare(password, user.shadow)
+        if (!isCorrect) {
+            response.status(401)
+            throw new Error('Invalid credentials.')
+        } else {
+            response.status(202).json({
+                name: user.name,
+                role: user.role,
+                token: createToken(response, user.pk)
+            })
+        }
     }
 })
 /**
