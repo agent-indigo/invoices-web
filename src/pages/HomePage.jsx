@@ -13,36 +13,36 @@ const HomePage = () => {
       </Helmet>
       <Card bg='light' className='py-3'>
         <Row>
-          <Col sm={5}/>
-          <Col xs={2}>
+          <Col xs={2} sm={5}/>
+          <Col xs={8} sm={2}>
             <Button
               type='button'
               variant='primary'
-              className='p-auto text-white'
+              className='px-1 text-white'
               onClick={() => navigate('/invoices/list')}
             >
               <FaFileInvoiceDollar/> Invoices
             </Button>
           </Col>
-          <Col sm={5}/>
+          <Col xs={2} sm={5}/>
         </Row>
         {user.role === 'root' && (
           <Row>
-            <div className="py-1"></div>
-            <Col sm={5}/>
-            <Col xs={2}>
+            <div className="py-1"/>
+            <Col xs={2} sm={5}/>
+            <Col xs={8} sm={2}>
               <Button
                 type='button'
                 variant='primary'
-                className='p-auto text-white'
+                className='text-white'
                 onClick={() => navigate('/users/list')}
               >
                 <FaUsers/> Users
               </Button>
             </Col>
-            <Col sm={5}/>
+            <Col xs={2} sm={5}/>
           </Row>
-        )}        
+        )}
       </Card>
     </>
   )
