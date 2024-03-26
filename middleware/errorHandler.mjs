@@ -15,13 +15,13 @@ export const errorHandler = (error, request, response, next) => {
     } else if (error.name === 'SequelizeForeignKeyConstraintError') {
         error.message = errorMessage('Foreign key constraint violation.', 400)
     } else if (error.name === 'SequelizeConnectionError') {
-        error.message = errorMessage('Database connection error.', 500);
+        error.message = errorMessage('Database connection error.', 500)
     } else if (error.name === 'SequelizeTimeoutError') {
-        error.message = errorMessage('Database operation timed out.', 500);
+        error.message = errorMessage('Database operation timed out.', 500)
     } else if (error.name === 'SequelizeAccessDeniedError') {
-        error.message = errorMessage('Access denied.', 403);
+        error.message = errorMessage('Access denied.', 403)
     } else if (error.name === 'SequelizeError') {
-        error.message = errorMessage('Database operation failed.', 500);
+        error.message = errorMessage('Database operation failed.', 500)
     }                
     response.status(response.statusCode || 500).json({
         error: error.message || '500 internal server error.',

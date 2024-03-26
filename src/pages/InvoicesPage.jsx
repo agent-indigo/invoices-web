@@ -1,6 +1,6 @@
 import {useState, useEffect} from 'react'
 import {Button, Col, Form, Row, Table} from 'react-bootstrap'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import {
   FaEdit,
   FaPlus,
@@ -9,31 +9,67 @@ import {
   FaFileInvoiceDollar,
   FaArrowUp,
   FaArrowDown,
-  FaCheckDouble
+  FaCheckDouble,
 } from 'react-icons/fa'
 import {toast} from 'react-toastify'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import {
   useListInvoicesQuery,
-  useAddInvoiceMutation,
-  useEditInvoiceMutation,
   useDeleteInvoiceMutation
 } from '../slices/invoicesApiSlice'
-import floatify from '../floatify'
+import EditInvoiceModal from '../components/EditInvoiceModal'
 import {Helmet} from 'react-helmet'
 const InvoicesPage = () => {
   const {data: invoices, isLoading, isError, error, refetch} = useListInvoicesQuery()
+  const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState('')
+  const [searchDate, setSearchDate] = useState('')
+  const [showEditInvoiceModal, setShowEditInvoiceModal] = useState(false)
   const [selectedInvoicePk, setSelectedInvoicePk] = useState(null)
+  const [selectedInvoiceVendor, setSelectedInvoiceVendor] = useState(null)
+  const [selectedInvoiceDate, setSelectedInvoiceDate] = useState(null)
+  const [selectedInvoiceSubtotal, setSelectedInvoiceSubtotal] = useState(null)
+  const [selectedInvoiceHST, setSelectedInvoiceHST] = useState(null)
+  const [selectedInvoiceTotal, setSelectedInvoiceTotal] = useState(null)
+  const [selectedInvoiceID, setSelectedInvoiceID] = useState(null)
   const [selectedInvoices, setSelectedInvoices] = useState([])
   const [allInvoices, setAllInvoices] = useState([])
   const [sortCriteria, setSortCriteria] = useState({field: 'vendor', order: 'asc'})
   const [deleteInvoice, {isLoading: deleting}] = useDeleteInvoiceMutation()
-  const [addInvoice, {isLoading: adding}] = useAddInvoiceMutation()
-  const [editInvoice, {isLoading: editing}] = useEditInvoiceMutation()
   const sortHandler = (field, order) => {
     setSortCriteria({field, order})
+  }
+  const openEditInvoiceModal = (
+    pk,
+    vendor,
+    date,
+    subtotal,
+    hst,
+    total,
+    invoiceId
+  ) => {
+    setSelectedInvoicePk(pk)
+    setSelectedInvoiceVendor(vendor)
+    setSelectedInvoiceDate(date)
+    setSelectedInvoiceSubtotal(subtotal)
+    setSelectedInvoiceHST(hst)
+    setSelectedInvoiceTotal(total)
+    setSelectedInvoiceID(invoiceId)
+    setShowEditInvoiceModal(true)
+  }
+  const closeEditInvoiceModal = () => {
+    setSelectedInvoicePk(null)
+    setSelectedInvoiceVendor(null)
+    setSelectedInvoiceDate(null)
+    setSelectedInvoiceSubtotal(null)
+    setSelectedInvoiceHST(null)
+    setSelectedInvoiceTotal(null)
+    setSelectedInvoiceID(null)
+    setShowEditInvoiceModal(false)
+  }
+  const floatify = number => {
+    return (Math.round(number * 100) / 100).toFixed(2)
   }
   const deleteHandler = async pk => {
     try {
@@ -90,7 +126,8 @@ const InvoicesPage = () => {
     })
     const filteredInvoices = sortedInvoices.filter(invoice =>
       invoice.vendor.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      invoice.invoiceId.toLowerCase().includes(searchTerm.toLowerCase())
+      invoice.invoiceId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      invoice.date.includes(searchDate)
     )
     const checkAllHandler = event => {
       if (event.target.checked) {
@@ -106,7 +143,7 @@ const InvoicesPage = () => {
         </Helmet>
         <h1><FaFileInvoiceDollar/> Invoices</h1>
         <Row className='mb-3'>
-          <Col sm={8} className='d-flex align-items-center'>
+          <Col sm={4} className='d-flex align-items-center'>
             <FaSearch className='mx-1'/>
             <Form.Control
               type='text'
@@ -115,10 +152,18 @@ const InvoicesPage = () => {
               onChange={event => setSearchTerm(event.target.value)}
             />
           </Col>
+          <Col sm={4} className='d-flex align-items-center'>
+            <Form.Control
+              type='date'
+              value={searchDate}
+              onChange={event => setSearchDate(event.target.value)}
+            />
+          </Col>
           <Col sm={2}>
             <Button
               type='button'
               variant='primary'
+              onClick={() => navigate('/invoices/add')}
             >
               <FaPlus/> Add invoice
             </Button>
@@ -234,6 +279,7 @@ const InvoicesPage = () => {
                   </Link>
                 </div>
               </th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -270,13 +316,25 @@ const InvoicesPage = () => {
                     type='button'
                     variant='primary'
                     className='p-auto text-white'
+                    onClick={() => openEditInvoiceModal(
+                      invoice.pk,
+                      invoice.vendor,
+                      invoice.date,
+                      invoice.subtotal,
+                      invoice.hst,
+                      invoice.total,
+                      invoice.invoiceId
+                    )}
                   >
                     <FaEdit/> Edit
                   </Button>
+                </td>
+                <td>
                   <Button
                     type='button'
                     variant='danger'
                     className='p-auto text-white'
+                    disabled={deleting}
                     onClick={() => deleteHandler(invoice.pk)}
                   >
                     <FaTrash/> Delete
@@ -286,6 +344,18 @@ const InvoicesPage = () => {
             ))}
           </tbody>
         </Table>
+        {showEditInvoiceModal && (
+          <EditInvoiceModal
+            pk={selectedInvoicePk}
+            Vendor={selectedInvoiceVendor}
+            Date={selectedInvoiceDate}
+            Subtotal={selectedInvoiceSubtotal}
+            HST={selectedInvoiceHST}
+            Total={selectedInvoiceTotal}
+            InvoiceID={selectedInvoiceID}
+            closeModal={closeEditInvoiceModal}
+          />
+        )}
       </>
     )
   }

@@ -4,7 +4,6 @@ import {Form, Button} from 'react-bootstrap'
 import {Helmet} from 'react-helmet'
 import {
   FaUser,
-  FaPlus,
   FaKey,
   FaTimes,
   FaCheck,
@@ -32,8 +31,8 @@ const AddUserPage = () => {
   }
   const enterKeyHandler = event => {
     if (event.key === 'Enter') {
-        event.preventDefault();
-        submitHandler(event);
+        event.preventDefault()
+        submitHandler(event)
     }
   }
   if (isLoading) {
@@ -52,7 +51,7 @@ const AddUserPage = () => {
           <title>Add user | Invoices</title>
         </Helmet>
         <FormContainer>
-          <h1><FaPlus/><FaUser/>Add user</h1>
+          <h1><FaUser/> Add user</h1>
           <Form onSubmit={submitHandler}>
             <Form.Group controlId='name' className='my-3'>
               <Form.Label><FaUserTag/>User name</Form.Label>
@@ -63,7 +62,7 @@ const AddUserPage = () => {
                 onChange={event => setName(event.target.value)}
                 onKeyDown={event => enterKeyHandler(event)}
                 autoFocus
-              ></Form.Control>
+              />
             </Form.Group>
             <Form.Group controlId='password' className='my-3'>
               <Form.Label><FaKey/>Password</Form.Label>
@@ -72,7 +71,7 @@ const AddUserPage = () => {
                 placeholder='Enter password'
                 value={password}
                 onChange={event => setPassword(event.target.value)}
-              ></Form.Control>
+              />
             </Form.Group>
             <Form.Group controlId='confirmPassword' className='my-3'>
               <Form.Label><FaCheck/>Confirm password</Form.Label>
@@ -82,7 +81,7 @@ const AddUserPage = () => {
                 value={confirmPassword}
                 onChange={event => setConfirmPassword(event.target.value)}
                 onKeyDown={event => enterKeyHandler(event)}
-              ></Form.Control>
+              />
             </Form.Group>
             <Button
               type='submit'

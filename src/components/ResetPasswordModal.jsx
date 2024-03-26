@@ -1,8 +1,8 @@
 import {useState} from 'react'
 import {Form, Button, Modal} from 'react-bootstrap'
 import {FaKey, FaTimes, FaCheck, FaEdit} from 'react-icons/fa'
-import FormContainer from '../components/FormContainer'
-import Loader from '../components/Loader'
+import FormContainer from './FormContainer'
+import Loader from './Loader'
 import {useResetPasswordMutation} from '../slices/usersApiSlice'
 import {toast} from 'react-toastify'
 const ResetPasswordModal = ({pk, closeModal}) => {
@@ -22,8 +22,8 @@ const ResetPasswordModal = ({pk, closeModal}) => {
     }
     const enterKeyHandler = event => {
       if (event.key === 'Enter') {
-          event.preventDefault();
-          submitHandler(event);
+          event.preventDefault()
+          submitHandler(event)
       }
     }
   return (
@@ -31,7 +31,7 @@ const ResetPasswordModal = ({pk, closeModal}) => {
         <FormContainer>
             <h1><FaKey/> Reset password</h1>
             <Form onSubmit={submitHandler} className='py-1'>
-                <Form.Group controlId='newPassword' className='my-3'>
+                <Form.Group controlId='newPassword' className='py-1'>
                 <Form.Label><FaEdit/> New password</Form.Label>
                 <Form.Control
                     type='password'
@@ -39,9 +39,9 @@ const ResetPasswordModal = ({pk, closeModal}) => {
                     value={newPassword}
                     onChange={event => setNewPassword(event.target.value)}
                     autoFocus
-                ></Form.Control>
+                />
                 </Form.Group>
-                <Form.Group controlId='confirmNewPassword' className='my-3'>
+                <Form.Group controlId='confirmNewPassword' className='py-1'>
                 <Form.Label><FaCheck/> Confirm new password</Form.Label>
                 <Form.Control
                     type='password'
@@ -49,7 +49,7 @@ const ResetPasswordModal = ({pk, closeModal}) => {
                     value={confirmNewPassword}
                     onChange={event => setConfirmNewPassword(event.target.value)}
                     onKeyDown={event => enterKeyHandler(event)}
-                ></Form.Control>
+                />
                 </Form.Group>
                 <Button
                     type='submit'

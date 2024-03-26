@@ -21,8 +21,8 @@ export const up = async (queryInterface, Sequelize) => {
         },
         createdAt: Sequelize.DATE,
         updatedAt: Sequelize.DATE
-    });
+    })
 }
 export const down = async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('users')
 }

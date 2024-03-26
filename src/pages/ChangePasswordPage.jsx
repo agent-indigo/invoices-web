@@ -26,8 +26,8 @@ const ChangePasswordPage = () => {
   }
   const enterKeyHandler = event => {
     if (event.key === 'Enter') {
-        event.preventDefault();
-        submitHandler(event);
+        event.preventDefault()
+        submitHandler(event)
     }
   }
   if (isLoading) {
@@ -56,7 +56,7 @@ const ChangePasswordPage = () => {
                 value={currentPassword}
                 onChange={event => setCurrentPassword(event.target.value)}
                 autoFocus
-              ></Form.Control>
+              />
             </Form.Group>
             <Form.Group controlId='newPassword' className='my-3'>
               <Form.Label><FaEdit/> New password</Form.Label>
@@ -65,7 +65,7 @@ const ChangePasswordPage = () => {
                 placeholder='Enter new password'
                 value={newPassword}
                 onChange={event => setNewPassword(event.target.value)}
-              ></Form.Control>
+              />
             </Form.Group>
             <Form.Group controlId='confirmNewPassword' className='my-3'>
               <Form.Label><FaCheck/> Confirm new password</Form.Label>
@@ -75,7 +75,7 @@ const ChangePasswordPage = () => {
                 value={confirmNewPassword}
                 onChange={event => setConfirmNewPassword(event.target.value)}
                 onKeyDown={event => enterKeyHandler(event)}
-              ></Form.Control>
+              />
             </Form.Group>
             <Button
               type='submit'

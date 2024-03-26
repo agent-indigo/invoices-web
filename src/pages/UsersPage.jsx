@@ -1,8 +1,7 @@
 import {useState, useEffect} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import {Helmet} from 'react-helmet'
 import {Table, Form, Button, Row, Col} from 'react-bootstrap'
-import {Link} from 'react-router-dom'
 import {
   FaKey,
   FaPlus,
@@ -30,7 +29,7 @@ const UsersPage = () => {
   const sortHandler = (field, order) => {
     setSortCriteria({field, order})
   }
-  const openResetPAsswordModal = pk => {
+  const openResetPasswordModal = pk => {
     setSelectedUserPk(pk)
     setShowResetPasswordModal(true)
   }
@@ -221,7 +220,7 @@ const UsersPage = () => {
                     variant='primary'
                     className='p-auto text-white'
                     disabled={user.role === 'root'}
-                    onClick={() => openResetPAsswordModal(user.pk)}
+                    onClick={() => openResetPasswordModal(user.pk)}
                   >
                     <FaKey/> Reset password
                   </Button>

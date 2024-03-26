@@ -32,8 +32,8 @@ const SetupPage = () => {
   }
   const enterKeyHandler = event => {
     if (event.key === 'Enter') {
-        event.preventDefault();
-        submitHandler(event);
+        event.preventDefault()
+        submitHandler(event)
     }
   }
   if (isLoading) {

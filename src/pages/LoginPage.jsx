@@ -37,8 +37,8 @@ const LoginPage = () => {
   }
   const enterKeyHandler = event => {
     if (event.key === 'Enter') {
-        event.preventDefault();
-        submitHandler(event);
+        event.preventDefault()
+        submitHandler(event)
     }
   }
   if (isLoading) {
@@ -67,7 +67,7 @@ const LoginPage = () => {
                 value={name}
                 onChange={event => setName(event.target.value)}
                 autoFocus
-              ></Form.Control>
+              />
             </Form.Group>
             <Form.Group controlId='password' className='my-3'>
               <Form.Label><FaKey/> Password</Form.Label>
@@ -77,7 +77,7 @@ const LoginPage = () => {
                 value={password}
                 onChange={event => setPassword(event.target.value)}
                 onKeyDown={event => enterKeyHandler(event)}
-              ></Form.Control>
+              />
             </Form.Group>
             <Button
               type='submit'

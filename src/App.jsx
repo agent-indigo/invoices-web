@@ -17,6 +17,7 @@ import ChangePasswordPage from './pages/ChangePasswordPage'
 import InvoicesPage from './pages/InvoicesPage'
 import UsersPage from './pages/UsersPage'
 import AddUserPage from './pages/AddUserPage'
+import AddInvoicePage from './pages/AddInvoicePage'
 import 'bootswatch/dist/united/bootstrap.css'
 import 'react-toastify/dist/ReactToastify.css'
 const App = () => {
@@ -64,6 +65,10 @@ const App = () => {
                   <Route
                     path='/invoices/list'
                     element={<InvoicesPage/>}
+                  />
+                  <Route
+                    path='/invoices/add'
+                    element={<AddInvoicePage/>}
                   />
                   <Route
                     path=''
