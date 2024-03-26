@@ -26,8 +26,8 @@ const Header = () => {
   }
   return (
     <header>
-      <Navbar bg='dark' expand='sm' collapseOnSelect>
-        <Container>
+      <Navbar bg='dark' expand='sm' collapseOnSelect className='text-center'>
+        <Container className='justify-content-center'>
           <LinkContainer to='/home'>
             <Navbar.Brand className='text-white'>
               <FaFileInvoiceDollar/> Invoices
@@ -47,7 +47,7 @@ const Header = () => {
                       className='p-auto text-white'
                       onClick={() => navigate('/users/changePassword')}
                     ><FaKey/> Change password</Button>
-                    <div className="px-1"/>
+                    <div className="px-1 py-1"/>
                     <Button
                       type='button'
                       variant='primary'

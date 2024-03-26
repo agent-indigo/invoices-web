@@ -127,7 +127,7 @@ const InvoicesPage = () => {
     const filteredInvoices = sortedInvoices.filter(invoice =>
       invoice.vendor.toLowerCase().includes(searchTerm.toLowerCase()) ||
       invoice.invoiceId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      invoice.date.includes(searchDate)
+      new Date(invoice.date).toLocaleDateString() === searchDate
     )
     const checkAllHandler = event => {
       if (event.target.checked) {
@@ -291,7 +291,7 @@ const InvoicesPage = () => {
                     checked={selectedInvoices.includes(invoice.pk)}
                     onChange={event => {
                       const pk = invoice.pk
-                      if (event.target.selected) {
+                      if (event.target.checked) {
                         setSelectedInvoices([...selectedInvoices, pk])
                       } else {
                         setSelectedInvoices(selectedInvoices.filter(

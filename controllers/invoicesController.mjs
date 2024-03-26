@@ -55,7 +55,7 @@ export const editinvoice = asyncHandler(async (request, response) => {
  * @access  private
  */
 export const deleteInvoice = asyncHandler(async (request, response) => {
-    const invoice = invoiceModel.findByPk(request.params.pk)
+    const invoice = await invoiceModel.findByPk(request.params.pk)
     if (!invoice) {
         response.status(404)
         throw new Error('Invoice not found.')
