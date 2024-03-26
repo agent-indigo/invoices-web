@@ -41,7 +41,7 @@ export const editinvoice = asyncHandler(async (request, response) => {
         for (const key in request.body) {
             if (!request.body[key]) {
                 response.status(400)
-                throw new Error(`Field "${key}" if empty.`)
+                throw new Error(`Field "${key}" is empty.`)
             }
         }
         await invoice.update(request.body)

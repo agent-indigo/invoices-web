@@ -14,13 +14,13 @@ export const login = asyncHandler(async (request, response) => {
     const {name, password} = request.body
     const user = await userModel.findOne({where: {name}})
     if (!user) {
-        response.status(401)
-        throw new Error('Invalid credentials.')
+        response.status(404)
+        throw new Error('User not found.')
     } else {
         const isCorrect = await bcrypt.compare(password, user.shadow)
         if (!isCorrect) {
             response.status(401)
-            throw new Error('Invalid credentials.')
+            throw new Error('Incorrect password.')
         } else {
             response.status(202).json({
                 name: user.name,
@@ -51,21 +51,26 @@ export const changePassword = asyncHandler(async(request, response) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
     const {currentPassword, newPassword, confirmNewPassword} = request.body
     const user = await userModel.findByPk(decoded.pk)
-    const isCorrect = await bcrypt.compare(currentPassword, user.shadow)
-    if (!isCorrect) {
-        response.status(401)
-        throw new Error('Incorrect password.')
-    } else if (newPassword !== confirmNewPassword) {
-        response.status(400)
-        throw new Error('New passwords do not match.')
-    } else if (!currentPassword || !newPassword || !confirmNewPassword) {
-        response.status(400)
-        throw new Error('At least one field is empty.')
+    if (!user) {
+        response.status(404)
+        throw new Error('User not found.')
     } else {
-        const newShadow = await bcrypt.hash(newPassword, 10)
-        user.shadow = newShadow
-        await user.save()
-        response.status(202).json({message: 'Password changed.'})
+        const isCorrect = await bcrypt.compare(currentPassword, user.shadow)
+        if (!currentPassword || !newPassword || !confirmNewPassword) {
+            response.status(400)
+            throw new Error('At least one field is empty.')
+        } else if (!isCorrect) {
+            response.status(401)
+            throw new Error('Incorrect password.')
+        } else if (newPassword !== confirmNewPassword) {
+            response.status(400)
+            throw new Error('New passwords do not match.')
+        } else {
+            const newShadow = await bcrypt.hash(newPassword, 10)
+            user.shadow = newShadow
+            await user.save()
+            response.status(202).json({message: 'Password changed.'})
+        }
     }
 })
 /**
@@ -80,20 +85,25 @@ export const resetPassword = asyncHandler(async (request, response) => {
     const {pk, newPassword, confirmNewPassword} = request.body
     const currentUser = await userModel.findByPk(decoded.pk)
     const user = await userModel.findByPk(pk)
-    if (currentUser.pk === user.pk) {
-        response.status(403)
-        throw new Error('You can\'t change your own password this way.')
-    } else if (newPassword !== confirmNewPassword) {
-        response.status(400)
-        throw new Error('New passwords do not match.')
-    } else if (!newPassword || !confirmNewPassword) {
-        response.status(400)
-        throw new Error('At least one field is empty.')
+    if (!user) {
+        response.status(404)
+        throw new Error('User not found.')
     } else {
-        const newShadow = await bcrypt.hash(newPassword, 10)
-        user.shadow = newShadow
-        await user.save()
-        response.status(202).json({message: 'Password reset.'})
+        if (currentUser.pk === user.pk) {
+            response.status(403)
+            throw new Error('You can\'t change your own password this way.')
+        } else if (!newPassword || !confirmNewPassword) {
+            response.status(400)
+            throw new Error('At least one field is empty.')
+        } else if (newPassword !== confirmNewPassword) {
+            response.status(400)
+            throw new Error('New passwords do not match.')
+        } else {
+            const newShadow = await bcrypt.hash(newPassword, 10)
+            user.shadow = newShadow
+            await user.save()
+            response.status(202).json({message: 'Password reset.'})
+        }
     }
 })
 /**
