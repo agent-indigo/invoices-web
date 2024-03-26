@@ -81,7 +81,7 @@ const ChangePasswordPage = () => {
               type='submit'
               variant='success'
               className='p-auto text-white'
-              disabled={isLoading}
+              disabled={isLoading || !newPassword || !confirmNewPassword}
             ><FaCheck/> Change</Button>
             {' '}
             <Button

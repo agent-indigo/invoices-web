@@ -87,7 +87,7 @@ const AddUserPage = () => {
               type='submit'
               variant='success'
               className='p-auto text-white'
-              disabled={isLoading}
+              disabled={isLoading || !name || !password || !confirmPassword}
             ><FaCheck/>Add</Button>
             {' '}
             <Button

@@ -82,7 +82,7 @@ const SetupPage = () => {
               type='submit'
               variant='success'
               className='p-auto text-white'
-              disabled={isLoading}
+              disabled={isLoading || !password || !confirmPassword}
             ><FaCheck/> Confirm</Button>
             {isLoading && <Loader/>}
           </Form>

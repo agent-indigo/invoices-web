@@ -83,7 +83,7 @@ const LoginPage = () => {
               type='submit'
               variant='success'
               className='p-auto text-white'
-              disabled={isLoading}
+              disabled={isLoading || !name || !password}
             >
               Log in <FaArrowRight/>
             </Button>

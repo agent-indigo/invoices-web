@@ -47,6 +47,7 @@ const ResetPasswordModal = ({pk, closeModal}) => {
                     type='password'
                     placeholder='Confirm new password'
                     value={confirmNewPassword}
+                    disabled={!newPassword}
                     onChange={event => setConfirmNewPassword(event.target.value)}
                     onKeyDown={event => enterKeyHandler(event)}
                 />
@@ -55,7 +56,7 @@ const ResetPasswordModal = ({pk, closeModal}) => {
                     type='submit'
                     variant='success'
                     className='p-auto text-white'
-                    disabled={isLoading}
+                    disabled={isLoading || !newPassword || !confirmNewPassword}
                 ><FaCheck/> Reset</Button>
                 {' '}
                 <Button

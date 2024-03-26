@@ -13,7 +13,10 @@ import userModel from '../models/userModel.mjs'
 export const login = asyncHandler(async (request, response) => {
     const {name, password} = request.body
     const user = await userModel.findOne({where: {name}})
-    if (!user) {
+    if (!name || !password) {
+        response.status(400)
+        throw new Error('At least one field is empty.')
+    } else if (!user) {
         response.status(404)
         throw new Error('User not found.')
     } else {

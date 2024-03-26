@@ -123,7 +123,15 @@ const AddInvoicePage = () => {
                         type='submit'
                         variant='success'
                         className='p-auto text-white'
-                        disabled={isLoading}
+                        disabled={
+                            isLoading ||
+                            !vendor ||
+                            !date ||
+                            !invoiceId ||
+                            !subtotal ||
+                            !hst ||
+                            !total
+                        }
                     ><FaCheck/> Save</Button>
                     {' '}
                     <Button
