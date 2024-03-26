@@ -68,6 +68,7 @@ const AddInvoicePage = () => {
                             value={vendor}
                             onChange={event => setVendor(event.target.value)}
                             onKeyDown={event => enterKeyHandler(event)}
+                            autoFocus
                         />
                     </Form.Group>
                     <Form.Group controlId='date' className='py-1'>
