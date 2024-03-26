@@ -203,17 +203,6 @@ const InvoicesPage = () => {
                 </div>
               </th>
               <th>
-                Date
-                <div className="d-flex">
-                  <Link to={'#'} onClick={() => sortHandler('date', 'asc')}>
-                    <FaArrowUp/>
-                  </Link>
-                  <Link to={'#'} onClick={() => sortHandler('date', 'desc')}>
-                    <FaArrowDown/>
-                  </Link>
-                </div>
-              </th>
-              <th>
                 Subtotal
                 <div className="d-flex">
                   <Link to={'#'} onClick={() => sortHandler('subtotal', 'asc')}>
@@ -253,6 +242,17 @@ const InvoicesPage = () => {
                     <FaArrowUp/>
                   </Link>
                   <Link to={'#'} onClick={() => sortHandler('invoiceId', 'desc')}>
+                    <FaArrowDown/>
+                  </Link>
+                </div>
+              </th>
+              <th>
+                Date
+                <div className="d-flex">
+                  <Link to={'#'} onClick={() => sortHandler('date', 'asc')}>
+                    <FaArrowUp/>
+                  </Link>
+                  <Link to={'#'} onClick={() => sortHandler('date', 'desc')}>
                     <FaArrowDown/>
                   </Link>
                 </div>
@@ -302,11 +302,11 @@ const InvoicesPage = () => {
                   />
                 </td>
                 <td>{invoice.vendor}</td>
-                <td>{new Date(invoice.date).toLocaleString()}</td>
                 <td>${floatify(invoice.subtotal)}</td>
                 <td>${floatify(invoice.hst)}</td>
                 <td>${floatify(invoice.total)}</td>
                 <td>{invoice.invoiceId}</td>
+                <td>{new Date(invoice.date).toLocaleDateString()}</td>
                 <td>{new Date(invoice.createdAt).toLocaleString()}</td>
                 <td>{invoice.createdAt === invoice.updatedAt ? null : new Date(
                   invoice.updatedAt).toLocaleString()

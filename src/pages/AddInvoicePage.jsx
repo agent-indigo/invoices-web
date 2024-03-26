@@ -79,6 +79,15 @@ const AddInvoicePage = () => {
                             onKeyDown={event => enterKeyHandler(event)}
                         />
                     </Form.Group>
+                    <Form.Group controlId='invoiceId' className='py-1'>
+                        <Form.Label>Invoice ID</Form.Label>
+                        <Form.Control
+                            type='text'
+                            value={invoiceId}
+                            onChange={event => setInvoiceID(event.target.value)}
+                            onKeyDown={event => enterKeyHandler(event)}
+                        />
+                    </Form.Group>
                     <Form.Group controlId='subtotal' className='py-1'>
                         <Form.Label>Subtotal</Form.Label>
                         <Form.Control
@@ -106,15 +115,6 @@ const AddInvoicePage = () => {
                             step='any'
                             value={total}
                             onChange={event => setTotal(event.target.value)}
-                            onKeyDown={event => enterKeyHandler(event)}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId='invoiceId' className='py-1'>
-                        <Form.Label>Invoice ID</Form.Label>
-                        <Form.Control
-                            type='text'
-                            value={invoiceId}
-                            onChange={event => setInvoiceID(event.target.value)}
                             onKeyDown={event => enterKeyHandler(event)}
                         />
                     </Form.Group>
