@@ -8,7 +8,14 @@ export const up = async (queryInterface, Sequelize) => {
         },
         name: {
             type: Sequelize.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: true,
+            validate: {
+                notContains: {
+                    args: [' '],
+                    msg: 'Spaces prohibited.'
+                }
+            }
         },
         shadow: {
             type: Sequelize.STRING,
@@ -21,6 +28,22 @@ export const up = async (queryInterface, Sequelize) => {
         },
         createdAt: Sequelize.DATE,
         updatedAt: Sequelize.DATE
+    })
+    await queryInterface.addConstraint('users', {
+        type: 'unique',
+        fields: ['role'],
+        where : {
+            role: 'root'
+        },
+        name: 'unique_root_constraint'
+    })
+    await queryInterface.addConstraint('users', {
+        type: 'check',
+        fields: ['role'],
+        where: {
+            role: ['root', 'user']
+        },
+        name: 'valid_role_constraint'
     })
 }
 export const down = async (queryInterface, Sequelize) => {
