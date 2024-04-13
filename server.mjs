@@ -18,7 +18,7 @@ const MODE = process.env.NODE_ENV || 'production'
 const PORT = process.env.EXPRESS_PORT || 5000
 connectToSQLdb()
 const server = express()
-server.use(morgan(':url,:method,:status,:response-time,:remote-user,:date[web]', {
+server.use(morgan(':url,:method,:status,:response-time,:date[web]', {
         stream: createWriteStream(join(dirname(fileURLToPath(import.meta.url)), 'log.csv'), {
             flags: 'a'
         })
