@@ -11,6 +11,7 @@ const sequelize = new Sequelize({
         ssl: {
             prefer: true
         }
-    }
+    },
+    logging: process.env.SHOW_SQL.toLowerCase() === 'true'
 })
 export default sequelize
