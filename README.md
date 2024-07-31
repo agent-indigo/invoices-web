@@ -4,13 +4,7 @@
 
 A simple invoice manager using React.js, Bootstrap, and Redux Toolkit.
 
-## API
-
-Two versions are available:
-
-- [Express.js](https://github.com/agent-indigo/invoices-api-js)
-
-- [Spring Boot](https://github.com/agent-indigo/invoices-api-java)
+The API is available [here](https://github.com/agent-indigo/invoices-api-js).
 
 ## User Roles
 
