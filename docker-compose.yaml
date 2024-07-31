@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  invoices-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: invoices-web:latest
+    ports:
+      - "80:80"
+      - "443:443"
