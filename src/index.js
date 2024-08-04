@@ -1,12 +1,8 @@
-import {StrictMode} from 'react'
-import {createRoot} from 'react-dom/client'
+import React from 'react'
+import ReactDOM from 'react-dom'
 import App from './App'
-const index = (() => {
-  const root = createRoot(document.getElementById('root'))
-  root.render(
-    <StrictMode>
-      <App/>
-    </StrictMode>
-  )
-})()
-export default index
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App/>
+  </React.StrictMode>
+)

@@ -26,9 +26,7 @@ const UsersPage = () => {
   const [sortCriteria, setSortCriteria] = useState({field: 'name', order: 'asc'})
   const [deleteUser, {isLoading: deleting}] = useDeleteUserMutation()
   const navigate = useNavigate()
-  const sortHandler = (field, order) => {
-    setSortCriteria({field, order})
-  }
+  const sortHandler = (field, order) => setSortCriteria({field, order})
   const openResetPasswordModal = pk => {
     setSelectedUserPk(pk)
     setShowResetPasswordModal(true)
@@ -56,9 +54,10 @@ const UsersPage = () => {
       toast.error(error?.data?.message || error.error)
     }
   }
-  useEffect(() => {
-    setAllUsers(users || [])
-  }, [users])
+  useEffect(
+    () => setAllUsers(users || []),
+    [users]
+  )
   if (isLoading) {
     return (
       <>
@@ -82,28 +81,20 @@ const UsersPage = () => {
   } else {
     const sortedUsers = [...users].sort((a, b) => {
       const orderFactor = sortCriteria.order === 'asc' ? 1 : -1
-      if (a[sortCriteria.field] < b[sortCriteria.field]) return -1 * orderFactor
-      if (a[sortCriteria.field] > b[sortCriteria.field]) return 1 * orderFactor
-      return 0
+      if (a[sortCriteria.field] < b[sortCriteria.field]) {
+        return -1 * orderFactor
+      } else if (a[sortCriteria.field] > b[sortCriteria.field]) {
+        return 1 * orderFactor
+      } else {
+        return 0
+      }
     })
-    const filteredUsers = sortedUsers.filter(user =>
-      user.name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    const filteredUsers = sortedUsers.filter(user => user.name.toLowerCase().includes(searchTerm.toLowerCase()))
     const userIsRoot = pk => {
       const user = allUsers.find(user => user.pk === pk)
       return user && user.role === 'root'
     }
-    const checkAllHandler = event => {
-      if (event.target.checked) {
-        setSelectedUsers(
-          allUsers
-            .filter(user => !userIsRoot(user.pk))
-            .map(user => user.pk)
-        )
-      } else {
-        setSelectedUsers([])
-      }
-    }
+    const checkAllHandler = event => event.target.checked ? setSelectedUsers(allUsers.filter(user => !userIsRoot(user.pk)).map(user => user.pk)) : setSelectedUsers([])
     return (
       <>
         <Helmet>
@@ -147,9 +138,10 @@ const UsersPage = () => {
                 <FaCheckDouble/>
                 <Form.Check
                   type="checkbox"
-                  checked={filteredUsers.length > 0 &&
-                    selectedUsers.length === filteredUsers.filter(
-                      user => !userIsRoot(user.pk)).length}
+                  checked={
+                    filteredUsers.length > 0 &&
+                    selectedUsers.length === filteredUsers.filter(user => !userIsRoot(user.pk)).length
+                  }
                   onChange={event => checkAllHandler(event)}
                 />
               </th>
@@ -199,21 +191,15 @@ const UsersPage = () => {
                     disabled={user.role === 'root'}
                     onChange={event => {
                       const pk = user.pk
-                      if (event.target.checked) {
-                        setSelectedUsers([...selectedUsers, pk])
-                      } else {
-                        setSelectedUsers(selectedUsers.filter(
-                          id => id !== pk
-                        ))
-                      }
+                      event.target.checked ? setSelectedUsers([...selectedUsers, pk]) : setSelectedUsers(selectedUsers.filter(id => id !== pk))
                     }}
                   />
                 </td>
                 <td>{user.name}</td>
                 <td>{new Date(user.createdAt).toLocaleString()}</td>
-                <td>{user.createdAt === user.updatedAt ? null : new Date(
-                    user.updatedAt).toLocaleString()
-                }</td>
+                <td>
+                  {user.createdAt === user.updatedAt ? null : new Date(user.updatedAt).toLocaleString()}
+                </td>
                 <td>
                   <Button
                     type='button'

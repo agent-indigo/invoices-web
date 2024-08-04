@@ -37,9 +37,7 @@ const InvoicesPage = () => {
   const [allInvoices, setAllInvoices] = useState([])
   const [sortCriteria, setSortCriteria] = useState({field: 'vendor', order: 'asc'})
   const [deleteInvoice, {isLoading: deleting}] = useDeleteInvoiceMutation()
-  const sortHandler = (field, order) => {
-    setSortCriteria({field, order})
-  }
+  const sortHandler = (field, order) => setSortCriteria({field, order})
   const openEditInvoiceModal = (
     pk,
     vendor,
@@ -68,9 +66,7 @@ const InvoicesPage = () => {
     setSelectedInvoiceID(null)
     setShowEditInvoiceModal(false)
   }
-  const floatify = number => {
-    return (Math.round(number * 100) / 100).toFixed(2)
-  }
+  const floatify = number => (Math.round(number * 100) / 100).toFixed(2)
   const deleteHandler = async pk => {
     try {
       const response = await deleteInvoice(pk).unwrap()
@@ -90,9 +86,10 @@ const InvoicesPage = () => {
       toast.error(error?.data?.message || error.error)
     }
   }
-  useEffect(() => {
-    setAllInvoices(invoices || [])
-  }, [invoices])
+  useEffect(
+    () => setAllInvoices(invoices || []),
+    [invoices]
+  )
   if (isLoading) {
     return (
       <>
@@ -129,13 +126,7 @@ const InvoicesPage = () => {
       invoice.invoiceId.toLowerCase().includes(searchTerm.toLowerCase()) ||
       new Date(invoice.date).toLocaleDateString() === searchDate
     )
-    const checkAllHandler = event => {
-      if (event.target.checked) {
-        setSelectedInvoices(allInvoices.map(invoice => invoice.pk))
-      } else {
-        setSelectedInvoices([])
-      }
-    }
+    const checkAllHandler = event => event.target.checked ? setSelectedInvoices(allInvoices.map(invoice => invoice.pk)) : setSelectedInvoices([])
     return (
       <>
         <Helmet>
@@ -186,8 +177,10 @@ const InvoicesPage = () => {
                 <FaCheckDouble/>
                 <Form.Check
                   type='checkbox'
-                  checked={filteredInvoices.length > 0 &&
-                    filteredInvoices.length === selectedInvoices.length}
+                  checked={
+                    filteredInvoices.length > 0 &&
+                    filteredInvoices.length === selectedInvoices.length
+                  }
                   onChange={event => checkAllHandler(event)}
                 />
               </th>
@@ -291,13 +284,7 @@ const InvoicesPage = () => {
                     checked={selectedInvoices.includes(invoice.pk)}
                     onChange={event => {
                       const pk = invoice.pk
-                      if (event.target.checked) {
-                        setSelectedInvoices([...selectedInvoices, pk])
-                      } else {
-                        setSelectedInvoices(selectedInvoices.filter(
-                          id => id !== pk
-                        ))
-                      }
+                      event.target.checked ? setSelectedInvoices([...selectedInvoices, pk]) : setSelectedInvoices(selectedInvoices.filter(id => id !== pk))
                     }}
                   />
                 </td>
@@ -308,9 +295,9 @@ const InvoicesPage = () => {
                 <td>{invoice.invoiceId}</td>
                 <td>{new Date(invoice.date).toLocaleDateString()}</td>
                 <td>{new Date(invoice.createdAt).toLocaleString()}</td>
-                <td>{invoice.createdAt === invoice.updatedAt ? null : new Date(
-                  invoice.updatedAt).toLocaleString()
-                }</td>
+                <td>
+                  {invoice.createdAt === invoice.updatedAt ? null : new Date(invoice.updatedAt).toLocaleString()}
+                </td>
                 <td>
                   <Button
                     type='button'

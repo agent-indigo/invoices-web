@@ -32,63 +32,65 @@ const SetupPage = () => {
   }
   const enterKeyHandler = event => {
     if (event.key === 'Enter') {
-        event.preventDefault()
-        submitHandler(event)
+      event.preventDefault()
+      submitHandler(event)
     }
   }
-  if (isLoading) {
-    return (
-      <>
-        <Helmet>
-          <title>Processing... | Invoices</title>
-        </Helmet>
-        <Loader/>
-      </>
-    )
-  } else {
-    return (
-      <>
-        <Helmet>
-          <title>Setup | Invoices</title>
-        </Helmet>
-        <FormContainer>
-          <h1><FaWrench/> Setup</h1>
-          <p>
-            You are running this application for the first time.
-            Please create a password for <strong>root</strong>.
-          </p>
-          <Form onSubmit={submitHandler}>
-            <Form.Group controlId='password' className='my-3'>
-              <Form.Label><FaKey/> Password</Form.Label>
-              <Form.Control
-                type='password'
-                placeholder='Enter password'
-                value={password}
-                onChange={event => setPassword(event.target.value)}
-                autoFocus
-              ></Form.Control>
-            </Form.Group>
-            <Form.Group controlId='confirmPassword' className='my-3'>
-              <Form.Label><FaCheck/> Confirm password</Form.Label>
-              <Form.Control
-                type='password'
-                placeholder='Confirm password'
-                value={confirmPassword}
-                onChange={event => setConfirmPassword(event.target.value)}
-                onKeyDown={event => enterKeyHandler(event)}
-              ></Form.Control>
-            </Form.Group>
-            <Button
-              type='submit'
-              variant='success'
-              className='p-auto text-white'
-              disabled={isLoading || !password || !confirmPassword}
-            ><FaCheck/> Confirm</Button>
-            {isLoading && <Loader/>}
-          </Form>
-        </FormContainer>
-      </>
-    )
-  }
+  return isLoading ? (
+    <>
+      <Helmet>
+        <title>Processing... | Invoices</title>
+      </Helmet>
+      <Loader/>
+    </>
+  ) : (
+    <>
+      <Helmet>
+        <title>Setup | Invoices</title>
+      </Helmet>
+      <FormContainer>
+        <h1><FaWrench/> Setup</h1>
+        <p>
+          You are running this application for the first time.
+          Please create a password for <strong>root</strong>.
+        </p>
+        <Form onSubmit={submitHandler}>
+          <Form.Group controlId='password' className='my-3'>
+            <Form.Label><FaKey/> Password</Form.Label>
+            <Form.Control
+              type='password'
+              placeholder='Enter password'
+              value={password}
+              onChange={event => setPassword(event.target.value)}
+              autoFocus
+            />
+          </Form.Group>
+          <Form.Group controlId='confirmPassword' className='my-3'>
+            <Form.Label><FaCheck/> Confirm password</Form.Label>
+            <Form.Control
+              type='password'
+              placeholder='Confirm password'
+              value={confirmPassword}
+              onChange={event => setConfirmPassword(event.target.value)}
+              onKeyDown={event => enterKeyHandler(event)}
+            />
+          </Form.Group>
+          <Button
+            type='submit'
+            variant='success'
+            className='p-auto text-white'
+            disabled={
+              isLoading ||
+              !password ||
+              !confirmPassword
+            }
+          >
+            <FaCheck/> Confirm
+          </Button>
+          {isLoading && <Loader/>}
+        </Form>
+      </FormContainer>
+    </>
+  )
 }
 export default SetupPage

@@ -20,79 +20,77 @@ import AddUserPage from './pages/AddUserPage'
 import AddInvoicePage from './pages/AddInvoicePage'
 import 'bootswatch/dist/united/bootstrap.css'
 import 'react-toastify/dist/ReactToastify.css'
-const App = () => {
-  return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <Header/>
-        <main className="py-3">
-          <Container>
-            <Routes>
+const App = () => (
+  <Provider store={store}>
+    <BrowserRouter>
+      <Header/>
+      <main className="py-3">
+        <Container>
+          <Routes>
+            <Route
+              path=''
+              element={<SetupRoute/>}
+            >
+              <Route
+                path='/setup'
+                element={<SetupPage/>}
+              />
+            </Route>
+            <Route
+              path=''
+              element={<ProductionRoute/>}
+            >
+              <Route
+                path='/users/login'
+                element={<LoginPage/>}
+              />
               <Route
                 path=''
-                element={<SetupRoute/>}
+                element={<PrivateRoute/>}
               >
                 <Route
-                  path='/setup'
-                  element={<SetupPage/>}
-                />
-              </Route>
-              <Route
-                path=''
-                element={<ProductionRoute/>}
-              >
-                <Route
-                  path='/users/login'
+                  path='/users/logout'
                   element={<LoginPage/>}
                 />
                 <Route
+                  index={true}
+                  path='/home'
+                  element={<HomePage/>}
+                />
+                <Route
+                  path='/users/changePassword'
+                  element={<ChangePasswordPage/>}
+                />
+                <Route
+                  path='/invoices/list'
+                  element={<InvoicesPage/>}
+                />
+                <Route
+                  path='/invoices/add'
+                  element={<AddInvoicePage/>}
+                />
+                <Route
                   path=''
-                  element={<PrivateRoute/>}
+                  element={<RootRoute/>}
                 >
                   <Route
-                    path='/users/logout'
-                    element={<LoginPage/>}
+                    path='/users/list'
+                    element={<UsersPage/>}
                   />
                   <Route
-                    index={true}
-                    path='/home'
-                    element={<HomePage/>}
+                    path='/users/add'
+                    element={<AddUserPage/>}
                   />
-                  <Route
-                    path='/users/changePassword'
-                    element={<ChangePasswordPage/>}
-                  />
-                  <Route
-                    path='/invoices/list'
-                    element={<InvoicesPage/>}
-                  />
-                  <Route
-                    path='/invoices/add'
-                    element={<AddInvoicePage/>}
-                  />
-                  <Route
-                    path=''
-                    element={<RootRoute/>}
-                  >
-                    <Route
-                      path='/users/list'
-                      element={<UsersPage/>}
-                    />
-                    <Route
-                      path='/users/add'
-                      element={<AddUserPage/>}
-                    />
-                  </Route>
                 </Route>
               </Route>
-            </Routes>
-          </Container>
-        </main>
-        <Footer/>
-        <ConfigStatusFetcher/>
-        <ToastContainer/>
-      </BrowserRouter>
-    </Provider>
-  )
-}
+            </Route>
+          </Routes>
+        </Container>
+      </main>
+      <Footer/>
+      <ConfigStatusFetcher/>
+      <ToastContainer/>
+    </BrowserRouter>
+  </Provider>
+)
 export default App

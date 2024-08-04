@@ -33,31 +33,35 @@ const Header = () => {
               <FaFileInvoiceDollar/> Invoices
             </Navbar.Brand>
           </LinkContainer>
-            {user && (
-              <>
-                <Navbar.Toggle aria-controls='basic-navbar-nav'/>
-                <Navbar.Collapse id='basic-navbar-nav'>
-                  <Nav className='ms-auto'>
-                    <Navbar.Brand className='text-white'>
-                      <FaUser/> {user.name}
-                    </Navbar.Brand>
-                    <Button
-                      type='button'
-                      variant='primary'
-                      className='p-auto text-white'
-                      onClick={() => navigate('/users/changePassword')}
-                    ><FaKey/> Change password</Button>
-                    <div className="px-1 py-1"/>
-                    <Button
-                      type='button'
-                      variant='primary'
-                      className='p-auto text-white'
-                      onClick={logoutHandler}
-                    ><FaArrowLeft/> Log out</Button>
-                  </Nav>
-                </Navbar.Collapse>
-              </>
-            )}
+          {user && (
+            <>
+              <Navbar.Toggle aria-controls='basic-navbar-nav'/>
+              <Navbar.Collapse id='basic-navbar-nav'>
+                <Nav className='ms-auto'>
+                  <Navbar.Brand className='text-white'>
+                    <FaUser/> {user.name}
+                  </Navbar.Brand>
+                  <Button
+                    type='button'
+                    variant='primary'
+                    className='p-auto text-white'
+                    onClick={() => navigate('/users/changePassword')}
+                  >
+                    <FaKey/> Change password
+                  </Button>
+                  <div className="px-1 py-1"/>
+                  <Button
+                    type='button'
+                    variant='primary'
+                    className='p-auto text-white'
+                    onClick={logoutHandler}
+                  >
+                    <FaArrowLeft/> Log out
+                  </Button>
+                </Nav>
+              </Navbar.Collapse>
+            </>
+          )}
         </Container>
       </Navbar>
     </header>
