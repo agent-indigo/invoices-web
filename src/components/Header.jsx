@@ -3,7 +3,8 @@ import {
   FaUser,
   FaKey,
   FaArrowLeft,
-  FaFileInvoiceDollar} from 'react-icons/fa'
+  FaFileInvoiceDollar
+} from 'react-icons/fa'
 import {useNavigate} from 'react-router-dom'
 import {LinkContainer} from 'react-router-bootstrap'
 import {useSelector, useDispatch} from 'react-redux'
@@ -26,7 +27,12 @@ const Header = () => {
   }
   return (
     <header>
-      <Navbar bg='dark' expand='sm' collapseOnSelect className='text-center'>
+      <Navbar
+        bg='dark'
+        expand='sm'
+        collapseOnSelect
+        className='text-center'
+      >
         <Container className='justify-content-center'>
           <LinkContainer to='/home'>
             <Navbar.Brand className='text-white'>

@@ -10,6 +10,7 @@ import {useCreateRootMutation} from '../slices/setupApiSlice'
 import {useLoginMutation} from '../slices/usersApiSlice'
 import {setCredentials} from '../slices/authenticationSlice'
 import {setConfigStatus} from '../slices/configStatusSlice'
+import enterKeyHandler from '../enterKeyHandler'
 import {toast} from 'react-toastify'
 const SetupPage = () => {
   const [password, setPassword] = useState('')
@@ -28,12 +29,6 @@ const SetupPage = () => {
       navigate('/home')
     } catch (error) {
       toast.error(error?.data?.message || error.error)
-    }
-  }
-  const enterKeyHandler = event => {
-    if (event.key === 'Enter') {
-      event.preventDefault()
-      submitHandler(event)
     }
   }
   return isLoading ? (
@@ -56,7 +51,9 @@ const SetupPage = () => {
         </p>
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='password' className='my-3'>
-            <Form.Label><FaKey/> Password</Form.Label>
+            <Form.Label>
+              <FaKey/> Password
+            </Form.Label>
             <Form.Control
               type='password'
               placeholder='Enter password'
@@ -66,24 +63,22 @@ const SetupPage = () => {
             />
           </Form.Group>
           <Form.Group controlId='confirmPassword' className='my-3'>
-            <Form.Label><FaCheck/> Confirm password</Form.Label>
+            <Form.Label>
+              <FaCheck/> Confirm password
+            </Form.Label>
             <Form.Control
               type='password'
               placeholder='Confirm password'
               value={confirmPassword}
               onChange={event => setConfirmPassword(event.target.value)}
-              onKeyDown={event => enterKeyHandler(event)}
+              onKeyDown={event => enterKeyHandler(event, submitHandler)}
             />
           </Form.Group>
           <Button
             type='submit'
             variant='success'
             className='p-auto text-white'
-            disabled={
-              isLoading ||
-              !password ||
-              !confirmPassword
-            }
+            disabled={isLoading || !password || !confirmPassword}
           >
             <FaCheck/> Confirm
           </Button>

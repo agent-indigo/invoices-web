@@ -6,8 +6,7 @@ import {useLazyGetStatusQuery} from '../slices/setupApiSlice'
 const ConfigStatusFetcher = () => {
   const dispatch = useDispatch()
   const [getConfigStatusApiCall] = useLazyGetStatusQuery()
-  useEffect(
-    () => async () => {
+  useEffect(() => async () => {
       try {
         const response = await getConfigStatusApiCall().unwrap()
         dispatch(setConfigStatus(response))
@@ -15,9 +14,7 @@ const ConfigStatusFetcher = () => {
         toast.error(error?.data?.message || error.error)
         console.error(error)
       }
-    },
-    [dispatch, getConfigStatusApiCall]
-  )
+    }, [dispatch, getConfigStatusApiCall])
   return null
 }
 export default ConfigStatusFetcher

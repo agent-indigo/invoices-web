@@ -1,10 +1,15 @@
 import {useState} from 'react'
 import {Button, Form, Modal} from 'react-bootstrap'
-import {FaCheck, FaFileInvoiceDollar, FaTimes} from 'react-icons/fa'
+import {
+  FaCheck,
+  FaFileInvoiceDollar,
+  FaTimes
+} from 'react-icons/fa'
 import {toast} from 'react-toastify'
 import FormContainer from './FormContainer'
 import Loader from './Loader'
 import {useEditInvoiceMutation} from '../slices/invoicesApiSlice'
+import enterKeyHandler from '../enterKeyHandler'
 const EditInvoiceModal = ({
   pk,
   Vendor,
@@ -40,12 +45,6 @@ const EditInvoiceModal = ({
       toast.error(error?.data?.message || error.error)
     }
   }
-  const enterKeyHandler = event => {
-    if (event.key === 'Enter') {
-      event.preventDefault()
-      submitHandler(event)
-    }
-  }
   return (
     <Modal show={true} onHide={closeModal}>
       <FormContainer>
@@ -57,7 +56,10 @@ const EditInvoiceModal = ({
               type='text'
               value={vendor}
               onChange={event => setVendor(event.target.value)}
-              onKeyDown={event => enterKeyHandler(event)}
+              onKeyDown={event => enterKeyHandler(
+                event,
+                submitHandler
+              )}
             />
           </Form.Group>
           <Form.Group controlId='date' className='py-1'>
@@ -66,7 +68,10 @@ const EditInvoiceModal = ({
               type='date'
               value={date}
               onChange={event => setDate(event.target.value)}
-              onKeyDown={event => enterKeyHandler(event)}
+              onKeyDown={event => enterKeyHandler(
+                event,
+                submitHandler
+              )}
             />
           </Form.Group>
           <Form.Group controlId='invoiceId' className='py-1'>
@@ -75,7 +80,10 @@ const EditInvoiceModal = ({
               type='text'
               value={invoiceId}
               onChange={event => setInvoiceID(event.target.value)}
-              onKeyDown={event => enterKeyHandler(event)}
+              onKeyDown={event => enterKeyHandler(
+                event,
+                submitHandler
+              )}
             />
           </Form.Group>
           <Form.Group controlId='subtotal' className='py-1'>
@@ -85,7 +93,10 @@ const EditInvoiceModal = ({
               step='any'
               value={subtotal}
               onChange={event => setSubtotal(event.target.value)}
-              onKeyDown={event => enterKeyHandler(event)}
+              onKeyDown={event => enterKeyHandler(
+                event,
+                submitHandler
+              )}
             />
           </Form.Group>
           <Form.Group controlId='hst' className='py-1'>
@@ -95,7 +106,10 @@ const EditInvoiceModal = ({
               step='any'
               value={hst}
               onChange={event => setHST(event.target.value)}
-              onKeyDown={event => enterKeyHandler(event)}
+              onKeyDown={event => enterKeyHandler(
+                event,
+                submitHandler
+              )}
             />
           </Form.Group>
           <Form.Group controlId='total' className='py-1'>
@@ -105,7 +119,10 @@ const EditInvoiceModal = ({
               step='any'
               value={total}
               onChange={event => setTotal(event.target.value)}
-              onKeyDown={event => enterKeyHandler(event)}
+              onKeyDown={event => enterKeyHandler(
+                event,
+                submitHandler
+              )}
             />
           </Form.Group>
           <Button
@@ -123,9 +140,7 @@ const EditInvoiceModal = ({
             }
           >
             <FaCheck/> Save
-          </Button>
-          {' '}
-          <Button
+          </Button> <Button
             type='button'
             variant='danger'
             className='p-auto text-white'

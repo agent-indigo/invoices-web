@@ -6,6 +6,7 @@ import {FaKey, FaTimes, FaCheck, FaEdit} from 'react-icons/fa'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
 import {useChangePasswordMutation} from '../slices/usersApiSlice'
+import enterKeyHandler from '../enterKeyHandler'
 import {toast} from 'react-toastify'
 const ChangePasswordPage = () => {
   const [currentPassword, setCurrentPassword] = useState('')
@@ -27,12 +28,6 @@ const ChangePasswordPage = () => {
       toast.error(error?.data?.message || error.error)
     }
   }
-  const enterKeyHandler = event => {
-    if (event.key === 'Enter') {
-      event.preventDefault()
-      submitHandler(event)
-    }
-  }
   return isLoading ? (
     <>
       <Helmet>
@@ -49,7 +44,9 @@ const ChangePasswordPage = () => {
         <h1><FaKey/> Change password</h1>
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='currentPassword' className='my-3'>
-            <Form.Label><FaKey/> Current password</Form.Label>
+            <Form.Label>
+              <FaKey/> Current password
+            </Form.Label>
             <Form.Control
               type='password'
               placeholder='Enter current password'
@@ -59,7 +56,9 @@ const ChangePasswordPage = () => {
             />
           </Form.Group>
           <Form.Group controlId='newPassword' className='my-3'>
-            <Form.Label><FaEdit/> New password</Form.Label>
+            <Form.Label>
+              <FaEdit/> New password
+            </Form.Label>
             <Form.Control
               type='password'
               placeholder='Enter new password'
@@ -68,29 +67,25 @@ const ChangePasswordPage = () => {
             />
           </Form.Group>
           <Form.Group controlId='confirmNewPassword' className='my-3'>
-            <Form.Label><FaCheck/> Confirm new password</Form.Label>
+            <Form.Label>
+              <FaCheck/> Confirm new password
+            </Form.Label>
             <Form.Control
               type='password'
               placeholder='Confirm new password'
               value={confirmNewPassword}
               onChange={event => setConfirmNewPassword(event.target.value)}
-              onKeyDown={event => enterKeyHandler(event)}
+              onKeyDown={event => enterKeyHandler(event, submitHandler)}
             />
           </Form.Group>
           <Button
             type='submit'
             variant='success'
             className='p-auto text-white'
-            disabled={
-              isLoading ||
-              !newPassword ||
-              !confirmNewPassword
-            }
+            disabled={isLoading || !newPassword || !confirmNewPassword}
           >
             <FaCheck/> Change
-          </Button>
-          {' '}
-          <Button
+          </Button> <Button
             type='button'
             variant='danger'
             className='p-auto text-white'

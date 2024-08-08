@@ -11,6 +11,7 @@ import {toast} from 'react-toastify'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
 import {useAddInvoiceMutation} from '../slices/invoicesApiSlice'
+import enterKeyHandler from '../enterKeyHandler'
 const AddInvoicePage = () => {
   const [vendor, setVendor] = useState('')
   const [date, setDate] = useState('')
@@ -37,12 +38,6 @@ const AddInvoicePage = () => {
       toast.error(error?.data?.message || error.error)
     }
   }
-  const enterKeyHandler = event => {
-    if (event.key === 'Enter') {
-      event.preventDefault()
-      submitHandler(event)
-    }
-  }
   return isLoading ? (
     <>
       <Helmet>
@@ -64,7 +59,10 @@ const AddInvoicePage = () => {
               type='text'
               value={vendor}
               onChange={event => setVendor(event.target.value)}
-              onKeyDown={event => enterKeyHandler(event)}
+              onKeyDown={event => enterKeyHandler(
+                event,
+                submitHandler
+              )}
               autoFocus
             />
           </Form.Group>
@@ -74,7 +72,10 @@ const AddInvoicePage = () => {
               type='date'
               value={date}
               onChange={event => setDate(event.target.value)}
-              onKeyDown={event => enterKeyHandler(event)}
+              onKeyDown={event => enterKeyHandler(
+                event,
+                submitHandler
+              )}
             />
           </Form.Group>
           <Form.Group controlId='invoiceId' className='py-1'>
@@ -83,7 +84,10 @@ const AddInvoicePage = () => {
               type='text'
               value={invoiceId}
               onChange={event => setInvoiceID(event.target.value)}
-              onKeyDown={event => enterKeyHandler(event)}
+              onKeyDown={event => enterKeyHandler(
+                event,
+                submitHandler
+              )}
             />
           </Form.Group>
           <Form.Group controlId='subtotal' className='py-1'>
@@ -93,7 +97,10 @@ const AddInvoicePage = () => {
               step='any'
               value={subtotal}
               onChange={event => setSubtotal(event.target.value)}
-              onKeyDown={event => enterKeyHandler(event)}
+              onKeyDown={event => enterKeyHandler(
+                event,
+                submitHandler
+              )}
             />
           </Form.Group>
           <Form.Group controlId='hst' className='py-1'>
@@ -103,7 +110,10 @@ const AddInvoicePage = () => {
               step='any'
               value={hst}
               onChange={event => setHST(event.target.value)}
-              onKeyDown={event => enterKeyHandler(event)}
+              onKeyDown={event => enterKeyHandler(
+                event,
+                submitHandler
+              )}
             />
           </Form.Group>
           <Form.Group controlId='total' className='py-1'>
@@ -113,7 +123,10 @@ const AddInvoicePage = () => {
               step='any'
               value={total}
               onChange={event => setTotal(event.target.value)}
-              onKeyDown={event => enterKeyHandler(event)}
+              onKeyDown={event => enterKeyHandler(
+                event,
+                submitHandler
+              )}
             />
           </Form.Group>
           <Button
@@ -131,9 +144,7 @@ const AddInvoicePage = () => {
             }
           >
             <FaCheck/> Save
-          </Button>
-          {' '}
-          <Button
+          </Button> <Button
             type='button'
             variant='danger'
             className='p-auto text-white'

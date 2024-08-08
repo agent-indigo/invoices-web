@@ -8,7 +8,10 @@ const configStatusSlice = createSlice({
   reducers: {
     setConfigStatus: (state, action) => {
       state.firstRun = action.payload
-      localStorage.setItem('firstRun', JSON.stringify(action.payload))
+      localStorage.setItem(
+        'firstRun',
+        JSON.stringify(action.payload)
+      )
     }
   }
 })

@@ -1,23 +1,11 @@
 import {useState, useEffect} from 'react'
 import {Button, Col, Form, Row, Table} from 'react-bootstrap'
 import {Link, useNavigate} from 'react-router-dom'
-import {
-  FaEdit,
-  FaPlus,
-  FaTrash,
-  FaSearch,
-  FaFileInvoiceDollar,
-  FaArrowUp,
-  FaArrowDown,
-  FaCheckDouble,
-} from 'react-icons/fa'
+import {FaEdit, FaPlus, FaTrash, FaSearch, FaFileInvoiceDollar, FaArrowUp, FaArrowDown, FaCheckDouble} from 'react-icons/fa'
 import {toast} from 'react-toastify'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import {
-  useListInvoicesQuery,
-  useDeleteInvoiceMutation
-} from '../slices/invoicesApiSlice'
+import {useListInvoicesQuery, useDeleteInvoiceMutation} from '../slices/invoicesApiSlice'
 import EditInvoiceModal from '../components/EditInvoiceModal'
 import {Helmet} from 'react-helmet'
 const InvoicesPage = () => {
@@ -295,9 +283,7 @@ const InvoicesPage = () => {
                 <td>{invoice.invoiceId}</td>
                 <td>{new Date(invoice.date).toLocaleDateString()}</td>
                 <td>{new Date(invoice.createdAt).toLocaleString()}</td>
-                <td>
-                  {invoice.createdAt === invoice.updatedAt ? null : new Date(invoice.updatedAt).toLocaleString()}
-                </td>
+                <td>{invoice.createdAt === invoice.updatedAt ? null : new Date(invoice.updatedAt).toLocaleString()}</td>
                 <td>
                   <Button
                     type='button'

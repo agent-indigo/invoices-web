@@ -7,11 +7,13 @@ import {
   FaKey,
   FaArrowRight,
   FaUser,
-  FaUserTag} from 'react-icons/fa'
+  FaUserTag
+} from 'react-icons/fa'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
 import {useLoginMutation} from '../slices/usersApiSlice'
 import {setCredentials} from '../slices/authenticationSlice'
+import enterKeyHandler from '../enterKeyHandler'
 import {toast} from 'react-toastify'
 const LoginPage = () => {
   const [name, setName] = useState('')
@@ -21,7 +23,9 @@ const LoginPage = () => {
   const [login, {isLoading}] = useLoginMutation()
   const {user} = useSelector(state => state.authentication)
   useEffect(
-    () => {if (user) navigate('/home')},
+    () => {
+      if (user) navigate('/home')
+    },
     [user, navigate]
   )
   const submitHandler = async event => {
@@ -32,12 +36,6 @@ const LoginPage = () => {
       navigate('/home')
     } catch (error) {
       toast.error(error?.data?.message || error.error)
-    }
-  }
-  const enterKeyHandler = event => {
-    if (event.key === 'Enter') {
-      event.preventDefault()
-      submitHandler(event)
     }
   }
   return isLoading ? (
@@ -56,7 +54,9 @@ const LoginPage = () => {
         <h1><FaUser/> Log in</h1>
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='name' className='my-3'>
-            <Form.Label><FaUserTag/> User name</Form.Label>
+            <Form.Label>
+              <FaUserTag/> User name
+            </Form.Label>
             <Form.Control
               type='text'
               placeholder='Enter user name'
@@ -66,24 +66,25 @@ const LoginPage = () => {
             />
           </Form.Group>
           <Form.Group controlId='password' className='my-3'>
-            <Form.Label><FaKey/> Password</Form.Label>
+            <Form.Label>
+              <FaKey/> Password
+            </Form.Label>
             <Form.Control
               type='password'
               placeholder='Enter password'
               value={password}
               onChange={event => setPassword(event.target.value)}
-              onKeyDown={event => enterKeyHandler(event)}
+              onKeyDown={event => enterKeyHandler(
+                event,
+                submitHandler
+              )}
             />
           </Form.Group>
           <Button
             type='submit'
             variant='success'
             className='p-auto text-white'
-            disabled={
-              isLoading ||
-              !name ||
-              !password
-            }
+            disabled={isLoading || !name || !password}
           >
             Log in <FaArrowRight/>
           </Button>

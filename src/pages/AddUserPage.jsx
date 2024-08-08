@@ -7,10 +7,12 @@ import {
   FaKey,
   FaTimes,
   FaCheck,
-  FaUserTag} from 'react-icons/fa'
+  FaUserTag
+} from 'react-icons/fa'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
 import {useAddUserMutation} from '../slices/usersApiSlice'
+import enterKeyHandler from '../enterKeyHandler'
 import {toast} from 'react-toastify'
 const AddUserPage = () => {
   const [password, setPassword] = useState('')
@@ -23,19 +25,13 @@ const AddUserPage = () => {
     try {
       const response = await addUser({
         name,
-        password, 
+        password,
         confirmPassword
       }).unwrap()
       navigate('/users/list')
       toast.success(response.message)
     } catch (error) {
       toast.error(error?.data?.message || error.error)
-    }
-  }
-  const enterKeyHandler = event => {
-    if (event.key === 'Enter') {
-      event.preventDefault()
-      submitHandler(event)
     }
   }
   return isLoading ? (
@@ -54,18 +50,25 @@ const AddUserPage = () => {
         <h1><FaUser/> Add user</h1>
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='name' className='my-3'>
-            <Form.Label><FaUserTag/>User name</Form.Label>
+            <Form.Label>
+              <FaUserTag/> User name
+            </Form.Label>
             <Form.Control
               type='text'
               placeholder='Enter user name'
               value={name}
               onChange={event => setName(event.target.value)}
-              onKeyDown={event => enterKeyHandler(event)}
+              onKeyDown={event => enterKeyHandler(
+                event,
+                submitHandler
+              )}
               autoFocus
             />
           </Form.Group>
           <Form.Group controlId='password' className='my-3'>
-            <Form.Label><FaKey/>Password</Form.Label>
+            <Form.Label>
+              <FaKey/> Password
+            </Form.Label>
             <Form.Control
               type='password'
               placeholder='Enter password'
@@ -74,13 +77,18 @@ const AddUserPage = () => {
             />
           </Form.Group>
           <Form.Group controlId='confirmPassword' className='my-3'>
-            <Form.Label><FaCheck/>Confirm password</Form.Label>
+            <Form.Label>
+              <FaCheck/> Confirm password
+            </Form.Label>
             <Form.Control
               type='password'
               placeholder='Confirm password'
               value={confirmPassword}
               onChange={event => setConfirmPassword(event.target.value)}
-              onKeyDown={event => enterKeyHandler(event)}
+              onKeyDown={event => enterKeyHandler(
+                event,
+                submitHandler
+              )}
             />
           </Form.Group>
           <Button
@@ -94,17 +102,15 @@ const AddUserPage = () => {
               !confirmPassword
             }
           >
-            <FaCheck/>Add
-          </Button>
-          {' '}
-          <Button
+            <FaCheck/> Add
+          </Button> <Button
             type='button'
             variant='danger'
             className='p-auto text-white'
             disabled={isLoading}
             onClick={() => navigate('/users/list')}
           >
-            <FaTimes/>Cancel
+            <FaTimes/> Cancel
           </Button>
           {isLoading && <Loader/>}
         </Form>
