@@ -1,4 +1,8 @@
-import {Container, Row, Col} from 'react-bootstrap'
+import {
+  Container,
+  Row,
+  Col
+} from 'react-bootstrap'
 const FormContainer = ({children}) => (
   <Container>
     <Row className='justify-content-md-center'>
