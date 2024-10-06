@@ -9,7 +9,7 @@ const ConfigStatusFetcher = () => {
   useEffect(() => async () => {
       try {
         const response = await getConfigStatusApiCall().unwrap()
-        dispatch(setConfigStatus(response))
+        dispatch(setConfigStatus(!response.rootExists))
       } catch (error) {
         toast.error(error?.data?.message || error.error)
         console.error(error)

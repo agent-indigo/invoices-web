@@ -27,7 +27,7 @@ const InvoicesPage = () => {
   const [deleteInvoice, {isLoading: deleting}] = useDeleteInvoiceMutation()
   const sortHandler = (field, order) => setSortCriteria({field, order})
   const openEditInvoiceModal = (
-    pk,
+    uuid,
     vendor,
     date,
     subtotal,
@@ -35,7 +35,7 @@ const InvoicesPage = () => {
     total,
     invoiceId
   ) => {
-    setSelectedInvoicePk(pk)
+    setSelectedInvoicePk(uuid)
     setSelectedInvoiceVendor(vendor)
     setSelectedInvoiceDate(date)
     setSelectedInvoiceSubtotal(subtotal)
@@ -55,9 +55,9 @@ const InvoicesPage = () => {
     setShowEditInvoiceModal(false)
   }
   const floatify = number => (Math.round(number * 100) / 100).toFixed(2)
-  const deleteHandler = async pk => {
+  const deleteHandler = async uuid => {
     try {
-      const response = await deleteInvoice(pk).unwrap()
+      const response = await deleteInvoice(uuid).unwrap()
       refetch()
       toast.success(response.message)
     } catch (error) {
@@ -66,7 +66,7 @@ const InvoicesPage = () => {
   }
   const bulkDeleteHandler = async () => {
     try {
-      await Promise.all(selectedInvoices.map(pk => deleteInvoice(pk).unwrap()))
+      await Promise.all(selectedInvoices.map(uuid => deleteInvoice(uuid).unwrap()))
       refetch()
       setSelectedInvoices([])
       toast.success('Invoices deleted.')
@@ -89,7 +89,7 @@ const InvoicesPage = () => {
     invoice.invoiceId.toLowerCase().includes(searchTerm.toLowerCase()) ||
     new Date(invoice.date).toLocaleDateString() === searchDate
   )
-  const checkAllHandler = event => event.target.checked ? setSelectedInvoices(allInvoices.map(invoice => invoice.pk)) : setSelectedInvoices([])
+  const checkAllHandler = event => event.target.checked ? setSelectedInvoices(allInvoices.map(invoice => invoice.uuid)) : setSelectedInvoices([])
   useEffect(
     () => setAllInvoices(invoices ?? []),
     [invoices]
@@ -250,14 +250,14 @@ const InvoicesPage = () => {
             </thead>
             <tbody>
               {filteredInvoices.map(invoice => (
-                <tr key={invoice.pk}>
+                <tr key={invoice.uuid}>
                   <td>
                     <Form.Check
                       type='checkbox'
-                      checked={selectedInvoices.includes(invoice.pk)}
+                      checked={selectedInvoices.includes(invoice.uuid)}
                       onChange={event => {
-                        const pk = invoice.pk
-                        event.target.checked ? setSelectedInvoices([...selectedInvoices, pk]) : setSelectedInvoices(selectedInvoices.filter(id => id !== pk))
+                        const uuid = invoice.uuid
+                        event.target.checked ? setSelectedInvoices([...selectedInvoices, uuid]) : setSelectedInvoices(selectedInvoices.filter(id => id !== uuid))
                       }}
                     />
                   </td>
@@ -275,7 +275,7 @@ const InvoicesPage = () => {
                       variant='primary'
                       className='p-auto text-white'
                       onClick={() => openEditInvoiceModal(
-                        invoice.pk,
+                        invoice.uuid,
                         invoice.vendor,
                         invoice.date,
                         invoice.subtotal,
@@ -293,7 +293,7 @@ const InvoicesPage = () => {
                       variant='danger'
                       className='p-auto text-white'
                       disabled={deleting}
-                      onClick={() => deleteHandler(invoice.pk)}
+                      onClick={() => deleteHandler(invoice.uuid)}
                     >
                       <FaTrash/> Delete
                     </Button>
@@ -304,7 +304,7 @@ const InvoicesPage = () => {
           </Table>
           {showEditInvoiceModal && (
             <EditInvoiceModal
-              pk={selectedInvoicePk}
+              uuid={selectedInvoicePk}
               Vendor={selectedInvoiceVendor}
               Date={selectedInvoiceDate}
               Subtotal={selectedInvoiceSubtotal}

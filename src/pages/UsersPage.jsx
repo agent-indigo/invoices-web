@@ -19,17 +19,17 @@ const UsersPage = () => {
   const [deleteUser, {isLoading: deleting}] = useDeleteUserMutation()
   const navigate = useNavigate()
   const sortHandler = (field, order) => setSortCriteria({field, order})
-  const openResetPasswordModal = pk => {
-    setSelectedUserPk(pk)
+  const openResetPasswordModal = uuid => {
+    setSelectedUserPk(uuid)
     setShowResetPasswordModal(true)
   }
   const closeResetPasswordModal = () => {
     setSelectedUserPk(null)
     setShowResetPasswordModal(false)
   }
-  const deleteHandler = async pk => {
+  const deleteHandler = async uuid => {
     try {
-      const response = await deleteUser(pk).unwrap()
+      const response = await deleteUser(uuid).unwrap()
       refetch()
       toast.success(response.message)
     } catch (error) {
@@ -38,7 +38,7 @@ const UsersPage = () => {
   }
   const bulkDeleteHandler = async () => {
     try {
-      await Promise.all(selectedUsers.map(pk => deleteUser(pk).unwrap()))
+      await Promise.all(selectedUsers.map(uuid => deleteUser(uuid).unwrap()))
       refetch()
       setSelectedUsers([])
       toast.success('Users deleted.')
@@ -57,11 +57,11 @@ const UsersPage = () => {
     }
   })
   const filteredUsers = sortedUsers.filter(user => user.name.toLowerCase().includes(searchTerm.toLowerCase()))
-  const userIsRoot = pk => {
-    const user = allUsers.find(user => user.pk === pk)
+  const userIsRoot = uuid => {
+    const user = allUsers.find(user => user.uuid === uuid)
     return user && user.role === 'root'
   }
-  const checkAllHandler = event => event.target.checked ? setSelectedUsers(allUsers.filter(user => !userIsRoot(user.pk)).map(user => user.pk)) : setSelectedUsers([])
+  const checkAllHandler = event => event.target.checked ? setSelectedUsers(allUsers.filter(user => !userIsRoot(user.uuid)).map(user => user.uuid)) : setSelectedUsers([])
   useEffect(
     () => setAllUsers(users ?? []),
     [users]
@@ -117,7 +117,7 @@ const UsersPage = () => {
                     type="checkbox"
                     checked={
                       filteredUsers.length > 0 &&
-                      selectedUsers.length === filteredUsers.filter(user => !userIsRoot(user.pk)).length
+                      selectedUsers.length === filteredUsers.filter(user => !userIsRoot(user.uuid)).length
                     }
                     onChange={event => checkAllHandler(event)}
                   />
@@ -160,15 +160,15 @@ const UsersPage = () => {
             </thead>
             <tbody>
               {filteredUsers.map(user => (
-                <tr key={user.pk}>
+                <tr key={user.uuid}>
                   <td>
                     <Form.Check
                       type="checkbox"
-                      checked={selectedUsers.includes(user.pk)}
+                      checked={selectedUsers.includes(user.uuid)}
                       disabled={user.role === 'root'}
                       onChange={event => {
-                        const pk = user.pk
-                        event.target.checked ? setSelectedUsers([...selectedUsers, pk]) : setSelectedUsers(selectedUsers.filter(id => id !== pk))
+                        const uuid = user.uuid
+                        event.target.checked ? setSelectedUsers([...selectedUsers, uuid]) : setSelectedUsers(selectedUsers.filter(id => id !== uuid))
                       }}
                     />
                   </td>
@@ -181,7 +181,7 @@ const UsersPage = () => {
                       variant='primary'
                       className='p-auto text-white'
                       disabled={user.role === 'root'}
-                      onClick={() => openResetPasswordModal(user.pk)}
+                      onClick={() => openResetPasswordModal(user.uuid)}
                     >
                       <FaKey/> Reset password
                     </Button>
@@ -191,7 +191,7 @@ const UsersPage = () => {
                       type='button'
                       variant='danger'
                       className='p-auto text-white'
-                      onClick={() => deleteHandler(user.pk)}
+                      onClick={() => deleteHandler(user.uuid)}
                       disabled={deleting || user.role === 'root'}
                     >
                       <FaTrash/> Delete
@@ -203,7 +203,7 @@ const UsersPage = () => {
           </Table>
           {showResetPasswordModal && (
             <ResetPasswordModal
-              pk={selectedUserPk}
+              uuid={selectedUserPk}
               closeModal={closeResetPasswordModal}
             />
           )}

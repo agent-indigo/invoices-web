@@ -6,7 +6,7 @@ import Loader from './Loader'
 import {useResetPasswordMutation} from '../slices/usersApiSlice'
 import enterKeyHandler from '../enterKeyHandler'
 import {toast} from 'react-toastify'
-const ResetPasswordModal = ({pk, closeModal}) => {
+const ResetPasswordModal = ({uuid, closeModal}) => {
   const [newPassword, setNewPassword] = useState('')
   const [confirmNewPassword, setConfirmNewPassword] = useState('')
   const [resetPassword, {isLoading}] = useResetPasswordMutation()
@@ -14,7 +14,7 @@ const ResetPasswordModal = ({pk, closeModal}) => {
     event.preventDefault()
     try {
       const response = await resetPassword({
-        pk,
+        uuid,
         newPassword,
         confirmNewPassword
       }).unwrap()

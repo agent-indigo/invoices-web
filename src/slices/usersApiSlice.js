@@ -25,7 +25,7 @@ const usersApiSlice = apiSlice.injectEndpoints({
     }),
     resetPassword: builder.mutation({
       query: data => ({
-        url: `${USERS_URL}/resetPassword/${data.pk}`,
+        url: `${USERS_URL}/resetPassword/${data.uuid}`,
         method: 'PATCH',
         body: data
       }),
@@ -47,8 +47,8 @@ const usersApiSlice = apiSlice.injectEndpoints({
       providesTags: ['user']
     }),
     deleteUser: builder.mutation({
-      query: pk => ({
-        url: `${USERS_URL}/${pk}`,
+      query: uuid => ({
+        url: `${USERS_URL}/${uuid}`,
         method: 'DELETE'
       }),
       invalidatesTags: ['user']
