@@ -11,7 +11,7 @@ import Loader from './Loader'
 import {useEditInvoiceMutation} from '../slices/invoicesApiSlice'
 import enterKeyHandler from '../enterKeyHandler'
 const EditInvoiceModal = ({
-  uuid,
+  id,
   Vendor,
   Date,
   Subtotal,
@@ -31,7 +31,7 @@ const EditInvoiceModal = ({
     event.preventDefault()
     try {
       const response = await editInvoice({
-        uuid,
+        id,
         vendor,
         subtotal,
         hst,

@@ -19,15 +19,15 @@ const invoicesApiSlice = apiSlice.injectEndpoints({
     }),
     editInvoice: builder.mutation({
       query: data => ({
-        url: `${INVOICES_URL}/${data.uuid}`,
+        url: `${INVOICES_URL}/${data.id}`,
         method: 'PUT',
         body: data
       }),
       invalidatesTags: ['invoice']
     }),
     deleteInvoice: builder.mutation({
-      query: uuid => ({
-        url: `${INVOICES_URL}/${uuid}`,
+      query: id => ({
+        url: `${INVOICES_URL}/${id}`,
         method: 'DELETE'
       }),
       invalidatesTags: ['invoice']
