@@ -7,10 +7,10 @@ const configStatusSlice = createSlice({
   initialState,
   reducers: {
     setConfigStatus: (state, action) => {
-      state.firstRun = action.payload
+      state.firstRun = !action.payload.rootExists
       localStorage.setItem(
         'firstRun',
-        JSON.stringify(action.payload)
+        JSON.stringify(!action.payload.rootExists)
       )
     }
   }
