@@ -11,21 +11,16 @@ import Loader from './Loader'
 import {useEditInvoiceMutation} from '../slices/invoicesApiSlice'
 import enterKeyHandler from '../enterKeyHandler'
 const EditInvoiceModal = ({
-  id,
-  Vendor,
-  Date,
-  Subtotal,
-  HST,
-  Total,
-  InvoiceID,
+  invoice,
   closeModal
 }) => {
-  const [vendor, setVendor] = useState(Vendor)
-  const [date, setDate] = useState(Date)
-  const [subtotal, setSubtotal] = useState(Subtotal)
-  const [hst, setHST] = useState(HST)
-  const [total, setTotal] = useState(Total)
-  const [invoiceId, setInvoiceID] = useState(InvoiceID)
+  const {id} = invoice
+  const [vendor, setVendor] = useState(invoice.vendor)
+  const [date, setDate] = useState(invoice.date)
+  const [subtotal, setSubtotal] = useState(invoice.subtotal)
+  const [hst, setHST] = useState(invoice.hst)
+  const [total, setTotal] = useState(invoice.total)
+  const [invoiceId, setInvoiceID] = useState(invoice.invoiceId)
   const [editInvoice, {isLoading}] = useEditInvoiceMutation()
   const submitHandler = async event => {
     event.preventDefault()

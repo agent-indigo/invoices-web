@@ -14,44 +14,18 @@ const InvoicesPage = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [searchDate, setSearchDate] = useState('')
   const [showEditInvoiceModal, setShowEditInvoiceModal] = useState(false)
-  const [selectedInvoicePk, setSelectedInvoicePk] = useState(null)
-  const [selectedInvoiceVendor, setSelectedInvoiceVendor] = useState(null)
-  const [selectedInvoiceDate, setSelectedInvoiceDate] = useState(null)
-  const [selectedInvoiceSubtotal, setSelectedInvoiceSubtotal] = useState(null)
-  const [selectedInvoiceHST, setSelectedInvoiceHST] = useState(null)
-  const [selectedInvoiceTotal, setSelectedInvoiceTotal] = useState(null)
-  const [selectedInvoiceID, setSelectedInvoiceID] = useState(null)
+  const [selectedInvoice, setSelectedInvoice] = useState(null)
   const [selectedInvoices, setSelectedInvoices] = useState([])
   const [allInvoices, setAllInvoices] = useState([])
   const [sortCriteria, setSortCriteria] = useState({field: 'vendor', order: 'asc'})
   const [deleteInvoice, {isLoading: deleting}] = useDeleteInvoiceMutation()
   const sortHandler = (field, order) => setSortCriteria({field, order})
-  const openEditInvoiceModal = (
-    id,
-    vendor,
-    date,
-    subtotal,
-    hst,
-    total,
-    invoiceId
-  ) => {
-    setSelectedInvoicePk(id)
-    setSelectedInvoiceVendor(vendor)
-    setSelectedInvoiceDate(date)
-    setSelectedInvoiceSubtotal(subtotal)
-    setSelectedInvoiceHST(hst)
-    setSelectedInvoiceTotal(total)
-    setSelectedInvoiceID(invoiceId)
+  const openEditInvoiceModal = invoice => {
+    setSelectedInvoice(invoice)
     setShowEditInvoiceModal(true)
   }
   const closeEditInvoiceModal = () => {
-    setSelectedInvoicePk(null)
-    setSelectedInvoiceVendor(null)
-    setSelectedInvoiceDate(null)
-    setSelectedInvoiceSubtotal(null)
-    setSelectedInvoiceHST(null)
-    setSelectedInvoiceTotal(null)
-    setSelectedInvoiceID(null)
+    setSelectedInvoice(null)
     setShowEditInvoiceModal(false)
   }
   const floatify = number => (Math.round(number * 100) / 100).toFixed(2)
@@ -274,15 +248,7 @@ const InvoicesPage = () => {
                       type='button'
                       variant='primary'
                       className='p-auto text-white'
-                      onClick={() => openEditInvoiceModal(
-                        invoice.id,
-                        invoice.vendor,
-                        invoice.date,
-                        invoice.subtotal,
-                        invoice.hst,
-                        invoice.total,
-                        invoice.invoiceId
-                      )}
+                      onClick={() => openEditInvoiceModal(invoice)}
                     >
                       <FaEdit/> Edit
                     </Button>
@@ -304,13 +270,7 @@ const InvoicesPage = () => {
           </Table>
           {showEditInvoiceModal && (
             <EditInvoiceModal
-              id={selectedInvoicePk}
-              Vendor={selectedInvoiceVendor}
-              Date={selectedInvoiceDate}
-              Subtotal={selectedInvoiceSubtotal}
-              HST={selectedInvoiceHST}
-              Total={selectedInvoiceTotal}
-              InvoiceID={selectedInvoiceID}
+              invoice={selectedInvoice}
               closeModal={closeEditInvoiceModal}
             />
           )}
