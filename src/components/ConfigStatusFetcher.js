@@ -14,7 +14,10 @@ const ConfigStatusFetcher = () => {
         toast.error(error?.data?.message || error.error)
         console.error(error)
       }
-    }, [dispatch, getConfigStatusApiCall])
+    }, [
+      dispatch,
+      getConfigStatusApiCall
+    ])
   return null
 }
 export default ConfigStatusFetcher

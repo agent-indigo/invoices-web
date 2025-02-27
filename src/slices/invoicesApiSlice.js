@@ -3,10 +3,10 @@ import apiSlice from './apiSlice'
 const invoicesApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     addInvoice: builder.mutation({
-      query: data => ({
+      query: invoice => ({
         url: INVOICES_URL,
         method: 'POST',
-        body: data
+        body: invoice
       }),
       invalidatesTags: ['invoice']
     }),
@@ -18,10 +18,10 @@ const invoicesApiSlice = apiSlice.injectEndpoints({
       providesTags: ['invoice']
     }),
     editInvoice: builder.mutation({
-      query: data => ({
-        url: `${INVOICES_URL}/${data.id}`,
+      query: invoice => ({
+        url: `${INVOICES_URL}/${invoice.id}`,
         method: 'PUT',
-        body: data
+        body: invoice
       }),
       invalidatesTags: ['invoice']
     }),

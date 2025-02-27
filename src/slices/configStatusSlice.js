@@ -6,7 +6,10 @@ const configStatusSlice = createSlice({
   name: 'firstRun',
   initialState,
   reducers: {
-    setConfigStatus: (state, action) => {
+    setConfigStatus: (
+      state,
+      action
+    ) => {
       state.firstRun = !action.payload.rootExists
       localStorage.setItem(
         'firstRun',

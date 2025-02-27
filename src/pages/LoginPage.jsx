@@ -1,7 +1,16 @@
-import {useState, useEffect} from 'react'
+import {
+  useState,
+  useEffect
+} from 'react'
 import {useNavigate} from 'react-router-dom'
-import {useDispatch, useSelector} from 'react-redux'
-import {Form, Button} from 'react-bootstrap'
+import {
+  useDispatch,
+  useSelector
+} from 'react-redux'
+import {
+  Form,
+  Button
+} from 'react-bootstrap'
 import {Helmet} from 'react-helmet'
 import {
   FaKey,
@@ -17,22 +26,35 @@ import enterKeyHandler from '../enterKeyHandler'
 import {toast} from 'react-toastify'
 import Message from '../components/Message'
 const LoginPage = () => {
-  const [name, setName] = useState('')
-  const [password, setPassword] = useState('')
+  const [
+    name,
+    setName
+  ] = useState('')
+  const [
+    password,
+    setPassword
+  ] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [login, {isLoading, isError, error}] = useLoginMutation()
+  const [
+    login, {
+      isLoading,
+      isError,
+      error
+    }
+  ] = useLoginMutation()
   const {user} = useSelector(state => state.authentication)
-  useEffect(
-    () => {
-      if (user) navigate('/home')
-    },
-    [user, navigate]
-  )
+  useEffect(() => user && navigate('/home'), [
+    user,
+    navigate
+  ])
   const submitHandler = async event => {
     event.preventDefault()
     try {
-      const response = await login({name, password}).unwrap()
+      const response = await login({
+        name,
+        password
+      }).unwrap()
       dispatch(setCredentials({...response}))
       navigate('/home')
     } catch (error) {
@@ -42,17 +64,26 @@ const LoginPage = () => {
   return (
     <>
       <Helmet>
-        <title>{isLoading ? 'Processing...' : isError ? 'Error' : 'Log In'} | Invoices</title>
+        <title>
+          {isLoading ? 'Processing...' : isError ? 'Error' : 'Log In'} | Invoices
+        </title>
       </Helmet>
-      {isLoading ? <Loader/> : isError ? (
+      {isLoading ? (
+        <Loader/>
+      ) : isError ? (
         <Message variant='danger'>
           {error?.data?.message?.toString() ?? error?.error?.toString()}
         </Message>
       ) : (
         <FormContainer>
-          <h1><FaUser/> Log in</h1>
+          <h1>
+            <FaUser/> Log in
+          </h1>
           <Form onSubmit={submitHandler}>
-            <Form.Group controlId='name' className='my-3'>
+            <Form.Group
+              controlId='name'
+              className='my-3'
+            >
               <Form.Label>
                 <FaUserTag/> User name
               </Form.Label>
@@ -64,7 +95,10 @@ const LoginPage = () => {
                 autoFocus
               />
             </Form.Group>
-            <Form.Group controlId='password' className='my-3'>
+            <Form.Group
+              controlId='password'
+              className='my-3'
+            >
               <Form.Label>
                 <FaKey/> Password
               </Form.Label>

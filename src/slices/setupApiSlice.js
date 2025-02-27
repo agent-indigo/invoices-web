@@ -9,10 +9,10 @@ const setupApiSlice = apiSlice.injectEndpoints({
       })
     }),
     createRoot: builder.mutation({
-      query: data => ({
+      query: root => ({
         url: `${SETUP_URL}/root`,
         method: 'POST',
-        body: data
+        body: root
       })
     })
   })

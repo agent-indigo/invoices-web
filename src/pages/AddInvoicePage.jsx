@@ -1,6 +1,9 @@
 import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
-import {Button, Form} from 'react-bootstrap'
+import {
+  Button,
+  Form
+} from 'react-bootstrap'
 import {
   FaFileInvoiceDollar,
   FaTimes,
@@ -14,13 +17,37 @@ import {useAddInvoiceMutation} from '../slices/invoicesApiSlice'
 import enterKeyHandler from '../enterKeyHandler'
 import Message from '../components/Message'
 const AddInvoicePage = () => {
-  const [vendor, setVendor] = useState('')
-  const [date, setDate] = useState('')
-  const [subtotal, setSubtotal] = useState('')
-  const [hst, setHST] = useState('')
-  const [total, setTotal] = useState('')
-  const [invoiceId, setInvoiceID] = useState('')
-  const [addInvoice, {isLoading, isError, error}] = useAddInvoiceMutation()
+  const [
+    vendor,
+    setVendor
+  ] = useState('')
+  const [
+    date,
+    setDate
+  ] = useState('')
+  const [
+    subtotal,
+    setSubtotal
+  ] = useState('')
+  const [
+    hst,
+    setHST
+  ] = useState('')
+  const [
+    total,
+    setTotal
+  ] = useState('')
+  const [
+    invoiceId,
+    setInvoiceID
+  ] = useState('')
+  const [
+    addInvoice, {
+      isLoading,
+      isError,
+      error
+    }
+  ] = useAddInvoiceMutation()
   const navigate = useNavigate()
   const submitHandler = async event => {
     event.preventDefault()
@@ -42,18 +69,32 @@ const AddInvoicePage = () => {
   return (
     <>
       <Helmet>
-        <title>{isLoading ? 'Processing...' : isError? 'Error' : 'Add Invoice'} | Invoices</title>
+        <title>
+          {isLoading ? 'Processing...' : isError? 'Error' : 'Add Invoice'} | Invoices
+        </title>
       </Helmet>
-      {isLoading ? <Loader/> : isError ? (
+      {isLoading ? (
+        <Loader/>
+      ) : isError ? (
         <Message variant='danger'>
           {error?.data?.message.toString() ?? error?.error.toString()}
         </Message>
       ) : (
         <FormContainer>
-          <h1><FaFileInvoiceDollar/> Add invoice</h1>
-          <Form onSubmit={submitHandler} className='py-1'>
-            <Form.Group controlId='vendor' className='py-1'>
-              <Form.Label>Vendor</Form.Label>
+          <h1>
+            <FaFileInvoiceDollar/> Add invoice
+          </h1>
+          <Form
+            onSubmit={submitHandler}
+            className='py-1'
+          >
+            <Form.Group
+              controlId='vendor'
+              className='py-1'
+            >
+              <Form.Label>
+                Vendor
+              </Form.Label>
               <Form.Control
                 type='text'
                 value={vendor}
@@ -65,8 +106,13 @@ const AddInvoicePage = () => {
                 autoFocus
               />
             </Form.Group>
-            <Form.Group controlId='date' className='py-1'>
-              <Form.Label>Date</Form.Label>
+            <Form.Group
+              controlId='date'
+              className='py-1'
+            >
+              <Form.Label>
+                Date
+              </Form.Label>
               <Form.Control
                 type='date'
                 value={date}
@@ -77,8 +123,13 @@ const AddInvoicePage = () => {
                 )}
               />
             </Form.Group>
-            <Form.Group controlId='invoiceId' className='py-1'>
-              <Form.Label>Invoice ID</Form.Label>
+            <Form.Group
+              controlId='invoiceId'
+              className='py-1'
+            >
+              <Form.Label>
+                Invoice ID
+              </Form.Label>
               <Form.Control
                 type='text'
                 value={invoiceId}
@@ -89,8 +140,13 @@ const AddInvoicePage = () => {
                 )}
               />
             </Form.Group>
-            <Form.Group controlId='subtotal' className='py-1'>
-              <Form.Label>Subtotal</Form.Label>
+            <Form.Group
+              controlId='subtotal'
+              className='py-1'
+            >
+              <Form.Label>
+                Subtotal
+              </Form.Label>
               <Form.Control
                 type='number'
                 step='any'
@@ -102,8 +158,13 @@ const AddInvoicePage = () => {
                 )}
               />
             </Form.Group>
-            <Form.Group controlId='hst' className='py-1'>
-              <Form.Label>HST</Form.Label>
+            <Form.Group
+              controlId='hst'
+              className='py-1'
+            >
+              <Form.Label>
+                HST
+              </Form.Label>
               <Form.Control
                 type='number'
                 step='any'
@@ -115,8 +176,13 @@ const AddInvoicePage = () => {
                 )}
               />
             </Form.Group>
-            <Form.Group controlId='total' className='py-1'>
-            <Form.Label>Total</Form.Label>
+            <Form.Group
+              controlId='total'
+              className='py-1'
+            >
+            <Form.Label>
+              Total
+            </Form.Label>
               <Form.Control
                 type='number'
                 step='any'

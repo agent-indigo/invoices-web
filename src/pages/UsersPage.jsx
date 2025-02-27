@@ -1,24 +1,83 @@
-import {useState, useEffect} from 'react'
-import {Link, useNavigate} from 'react-router-dom'
+import {
+  useState,
+  useEffect
+} from 'react'
+import {
+  Link,
+  useNavigate
+} from 'react-router-dom'
 import {Helmet} from 'react-helmet'
-import {Table, Form, Button, Row, Col} from 'react-bootstrap'
-import {FaKey, FaPlus, FaTrash, FaSearch, FaUsers, FaArrowUp, FaArrowDown, FaCheckDouble} from 'react-icons/fa'
+import {
+  Table,
+  Form,
+  Button,
+  Row,
+  Col
+} from 'react-bootstrap'
+import {
+  FaKey,
+  FaPlus,
+  FaTrash,
+  FaSearch,
+  FaUsers,
+  FaArrowUp,
+  FaArrowDown,
+  FaCheckDouble
+} from 'react-icons/fa'
 import {toast} from 'react-toastify'
-import {useListUsersQuery, useDeleteUserMutation} from '../slices/usersApiSlice'
+import {
+  useListUsersQuery,
+  useDeleteUserMutation
+} from '../slices/usersApiSlice'
 import ResetPasswordModal from '../components/ResetPasswordModal'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 const UsersPage = () => {
-  const {data: users, isLoading, isError, error, refetch} = useListUsersQuery()
-  const [searchTerm, setSearchTerm] = useState('')
-  const [showResetPasswordModal, setShowResetPasswordModal] = useState(false)
-  const [selectedUserPk, setSelectedUserPk] = useState(null)
-  const [selectedUsers, setSelectedUsers] = useState([])
-  const [allUsers, setAllUsers] = useState([])
-  const [sortCriteria, setSortCriteria] = useState({field: 'name', order: 'asc'})
-  const [deleteUser, {isLoading: deleting}] = useDeleteUserMutation()
+  const {
+    data: users,
+    isLoading,
+    isError,
+    error,
+    refetch
+  } = useListUsersQuery()
+  const [
+    searchTerm,
+    setSearchTerm
+  ] = useState('')
+  const [
+    showResetPasswordModal,
+    setShowResetPasswordModal
+  ] = useState(false)
+  const [
+    selectedUserPk,
+    setSelectedUserPk
+  ] = useState(null)
+  const [
+    selectedUsers,
+    setSelectedUsers
+  ] = useState([])
+  const [
+    allUsers,
+    setAllUsers
+  ] = useState([])
+  const [
+    sortCriteria,
+    setSortCriteria
+  ] = useState({
+    field: 'name',
+    order: 'asc'
+  })
+  const [deleteUser, {
+    isLoading: deleting
+  }] = useDeleteUserMutation()
   const navigate = useNavigate()
-  const sortHandler = (field, order) => setSortCriteria({field, order})
+  const sortHandler = (
+    field,
+    order
+  ) => setSortCriteria({
+    field,
+    order
+  })
   const openResetPasswordModal = id => {
     setSelectedUserPk(id)
     setShowResetPasswordModal(true)
@@ -46,15 +105,12 @@ const UsersPage = () => {
       toast.error(error.toString())
     }
   }
-  const sortedUsers = [...users].sort((a, b) => {
+  const sortedUsers = [...users].sort((
+    a,
+    b
+  ) => {
     const orderFactor = sortCriteria.order === 'asc' ? 1 : -1
-    if (a[sortCriteria.field] < b[sortCriteria.field]) {
-      return -1 * orderFactor
-    } else if (a[sortCriteria.field] > b[sortCriteria.field]) {
-      return 1 * orderFactor
-    } else {
-      return 0
-    }
+    return a[sortCriteria.field] < b[sortCriteria.field] ? -orderFactor : a[sortCriteria.field] > b[sortCriteria.field] ? orderFactor : 0
   })
   const filteredUsers = sortedUsers.filter(user => user.name.toLowerCase().includes(searchTerm.toLowerCase()))
   const userIsRoot = id => {
@@ -62,24 +118,32 @@ const UsersPage = () => {
     return user && user.role === 'root'
   }
   const checkAllHandler = event => event.target.checked ? setSelectedUsers(allUsers.filter(user => !userIsRoot(user.id)).map(user => user.id)) : setSelectedUsers([])
-  useEffect(
-    () => setAllUsers(users ?? []),
-    [users]
-  )
+  useEffect(() => setAllUsers(users ?? []), [
+    users
+  ])
   return (
     <>
       <Helmet>
-        <title>{isLoading ? 'Loading...' : isError ? 'Error' : 'Users'} | Invoices</title>
+        <title>
+          {isLoading ? 'Loading...' : isError ? 'Error' : 'Users'} | Invoices
+        </title>
       </Helmet>
-      {isLoading ? <Loader/> : isError ? (
+      {isLoading ? (
+        <Loader/>
+      ) : isError ? (
         <Message variant='danger'>
           {error?.data?.message ?? error?.error}
         </Message>
       ) : (
         <>
-          <h1><FaUsers/> Users</h1>
+          <h1>
+            <FaUsers/> Users
+          </h1>
           <Row className="mb-3">
-            <Col sm={8} className='d-flex align-items-center'>
+            <Col
+              sm={8}
+              className='d-flex align-items-center'
+            >
               <FaSearch className='mx-1'/>
               <Form.Control
                 type="text"
@@ -108,7 +172,11 @@ const UsersPage = () => {
               </Button>
             </Col>
           </Row>
-          <Table striped hover responsive>
+          <Table
+            striped
+            hover
+            responsive
+          >
             <thead>
               <tr>
                 <th>
@@ -125,10 +193,22 @@ const UsersPage = () => {
                 <th>
                   Name
                   <div className="d-flex">
-                    <Link to={'#'} onClick={() => sortHandler('name', 'asc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'name',
+                        'asc'
+                      )}
+                    >
                       <FaArrowUp/>
                     </Link>
-                    <Link to={'#'} onClick={() => sortHandler('name', 'desc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'name',
+                        'desc'
+                      )}
+                    >
                       <FaArrowDown/>
                     </Link>
                   </div>
@@ -136,10 +216,22 @@ const UsersPage = () => {
                 <th>
                   Created
                   <div className="d-flex">
-                    <Link to={'#'} onClick={() => sortHandler('createdAt', 'asc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'createdAt',
+                        'asc'
+                      )}
+                    >
                       <FaArrowUp/>
                     </Link>
-                    <Link to={'#'} onClick={() => sortHandler('createdAt', 'desc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'createdAt',
+                        'desc'
+                      )}
+                    >
                       <FaArrowDown/>
                     </Link>
                   </div>
@@ -147,15 +239,29 @@ const UsersPage = () => {
                 <th>
                   Password last changed
                   <div className="d-flex">
-                    <Link to={'#'} onClick={() => sortHandler('updatedAt', 'asc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'updatedAt',
+                        'asc'
+                      )}
+                    >
                       <FaArrowUp/>
                     </Link>
-                    <Link to={'#'} onClick={() => sortHandler('updatedAt', 'desc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'updatedAt',
+                        'desc'
+                      )}
+                    >
                       <FaArrowDown/>
                     </Link>
                   </div>
                 </th>
-                <th>Actions</th>
+                <th>
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -168,13 +274,22 @@ const UsersPage = () => {
                       disabled={user.role === 'root'}
                       onChange={event => {
                         const id = user.id
-                        event.target.checked ? setSelectedUsers([...selectedUsers, id]) : setSelectedUsers(selectedUsers.filter(pk => pk !== id))
+                        event.target.checked ? setSelectedUsers([
+                          ...selectedUsers,
+                          id
+                        ]) : setSelectedUsers(selectedUsers.filter(pk => pk !== id))
                       }}
                     />
                   </td>
-                  <td>{user.name}</td>
-                  <td>{new Date(user.createdAt).toLocaleString()}</td>
-                  <td>{user.createdAt === user.updatedAt ? null : new Date(user.updatedAt).toLocaleString()}</td>
+                  <td>
+                    {user.name}
+                  </td>
+                  <td>
+                    {new Date(user.createdAt).toLocaleString()}
+                  </td>
+                  <td>
+                    {user.createdAt === user.updatedAt ? null : new Date(user.updatedAt).toLocaleString()}
+                  </td>
                   <td>
                     <Button
                       type='button'

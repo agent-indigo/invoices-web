@@ -1,5 +1,9 @@
 import {useState} from 'react'
-import {Button, Form, Modal} from 'react-bootstrap'
+import {
+  Button,
+  Form,
+  Modal
+} from 'react-bootstrap'
 import {
   FaCheck,
   FaFileInvoiceDollar,
@@ -15,13 +19,33 @@ const EditInvoiceModal = ({
   closeModal
 }) => {
   const {id} = invoice
-  const [vendor, setVendor] = useState(invoice.vendor)
-  const [date, setDate] = useState(invoice.date)
-  const [subtotal, setSubtotal] = useState(invoice.subtotal)
-  const [hst, setHST] = useState(invoice.hst)
-  const [total, setTotal] = useState(invoice.total)
-  const [invoiceId, setInvoiceID] = useState(invoice.invoiceId)
-  const [editInvoice, {isLoading}] = useEditInvoiceMutation()
+  const [
+    vendor,
+    setVendor
+  ] = useState(invoice.vendor)
+  const [
+    date,
+    setDate
+  ] = useState(invoice.date)
+  const [
+    subtotal,
+    setSubtotal
+  ] = useState(invoice.subtotal)
+  const [
+    hst,
+    setHST
+  ] = useState(invoice.hst)
+  const [
+    total,
+    setTotal
+  ] = useState(invoice.total)
+  const [
+    invoiceId,
+    setInvoiceID
+  ] = useState(invoice.invoiceId)
+  const [editInvoice, {
+    isLoading
+  }] = useEditInvoiceMutation()
   const submitHandler = async event => {
     event.preventDefault()
     try {
@@ -41,12 +65,25 @@ const EditInvoiceModal = ({
     }
   }
   return (
-    <Modal show={true} onHide={closeModal}>
+    <Modal
+      show={true}
+      onHide={closeModal}
+    >
       <FormContainer>
-        <h1><FaFileInvoiceDollar/> Edit invoice</h1>
-        <Form onSubmit={submitHandler} className='py-1'>
-          <Form.Group controlId='vendor' className='py-1'>
-            <Form.Label>Vendor</Form.Label>
+        <h1>
+          <FaFileInvoiceDollar/> Edit invoice
+        </h1>
+        <Form
+          onSubmit={submitHandler}
+          className='py-1'
+        >
+          <Form.Group
+            controlId='vendor'
+            className='py-1'
+          >
+            <Form.Label>
+              Vendor
+            </Form.Label>
             <Form.Control
               type='text'
               value={vendor}
@@ -57,8 +94,13 @@ const EditInvoiceModal = ({
               )}
             />
           </Form.Group>
-          <Form.Group controlId='date' className='py-1'>
-            <Form.Label>Date</Form.Label>
+          <Form.Group
+            controlId='date'
+            className='py-1'
+          >
+            <Form.Label>
+              Date
+            </Form.Label>
             <Form.Control
               type='date'
               value={date}
@@ -69,8 +111,13 @@ const EditInvoiceModal = ({
               )}
             />
           </Form.Group>
-          <Form.Group controlId='invoiceId' className='py-1'>
-            <Form.Label>Invoice ID</Form.Label>
+          <Form.Group
+            controlId='invoiceId'
+            className='py-1'
+          >
+            <Form.Label>
+              Invoice ID
+            </Form.Label>
             <Form.Control
               type='text'
               value={invoiceId}
@@ -81,8 +128,13 @@ const EditInvoiceModal = ({
               )}
             />
           </Form.Group>
-          <Form.Group controlId='subtotal' className='py-1'>
-            <Form.Label>Subtotal</Form.Label>
+          <Form.Group
+            controlId='subtotal'
+            className='py-1'
+          >
+            <Form.Label>
+              Subtotal
+            </Form.Label>
             <Form.Control
               type='number'
               step='any'
@@ -94,8 +146,13 @@ const EditInvoiceModal = ({
               )}
             />
           </Form.Group>
-          <Form.Group controlId='hst' className='py-1'>
-            <Form.Label>HST</Form.Label>
+          <Form.Group
+            controlId='hst'
+            className='py-1'
+          >
+            <Form.Label>
+              HST
+            </Form.Label>
             <Form.Control
               type='number'
               step='any'
@@ -107,8 +164,13 @@ const EditInvoiceModal = ({
               )}
             />
           </Form.Group>
-          <Form.Group controlId='total' className='py-1'>
-            <Form.Label>Total</Form.Label>
+          <Form.Group
+            controlId='total'
+            className='py-1'
+          >
+            <Form.Label>
+              Total
+            </Form.Label>
             <Form.Control
               type='number'
               step='any'

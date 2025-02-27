@@ -1,4 +1,9 @@
-import {Navbar, Nav, Container, Button} from 'react-bootstrap'
+import {
+  Navbar,
+  Nav,
+  Container,
+  Button
+} from 'react-bootstrap'
 import {
   FaUser,
   FaKey,
@@ -7,7 +12,10 @@ import {
 } from 'react-icons/fa'
 import {useNavigate} from 'react-router-dom'
 import {LinkContainer} from 'react-router-bootstrap'
-import {useSelector, useDispatch} from 'react-redux'
+import {
+  useSelector,
+  useDispatch
+} from 'react-redux'
 import {toast} from 'react-toastify'
 import {useLazyLogoutQuery} from '../slices/usersApiSlice'
 import {logout} from '../slices/authenticationSlice'

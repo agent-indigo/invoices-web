@@ -1,6 +1,9 @@
 import {useState} from 'react'
 import {useNavigate} from 'react-router-dom'
-import {Form, Button} from 'react-bootstrap'
+import {
+  Form,
+  Button
+} from 'react-bootstrap'
 import {Helmet} from 'react-helmet'
 import {
   FaUser,
@@ -16,11 +19,26 @@ import enterKeyHandler from '../enterKeyHandler'
 import {toast} from 'react-toastify'
 import Message from '../components/Message'
 const AddUserPage = () => {
-  const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const [
+    password,
+    setPassword
+  ] = useState('')
+  const [
+    name,
+    setName
+  ] = useState('')
+  const [
+    confirmPassword,
+    setConfirmPassword
+  ] = useState('')
   const navigate = useNavigate()
-  const [addUser, {isLoading, isError, error}] = useAddUserMutation()
+  const [
+    addUser, {
+      isLoading,
+      isError,
+      error
+    }
+  ] = useAddUserMutation()
   const submitHandler = async event => {
     event.preventDefault()
     try {
@@ -38,17 +56,26 @@ const AddUserPage = () => {
   return (
     <>
       <Helmet>
-        <title>{isLoading ? 'Processing...' : isError ? 'Error' : 'Add User'} | Invoices</title>
+        <title>
+          {isLoading ? 'Processing...' : isError ? 'Error' : 'Add User'} | Invoices
+        </title>
       </Helmet>
-      {isLoading ? <Loader/> : isError ? (
+      {isLoading ? (
+        <Loader/>
+      ) : isError ? (
         <Message variant='danger'>
           {error?.data?.message?.toString() ?? error?.error?.toString()}
         </Message>
       ) : (
         <FormContainer>
-          <h1><FaUser/> Add user</h1>
+          <h1>
+            <FaUser/> Add user
+          </h1>
           <Form onSubmit={submitHandler}>
-            <Form.Group controlId='name' className='my-3'>
+            <Form.Group
+              controlId='name'
+              className='my-3'
+            >
               <Form.Label>
                 <FaUserTag/> User name
               </Form.Label>
@@ -64,7 +91,10 @@ const AddUserPage = () => {
                 autoFocus
               />
             </Form.Group>
-            <Form.Group controlId='password' className='my-3'>
+            <Form.Group
+              controlId='password'
+              className='my-3'
+            >
               <Form.Label>
                 <FaKey/> Password
               </Form.Label>
@@ -75,7 +105,10 @@ const AddUserPage = () => {
                 onChange={event => setPassword(event.target.value)}
               />
             </Form.Group>
-            <Form.Group controlId='confirmPassword' className='my-3'>
+            <Form.Group
+              controlId='confirmPassword'
+              className='my-3'
+            >
               <Form.Label>
                 <FaCheck/> Confirm password
               </Form.Label>

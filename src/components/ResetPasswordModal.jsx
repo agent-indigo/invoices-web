@@ -1,15 +1,35 @@
 import {useState} from 'react'
-import {Form, Button, Modal} from 'react-bootstrap'
-import {FaKey, FaTimes, FaCheck, FaEdit} from 'react-icons/fa'
+import {
+  Form,
+  Button,
+  Modal
+} from 'react-bootstrap'
+import {
+  FaKey,
+  FaTimes,
+  FaCheck,
+  FaEdit
+} from 'react-icons/fa'
 import FormContainer from './FormContainer'
 import Loader from './Loader'
 import {useResetPasswordMutation} from '../slices/usersApiSlice'
 import enterKeyHandler from '../enterKeyHandler'
 import {toast} from 'react-toastify'
-const ResetPasswordModal = ({id, closeModal}) => {
-  const [newPassword, setNewPassword] = useState('')
-  const [confirmNewPassword, setConfirmNewPassword] = useState('')
-  const [resetPassword, {isLoading}] = useResetPasswordMutation()
+const ResetPasswordModal = ({
+  id,
+  closeModal
+}) => {
+  const [
+    newPassword,
+    setNewPassword
+  ] = useState('')
+  const [
+    confirmNewPassword,
+    setConfirmNewPassword
+  ] = useState('')
+  const [resetPassword, {
+    isLoading
+  }] = useResetPasswordMutation()
   const submitHandler = async event => {
     event.preventDefault()
     try {
@@ -25,11 +45,22 @@ const ResetPasswordModal = ({id, closeModal}) => {
     }
   }
   return (
-    <Modal show={true} onHide={closeModal}>
+    <Modal
+      show={true}
+      onHide={closeModal}
+    >
       <FormContainer>
-        <h1><FaKey/> Reset password</h1>
-        <Form onSubmit={submitHandler} className='py-1'>
-          <Form.Group controlId='newPassword' className='py-1'>
+        <h1>
+          <FaKey/> Reset password
+        </h1>
+        <Form
+          onSubmit={submitHandler}
+          className='py-1'
+        >
+          <Form.Group
+            controlId='newPassword'
+            className='py-1'
+          >
             <Form.Label>
               <FaEdit/> New password
             </Form.Label>
@@ -41,7 +72,10 @@ const ResetPasswordModal = ({id, closeModal}) => {
               autoFocus
             />
           </Form.Group>
-          <Form.Group controlId='confirmNewPassword' className='py-1'>
+          <Form.Group
+            controlId='confirmNewPassword'
+            className='py-1'
+          >
             <Form.Label>
               <FaCheck/> Confirm new password
             </Form.Label>
@@ -51,7 +85,10 @@ const ResetPasswordModal = ({id, closeModal}) => {
               value={confirmNewPassword}
               disabled={!newPassword}
               onChange={event => setConfirmNewPassword(event.target.value)}
-              onKeyDown={event => enterKeyHandler(event, submitHandler)}
+              onKeyDown={event => enterKeyHandler(
+                event,
+                submitHandler
+              )}
             />
           </Form.Group>
           <Button

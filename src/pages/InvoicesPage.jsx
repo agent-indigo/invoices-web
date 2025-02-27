@@ -1,25 +1,87 @@
-import {useState, useEffect} from 'react'
-import {Button, Col, Form, Row, Table} from 'react-bootstrap'
-import {Link, useNavigate} from 'react-router-dom'
-import {FaEdit, FaPlus, FaTrash, FaSearch, FaFileInvoiceDollar, FaArrowUp, FaArrowDown, FaCheckDouble} from 'react-icons/fa'
+import {
+  useState,
+  useEffect
+} from 'react'
+import {
+  Button,
+  Col,
+  Form,
+  Row,
+  Table
+} from 'react-bootstrap'
+import {
+  Link,
+  useNavigate
+} from 'react-router-dom'
+import {
+  FaEdit,
+  FaPlus,
+  FaTrash,
+  FaSearch,
+  FaFileInvoiceDollar,
+  FaArrowUp,
+  FaArrowDown,
+  FaCheckDouble
+} from 'react-icons/fa'
 import {toast} from 'react-toastify'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import {useListInvoicesQuery, useDeleteInvoiceMutation} from '../slices/invoicesApiSlice'
+import {
+  useListInvoicesQuery,
+  useDeleteInvoiceMutation
+} from '../slices/invoicesApiSlice'
 import EditInvoiceModal from '../components/EditInvoiceModal'
 import {Helmet} from 'react-helmet'
 const InvoicesPage = () => {
-  const {data: invoices, isLoading, isError, error, refetch} = useListInvoicesQuery()
+  const {
+    data: invoices,
+    isLoading,
+    isError,
+    error,
+    refetch
+  } = useListInvoicesQuery()
   const navigate = useNavigate()
-  const [searchTerm, setSearchTerm] = useState('')
-  const [searchDate, setSearchDate] = useState('')
-  const [showEditInvoiceModal, setShowEditInvoiceModal] = useState(false)
-  const [selectedInvoice, setSelectedInvoice] = useState(null)
-  const [selectedInvoices, setSelectedInvoices] = useState([])
-  const [allInvoices, setAllInvoices] = useState([])
-  const [sortCriteria, setSortCriteria] = useState({field: 'vendor', order: 'asc'})
-  const [deleteInvoice, {isLoading: deleting}] = useDeleteInvoiceMutation()
-  const sortHandler = (field, order) => setSortCriteria({field, order})
+  const [
+    searchTerm,
+    setSearchTerm
+  ] = useState('')
+  const [
+    searchDate,
+    setSearchDate
+  ] = useState('')
+  const [
+    showEditInvoiceModal,
+    setShowEditInvoiceModal
+  ] = useState(false)
+  const [
+    selectedInvoice,
+    setSelectedInvoice
+  ] = useState(null)
+  const [
+    selectedInvoices,
+    setSelectedInvoices
+  ] = useState([])
+  const [
+    allInvoices,
+    setAllInvoices
+  ] = useState([])
+  const [
+    sortCriteria,
+    setSortCriteria
+  ] = useState({
+    field: 'vendor',
+    order: 'asc'
+  })
+  const [deleteInvoice, {
+    isLoading: deleting
+  }] = useDeleteInvoiceMutation()
+  const sortHandler = (
+    field,
+    order
+  ) => setSortCriteria({
+    field,
+    order
+  })
   const openEditInvoiceModal = invoice => {
     setSelectedInvoice(invoice)
     setShowEditInvoiceModal(true)
@@ -48,15 +110,12 @@ const InvoicesPage = () => {
       toast.error(error.toString())
     }
   }
-  const sortedInvoices = [...invoices].sort((a, b) => {
+  const sortedInvoices = [...invoices].sort((
+    a,
+    b
+  ) => {
     const orderFactor = sortCriteria.order === 'asc' ? 1 : -1
-    if (a[sortCriteria.field] < b[sortCriteria.field]) {
-      return -1 * orderFactor
-    } else if (a[sortCriteria.field] > b[sortCriteria.field]) {
-      return 1 * orderFactor
-    } else {
-      return 0
-    }
+    return a[sortCriteria.field] < b[sortCriteria.field] ? orderFactor : a[sortCriteria.field] > b[sortCriteria.field] ? -orderFactor : 0
   })
   const filteredInvoices = sortedInvoices.filter(invoice =>
     invoice.vendor.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -64,24 +123,32 @@ const InvoicesPage = () => {
     new Date(invoice.date).toLocaleDateString() === searchDate
   )
   const checkAllHandler = event => event.target.checked ? setSelectedInvoices(allInvoices.map(invoice => invoice.id)) : setSelectedInvoices([])
-  useEffect(
-    () => setAllInvoices(invoices ?? []),
-    [invoices]
-  )
+  useEffect(() => setAllInvoices(invoices ?? []), [
+    invoices
+  ])
   return (
     <>
       <Helmet>
-        <title>{isLoading ? 'Loading...' : isError ? 'Error' : 'Invoices'} | Invoices</title>
+        <title>
+          {isLoading ? 'Loading...' : isError ? 'Error' : 'Invoices'} | Invoices
+        </title>
       </Helmet>
-      {isLoading ? <Loader/> : isError ? (
+      {isLoading ? (
+        <Loader/>
+      ) : isError ? (
         <Message variant='danger'>
           {error?.data?.message?.toString() ?? error?.error.toString()}
         </Message>
       ) : (
         <>
-          <h1><FaFileInvoiceDollar/> Invoices</h1>
+          <h1>
+            <FaFileInvoiceDollar/> Invoices
+          </h1>
           <Row className='mb-3'>
-            <Col sm={4} className='d-flex align-items-center'>
+            <Col
+              sm={4}
+              className='d-flex align-items-center'
+            >
               <FaSearch className='mx-1'/>
               <Form.Control
                 type='text'
@@ -90,7 +157,10 @@ const InvoicesPage = () => {
                 onChange={event => setSearchTerm(event.target.value)}
               />
             </Col>
-            <Col sm={4} className='d-flex align-items-center'>
+            <Col
+              sm={4}
+              className='d-flex align-items-center'
+            >
               <Form.Control
                 type='date'
                 value={searchDate}
@@ -117,7 +187,11 @@ const InvoicesPage = () => {
               </Button>
             </Col>
           </Row>
-          <Table striped hover responsive>
+          <Table
+            striped
+            hover
+            responsive
+          >
             <thead>
               <tr>
                 <th>
@@ -134,10 +208,22 @@ const InvoicesPage = () => {
                 <th>
                   Vendor
                   <div className="d-flex">
-                    <Link to={'#'} onClick={() => sortHandler('vendor', 'asc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'vendor',
+                        'asc'
+                      )}
+                    >
                       <FaArrowUp/>
                     </Link>
-                    <Link to={'#'} onClick={() => sortHandler('vendor', 'desc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'vendor',
+                        'desc'
+                      )}
+                    >
                       <FaArrowDown/>
                     </Link>
                   </div>
@@ -145,10 +231,22 @@ const InvoicesPage = () => {
                 <th>
                   Subtotal
                   <div className="d-flex">
-                    <Link to={'#'} onClick={() => sortHandler('subtotal', 'asc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'subtotal',
+                        'asc'
+                      )}
+                    >
                       <FaArrowUp/>
                     </Link>
-                    <Link to={'#'} onClick={() => sortHandler('subtotal', 'desc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'subtotal',
+                        'desc'
+                      )}
+                    >
                       <FaArrowDown/>
                     </Link>
                   </div>
@@ -156,10 +254,22 @@ const InvoicesPage = () => {
                 <th>
                   HST
                   <div className="d-flex">
-                    <Link to={'#'} onClick={() => sortHandler('hst', 'asc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'hst',
+                        'asc'
+                      )}
+                    >
                       <FaArrowUp/>
                     </Link>
-                    <Link to={'#'} onClick={() => sortHandler('hst', 'desc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'hst',
+                        'desc'
+                      )}
+                    >
                       <FaArrowDown/>
                     </Link>
                   </div>
@@ -167,10 +277,22 @@ const InvoicesPage = () => {
                 <th>
                   Total
                   <div className="d-flex">
-                    <Link to={'#'} onClick={() => sortHandler('total', 'asc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'total',
+                        'asc'
+                      )}
+                    >
                       <FaArrowUp/>
                     </Link>
-                    <Link to={'#'} onClick={() => sortHandler('total', 'desc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'total',
+                        'desc'
+                      )}
+                    >
                       <FaArrowDown/>
                     </Link>
                   </div>
@@ -178,10 +300,22 @@ const InvoicesPage = () => {
                 <th>
                   Invoice ID
                   <div className="d-flex">
-                    <Link to={'#'} onClick={() => sortHandler('invoiceId', 'asc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'invoiceId',
+                        'asc'
+                      )}
+                    >
                       <FaArrowUp/>
                     </Link>
-                    <Link to={'#'} onClick={() => sortHandler('invoiceId', 'desc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'invoiceId',
+                        'desc'
+                      )}
+                    >
                       <FaArrowDown/>
                     </Link>
                   </div>
@@ -189,10 +323,22 @@ const InvoicesPage = () => {
                 <th>
                   Date
                   <div className="d-flex">
-                    <Link to={'#'} onClick={() => sortHandler('date', 'asc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'date',
+                        'asc'
+                      )}
+                    >
                       <FaArrowUp/>
                     </Link>
-                    <Link to={'#'} onClick={() => sortHandler('date', 'desc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'date',
+                        'desc'
+                      )}
+                    >
                       <FaArrowDown/>
                     </Link>
                   </div>
@@ -200,10 +346,22 @@ const InvoicesPage = () => {
                 <th>
                   Registered
                   <div className="d-flex">
-                    <Link to={'#'} onClick={() => sortHandler('createdAt', 'asc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'createdAt',
+                        'asc'
+                      )}
+                    >
                       <FaArrowUp/>
                     </Link>
-                    <Link to={'#'} onClick={() => sortHandler('createdAt', 'desc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'createdAt',
+                        'desc'
+                      )}
+                    >
                       <FaArrowDown/>
                     </Link>
                   </div>
@@ -211,15 +369,29 @@ const InvoicesPage = () => {
                 <th>
                   Modified
                   <div className="d-flex">
-                    <Link to={'#'} onClick={() => sortHandler('updatedAt', 'asc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'updatedAt',
+                        'asc'
+                      )}
+                    >
                       <FaArrowUp/>
                     </Link>
-                    <Link to={'#'} onClick={() => sortHandler('updatedAt', 'desc')}>
+                    <Link
+                      to={'#'}
+                      onClick={() => sortHandler(
+                        'updatedAt',
+                        'desc'
+                      )}
+                    >
                       <FaArrowDown/>
                     </Link>
                   </div>
                 </th>
-                <th>Actions</th>
+                <th>
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -231,18 +403,37 @@ const InvoicesPage = () => {
                       checked={selectedInvoices.includes(invoice.id)}
                       onChange={event => {
                         const id = invoice.id
-                        event.target.checked ? setSelectedInvoices([...selectedInvoices, id]) : setSelectedInvoices(selectedInvoices.filter(pk => pk !== id))
+                        event.target.checked ? setSelectedInvoices([
+                          ...selectedInvoices,
+                          id
+                        ]) : setSelectedInvoices(selectedInvoices.filter(pk => pk !== id))
                       }}
                     />
                   </td>
-                  <td>{invoice.vendor}</td>
-                  <td>${floatify(invoice.subtotal)}</td>
-                  <td>${floatify(invoice.hst)}</td>
-                  <td>${floatify(invoice.total)}</td>
-                  <td>{invoice.invoiceId}</td>
-                  <td>{new Date(invoice.date).toLocaleDateString()}</td>
-                  <td>{new Date(invoice.createdAt).toLocaleString()}</td>
-                  <td>{invoice.createdAt === invoice.updatedAt ? null : new Date(invoice.updatedAt).toLocaleString()}</td>
+                  <td>
+                    {invoice.vendor}
+                  </td>
+                  <td>
+                    ${floatify(invoice.subtotal)}
+                  </td>
+                  <td>
+                    ${floatify(invoice.hst)}
+                  </td>
+                  <td>
+                    ${floatify(invoice.total)}
+                  </td>
+                  <td>
+                    {invoice.invoiceId}
+                  </td>
+                  <td>
+                    {new Date(invoice.date).toLocaleDateString()}
+                  </td>
+                  <td>
+                    {new Date(invoice.createdAt).toLocaleString()}
+                  </td>
+                  <td>
+                    {invoice.createdAt === invoice.updatedAt ? null : new Date(invoice.updatedAt).toLocaleString()}
+                  </td>
                   <td>
                     <Button
                       type='button'

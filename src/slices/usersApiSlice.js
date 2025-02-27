@@ -3,10 +3,10 @@ import apiSlice from './apiSlice'
 const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     login: builder.mutation({
-      query: data => ({
+      query: user => ({
         url: `${USERS_URL}/login`,
         method: 'POST',
-        body: data
+        body: user
       })
     }),
     logout: builder.query({
@@ -16,26 +16,26 @@ const usersApiSlice = apiSlice.injectEndpoints({
       })
     }),
     changePassword: builder.mutation({
-      query: data => ({
+      query: user => ({
         url: `${USERS_URL}/changePassword`,
         method: 'PATCH',
-        body: data
+        body: user
       }),
       invalidatesTags: ['user']
     }),
     resetPassword: builder.mutation({
-      query: data => ({
-        url: `${USERS_URL}/resetPassword/${data.id}`,
+      query: user => ({
+        url: `${USERS_URL}/resetPassword/${user.id}`,
         method: 'PATCH',
-        body: data
+        body: user
       }),
       invalidatesTags: ['user']
     }),
     addUser: builder.mutation({
-      query: data => ({
+      query: user => ({
         url: USERS_URL,
         method: 'POST',
-        body: data
+        body: user
       }),
       invalidatesTags: ['user']
     }),

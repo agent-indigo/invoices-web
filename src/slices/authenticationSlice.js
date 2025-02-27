@@ -6,7 +6,10 @@ const authenticationSlice = createSlice({
   name: 'authentication',
   initialState,
   reducers: {
-    setCredentials: (state, action) => {
+    setCredentials: (
+      state,
+      action
+    ) => {
       state.user = action.payload
       localStorage.setItem(
         'user',
