@@ -110,14 +110,20 @@ const UsersPage = () => {
     b
   ) => {
     const orderFactor = sortCriteria.order === 'asc' ? 1 : -1
-    return a[sortCriteria.field] < b[sortCriteria.field] ? -orderFactor : a[sortCriteria.field] > b[sortCriteria.field] ? orderFactor : 0
+    return a[sortCriteria.field] < b[sortCriteria.field]
+    ? -orderFactor
+    : a[sortCriteria.field] > b[sortCriteria.field]
+    ? orderFactor
+    : 0
   })
   const filteredUsers = sortedUsers.filter(user => user.name.toLowerCase().includes(searchTerm.toLowerCase()))
   const userIsRoot = id => {
     const user = allUsers.find(user => user.id === id)
     return user && user.role === 'root'
   }
-  const checkAllHandler = event => event.target.checked ? setSelectedUsers(allUsers.filter(user => !userIsRoot(user.id)).map(user => user.id)) : setSelectedUsers([])
+  const checkAllHandler = event => event.target.checked
+  ? setSelectedUsers(allUsers.filter(user => !userIsRoot(user.id)).map(user => user.id))
+  : setSelectedUsers([])
   useEffect(() => setAllUsers(users ?? []), [
     users
   ])

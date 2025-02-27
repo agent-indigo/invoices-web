@@ -115,14 +115,20 @@ const InvoicesPage = () => {
     b
   ) => {
     const orderFactor = sortCriteria.order === 'asc' ? 1 : -1
-    return a[sortCriteria.field] < b[sortCriteria.field] ? orderFactor : a[sortCriteria.field] > b[sortCriteria.field] ? -orderFactor : 0
+    return a[sortCriteria.field] < b[sortCriteria.field]
+    ? orderFactor
+    : a[sortCriteria.field] > b[sortCriteria.field]
+    ? -orderFactor
+    : 0
   })
   const filteredInvoices = sortedInvoices.filter(invoice =>
     invoice.vendor.toLowerCase().includes(searchTerm.toLowerCase()) ||
     invoice.invoiceId.toLowerCase().includes(searchTerm.toLowerCase()) ||
     new Date(invoice.date).toLocaleDateString() === searchDate
   )
-  const checkAllHandler = event => event.target.checked ? setSelectedInvoices(allInvoices.map(invoice => invoice.id)) : setSelectedInvoices([])
+  const checkAllHandler = event => event.target.checked
+  ? setSelectedInvoices(allInvoices.map(invoice => invoice.id))
+  : setSelectedInvoices([])
   useEffect(() => setAllInvoices(invoices ?? []), [
     invoices
   ])
