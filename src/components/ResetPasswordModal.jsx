@@ -33,11 +33,12 @@ const ResetPasswordModal = ({
   const submitHandler = async event => {
     event.preventDefault()
     try {
-      const response = await resetPassword({
-        id,
-        newPassword,
-        confirmNewPassword
-      }).unwrap()
+      const response = await resetPassword(
+        id, {
+          newPassword,
+          confirmNewPassword
+        }
+      ).unwrap()
       closeModal()
       toast.success(response.message)
     } catch (error) {

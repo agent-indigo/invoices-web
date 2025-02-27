@@ -49,15 +49,16 @@ const EditInvoiceModal = ({
   const submitHandler = async event => {
     event.preventDefault()
     try {
-      const response = await editInvoice({
-        id,
-        vendor,
-        subtotal,
-        hst,
-        total,
-        invoiceId,
-        date
-      }).unwrap()
+      const response = await editInvoice(
+        id, {
+          vendor: vendor === invoice.vendor ? undefined : vendor,
+          subtotal: subtotal === invoice.subtotal ? undefined : subtotal,
+          hst: hst === invoice.hst ? undefined : hst,
+          total: total === invoice.total ? undefined : total,
+          invoiceId: invoiceId === invoice.invoiceId ? undefined : invoiceId,
+          date: date === invoice.date ? undefined : date
+        }
+      ).unwrap()
       closeModal()
       toast.success(response.message)
     } catch (error) {
