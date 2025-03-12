@@ -49,15 +49,34 @@ const EditInvoiceModal = ({
   const submitHandler = async event => {
     event.preventDefault()
     try {
+      const patch = new FormData()
+      vendor !== invoice.vendor && patch.append(
+        'vendor',
+        vendor
+      )
+      date !== invoice.date && patch.append(
+        'date',
+        date
+      )
+      subtotal !== invoice.subtotal && patch.append(
+        'subtotal',
+        subtotal
+      )
+      hst !== invoice.hst && patch.append(
+        'hst',
+        hst
+      )
+      total !== invoice.total && patch.append(
+        'total',
+        total
+      )
+      invoiceId !== invoice.invoiceId && patch.append(
+        'invoiceId',
+        invoiceId
+      )
       const response = await editInvoice(
-        id, {
-          vendor: vendor === invoice.vendor ? undefined : vendor,
-          subtotal: subtotal === invoice.subtotal ? undefined : subtotal,
-          hst: hst === invoice.hst ? undefined : hst,
-          total: total === invoice.total ? undefined : total,
-          invoiceId: invoiceId === invoice.invoiceId ? undefined : invoiceId,
-          date: date === invoice.date ? undefined : date
-        }
+        id,
+        JSON.stringify(Object.fromEntries(patch.entries()))
       ).unwrap()
       closeModal()
       toast.success(response.message)
