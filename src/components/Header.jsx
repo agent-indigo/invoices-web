@@ -30,7 +30,7 @@ const Header = () => {
       dispatch(logout())
       navigate('/users/login')
     } catch (error) {
-      toast.error(error?.data?.message || error.error)
+      toast.error(error.toString())
     }
   }
   return (

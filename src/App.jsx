@@ -6,11 +6,11 @@ import store from './store'
 import ConfigStatusFetcher from './components/ConfigStatusFetcher'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import SetupRoute from './security/SetupRoute'
+import SetRootPasswordRoute from './security/SetRootPasswordRoute'
 import ProductionRoute from './security/ProductionRoute'
 import PrivateRoute from './security/PrivateRoute'
 import RootRoute from './security/RootRoute'
-import SetupPage from './pages/SetupPage'
+import SetRootPasswordPage from './pages/SetRootPasswordPage'
 import LoginPage from './pages/LoginPage'
 import HomePage from './pages/HomePage'
 import ChangePasswordPage from './pages/ChangePasswordPage'
@@ -29,11 +29,11 @@ const App = () => (
           <Routes>
             <Route
               path=''
-              element={<SetupRoute/>}
+              element={<SetRootPasswordRoute/>}
             >
               <Route
-                path='/setup'
-                element={<SetupPage/>}
+                path='/rootpw'
+                element={<SetRootPasswordPage/>}
               />
             </Route>
             <Route

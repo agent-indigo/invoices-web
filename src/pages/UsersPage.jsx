@@ -67,9 +67,11 @@ const UsersPage = () => {
     field: 'name',
     order: 'asc'
   })
-  const [deleteUser, {
-    isLoading: deleting
-  }] = useDeleteUserMutation()
+  const [
+    deleteUser, {
+      isLoading: deleting
+    }
+  ] = useDeleteUserMutation()
   const navigate = useNavigate()
   const sortHandler = (
     field,
@@ -124,7 +126,9 @@ const UsersPage = () => {
   const checkAllHandler = event => event.target.checked
   ? setSelectedUsers(allUsers.filter(user => !userIsRoot(user.id)).map(user => user.id))
   : setSelectedUsers([])
-  useEffect(() => setAllUsers(users ?? []), [
+  useEffect(() => {
+    setAllUsers(users ?? [])
+  }, [
     users
   ])
   return (
@@ -138,7 +142,7 @@ const UsersPage = () => {
         <Loader/>
       ) : isError ? (
         <Message variant='danger'>
-          {error?.data?.message ?? error?.error}
+          {error.toString()}
         </Message>
       ) : (
         <>

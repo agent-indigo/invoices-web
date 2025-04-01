@@ -8,14 +8,18 @@ const invoicesApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: invoice
       }),
-      invalidatesTags: ['invoice']
+      invalidatesTags: [
+        'invoice'
+      ]
     }),
     listInvoices: builder.query({
       query: () => ({
         url: INVOICES_URL,
         method: 'GET'
       }),
-      providesTags: ['invoice']
+      providesTags: [
+        'invoice'
+      ]
     }),
     editInvoice: builder.mutation({
       query: (
@@ -26,14 +30,18 @@ const invoicesApiSlice = apiSlice.injectEndpoints({
         method: 'PATCH',
         body: invoice
       }),
-      invalidatesTags: ['invoice']
+      invalidatesTags: [
+        'invoice'
+      ]
     }),
     deleteInvoice: builder.mutation({
       query: id => ({
         url: `${INVOICES_URL}/${id}`,
         method: 'DELETE'
       }),
-      invalidatesTags: ['invoice']
+      invalidatesTags: [
+        'invoice'
+      ]
     })
   })
 })

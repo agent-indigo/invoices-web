@@ -13,7 +13,7 @@ import {
 } from 'react-icons/fa'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
-import {useCreateRootMutation} from '../slices/setupApiSlice'
+import {useSetRootPasswordMutation} from '../slices/configApiSlice'
 import {useLoginMutation} from '../slices/usersApiSlice'
 import {setCredentials} from '../slices/authenticationSlice'
 import {setConfigStatus} from '../slices/configStatusSlice'
@@ -36,7 +36,7 @@ const SetupPage = () => {
       isError,
       error
     }
-  ] = useCreateRootMutation()
+  ] = useSetRootPasswordMutation()
   const [login] = useLoginMutation()
   const dispatch = useDispatch()
   const submitHandler = async event => {
@@ -68,7 +68,7 @@ const SetupPage = () => {
         <Loader/>
       ) : isError ? (
         <Message variant='danger'>
-          {error?.data?.message?.toString() ?? error?.error?.toString()}
+          {error.toString()}
         </Message>
       ) : (
         <FormContainer>

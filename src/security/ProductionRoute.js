@@ -4,14 +4,15 @@ import {
 } from 'react-router-dom'
 import {useSelector} from 'react-redux'
 const ProductionRoute = () => {
-  const {firstRun} = useSelector(state => state.firstRun)
-  return firstRun ? (
+  const {configStatus} = useSelector(state => state.configStatus)
+  const {rootExists} = configStatus
+  return rootExists ? (
+    <Outlet/>
+  ) : (
     <Navigate
-      to='/setup'
+      to='/rootpw'
       replace
     />
-  ) : (
-    <Outlet/>
   )
 }
 export default ProductionRoute

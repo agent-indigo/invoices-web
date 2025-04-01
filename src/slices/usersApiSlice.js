@@ -21,7 +21,9 @@ const usersApiSlice = apiSlice.injectEndpoints({
         method: 'PATCH',
         body: update
       }),
-      invalidatesTags: ['user']
+      invalidatesTags: [
+        'user'
+      ]
     }),
     resetPassword: builder.mutation({
       query: (
@@ -32,7 +34,9 @@ const usersApiSlice = apiSlice.injectEndpoints({
         method: 'PATCH',
         body: update
       }),
-      invalidatesTags: ['user']
+      invalidatesTags: [
+        'user'
+      ]
     }),
     addUser: builder.mutation({
       query: user => ({
@@ -40,21 +44,27 @@ const usersApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: user
       }),
-      invalidatesTags: ['user']
+      invalidatesTags: [
+        'user'
+      ]
     }),
     listUsers: builder.query({
       query: () => ({
         url: USERS_URL,
         method: 'GET'
       }),
-      providesTags: ['user']
+      providesTags: [
+        'user'
+      ]
     }),
     deleteUser: builder.mutation({
       query: id => ({
         url: `${USERS_URL}/${id}`,
         method: 'DELETE'
       }),
-      invalidatesTags: ['user']
+      invalidatesTags: [
+        'user'
+      ]
     })
   })
 })

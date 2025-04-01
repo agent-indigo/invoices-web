@@ -2,22 +2,20 @@ import {useEffect} from 'react'
 import {useDispatch} from 'react-redux'
 import {toast} from 'react-toastify'
 import {setConfigStatus} from '../slices/configStatusSlice'
-import {useLazyGetStatusQuery} from '../slices/setupApiSlice'
+import {useLazyGetStatusQuery} from '../slices/configApiSlice'
 const ConfigStatusFetcher = () => {
   const dispatch = useDispatch()
   const [getConfigStatusApiCall] = useLazyGetStatusQuery()
-  useEffect(() => async () => {
-      try {
-        const response = await getConfigStatusApiCall().unwrap()
-        dispatch(setConfigStatus(!response.rootExists))
-      } catch (error) {
-        toast.error(error?.data?.message || error.error)
-        console.error(error)
-      }
-    }, [
-      dispatch,
-      getConfigStatusApiCall
-    ])
+  useEffect(() => {(async () => {
+    try {
+      dispatch(setConfigStatus(...await getConfigStatusApiCall().unwrap()))
+    } catch (error) {
+      toast.error(error.toString())
+    }
+  })()}, [
+    dispatch,
+    getConfigStatusApiCall
+  ])
   return null
 }
 export default ConfigStatusFetcher

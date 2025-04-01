@@ -1,19 +1,19 @@
 import {createSlice} from '@reduxjs/toolkit'
 const initialState = {
-  firstRun: JSON.parse(localStorage.getItem('firstRun')) || null
+  configStatus: JSON.parse(localStorage.getItem('configStatus')) || null
 }
 const configStatusSlice = createSlice({
-  name: 'firstRun',
+  name: 'configStatus',
   initialState,
   reducers: {
     setConfigStatus: (
       state,
       action
     ) => {
-      state.firstRun = !action.payload.rootExists
+      state.configStatus = action.payload
       localStorage.setItem(
-        'firstRun',
-        JSON.stringify(!action.payload.rootExists)
+        'configStatus',
+        JSON.stringify(action.payload)
       )
     }
   }

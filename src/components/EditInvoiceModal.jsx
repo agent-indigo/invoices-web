@@ -43,9 +43,11 @@ const EditInvoiceModal = ({
     invoiceId,
     setInvoiceID
   ] = useState(invoice.invoiceId)
-  const [editInvoice, {
-    isLoading
-  }] = useEditInvoiceMutation()
+  const [
+    editInvoice, {
+      isLoading
+    }
+  ] = useEditInvoiceMutation()
   const submitHandler = async event => {
     event.preventDefault()
     try {
@@ -81,7 +83,7 @@ const EditInvoiceModal = ({
       closeModal()
       toast.success(response.message)
     } catch (error) {
-      toast.error(error?.data?.message || error.error)
+      toast.error(error.toString())
     }
   }
   return (

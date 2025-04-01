@@ -72,9 +72,11 @@ const InvoicesPage = () => {
     field: 'vendor',
     order: 'asc'
   })
-  const [deleteInvoice, {
-    isLoading: deleting
-  }] = useDeleteInvoiceMutation()
+  const [
+    deleteInvoice, {
+      isLoading: deleting
+    }
+  ] = useDeleteInvoiceMutation()
   const sortHandler = (
     field,
     order
@@ -129,7 +131,9 @@ const InvoicesPage = () => {
   const checkAllHandler = event => event.target.checked
   ? setSelectedInvoices(allInvoices.map(invoice => invoice.id))
   : setSelectedInvoices([])
-  useEffect(() => setAllInvoices(invoices ?? []), [
+  useEffect(() => {
+    setAllInvoices(invoices ?? [])
+  }, [
     invoices
   ])
   return (
@@ -143,7 +147,7 @@ const InvoicesPage = () => {
         <Loader/>
       ) : isError ? (
         <Message variant='danger'>
-          {error?.data?.message?.toString() ?? error?.error.toString()}
+          {error.toString()}
         </Message>
       ) : (
         <>

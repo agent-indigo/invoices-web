@@ -27,9 +27,11 @@ const ResetPasswordModal = ({
     confirmNewPassword,
     setConfirmNewPassword
   ] = useState('')
-  const [resetPassword, {
-    isLoading
-  }] = useResetPasswordMutation()
+  const [
+    resetPassword, {
+      isLoading
+    }
+  ] = useResetPasswordMutation()
   const submitHandler = async event => {
     event.preventDefault()
     try {
@@ -42,7 +44,7 @@ const ResetPasswordModal = ({
       closeModal()
       toast.success(response.message)
     } catch (error) {
-      toast.error(error?.data?.message || error.error)
+      toast.error(error.toString())
     }
   }
   return (

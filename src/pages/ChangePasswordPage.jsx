@@ -63,7 +63,7 @@ const ChangePasswordPage = () => {
         <Loader/>
       ) : isError ? (
         <Message variant='danger'>
-          {error?.data?.message?.toString() ?? error?.error?.toString()}
+          {error.toString()}
         </Message>
       ) : (
         <FormContainer>
