@@ -36,7 +36,7 @@ const App = () => (
               element={<SetRootPasswordRoute/>}
             >
               <Route
-                path='/createRootUserPassword'
+                path='/setRootUserPassword'
                 element={<SetRootPasswordPage/>}
               />
             </Route>

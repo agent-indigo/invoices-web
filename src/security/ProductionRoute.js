@@ -10,7 +10,7 @@ const ProductionRoute = () => {
     <Outlet/>
   ) : (
     <Navigate
-      to='/createRootUserPassword'
+      to='/setRootUserPassword'
       replace
     />
   )
