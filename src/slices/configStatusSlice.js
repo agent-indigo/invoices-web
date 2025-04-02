@@ -1,10 +1,9 @@
 import {createSlice} from '@reduxjs/toolkit'
-const initialState = {
-  configStatus: JSON.parse(localStorage.getItem('configStatus')) ?? null
-}
 const configStatusSlice = createSlice({
   name: 'configStatus',
-  initialState,
+  initialState: {
+    configStatus: JSON.parse(localStorage.getItem('configStatus')) ?? null
+  },
   reducers: {
     setConfigStatus: (
       state,

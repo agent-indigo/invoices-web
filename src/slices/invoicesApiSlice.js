@@ -1,12 +1,11 @@
-import {INVOICES_URL} from '../urls'
 import apiSlice from './apiSlice'
 const invoicesApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     addInvoice: builder.mutation({
-      query: invoice => ({
-        url: INVOICES_URL,
+      query: body => ({
+        url: '/invoices',
         method: 'POST',
-        body: invoice
+        body
       }),
       invalidatesTags: [
         'invoice'
@@ -14,7 +13,7 @@ const invoicesApiSlice = apiSlice.injectEndpoints({
     }),
     listInvoices: builder.query({
       query: () => ({
-        url: INVOICES_URL,
+        url: '/invoices',
         method: 'GET'
       }),
       providesTags: [
@@ -24,11 +23,11 @@ const invoicesApiSlice = apiSlice.injectEndpoints({
     editInvoice: builder.mutation({
       query: (
         id,
-        changes
+        body
       ) => ({
-        url: `${INVOICES_URL}/${id}`,
+        url: `/invoices/${id}`,
         method: 'PATCH',
-        body: changes
+        body
       }),
       invalidatesTags: [
         'invoice'
@@ -36,7 +35,7 @@ const invoicesApiSlice = apiSlice.injectEndpoints({
     }),
     deleteInvoice: builder.mutation({
       query: id => ({
-        url: `${INVOICES_URL}/${id}`,
+        url: `/invoices/${id}`,
         method: 'DELETE'
       }),
       invalidatesTags: [

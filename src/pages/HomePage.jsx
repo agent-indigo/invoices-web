@@ -14,6 +14,7 @@ import {Helmet} from 'react-helmet'
 const HomePage = () => {
   const navigate = useNavigate()
   const {user} = useSelector(state => state.authentication)
+  const {role} = user
   return (
     <>
       <Helmet>
@@ -48,7 +49,7 @@ const HomePage = () => {
             sm={5}
           />
         </Row>
-        {user.role === 'root' && (
+        {role === 'root' && (
           <Row>
             <div className="py-1"/>
             <Col

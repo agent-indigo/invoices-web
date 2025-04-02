@@ -1,25 +1,24 @@
-import {USERS_URL} from '../urls'
 import apiSlice from './apiSlice'
 const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: builder => ({
     login: builder.mutation({
-      query: user => ({
-        url: `${USERS_URL}/login`,
+      query: body => ({
+        url: '/users/login',
         method: 'POST',
-        body: user
+        body
       })
     }),
     logout: builder.query({
       query: () => ({
-        url: `${USERS_URL}/logout`,
+        url: '/users/logout',
         method: 'GET'
       })
     }),
     changePassword: builder.mutation({
-      query: passwords => ({
-        url: `${USERS_URL}/changePassword`,
+      query: body => ({
+        url: '/users/changePassword',
         method: 'PATCH',
-        body: passwords
+        body
       }),
       invalidatesTags: [
         'user'
@@ -28,21 +27,21 @@ const usersApiSlice = apiSlice.injectEndpoints({
     resetPassword: builder.mutation({
       query: (
         id,
-        password
+        body
       ) => ({
-        url: `${USERS_URL}/resetPassword/${id}`,
+        url: `/users/resetPassword/${id}`,
         method: 'PATCH',
-        body: password
+        body
       }),
       invalidatesTags: [
         'user'
       ]
     }),
     addUser: builder.mutation({
-      query: user => ({
-        url: USERS_URL,
+      query: body => ({
+        url: '/users',
         method: 'POST',
-        body: user
+        body
       }),
       invalidatesTags: [
         'user'
@@ -50,7 +49,7 @@ const usersApiSlice = apiSlice.injectEndpoints({
     }),
     listUsers: builder.query({
       query: () => ({
-        url: USERS_URL,
+        url: '/users',
         method: 'GET'
       }),
       providesTags: [
@@ -59,7 +58,7 @@ const usersApiSlice = apiSlice.injectEndpoints({
     }),
     deleteUser: builder.mutation({
       query: id => ({
-        url: `${USERS_URL}/${id}`,
+        url: `/users/${id}`,
         method: 'DELETE'
       }),
       invalidatesTags: [

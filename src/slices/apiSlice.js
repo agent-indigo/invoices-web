@@ -2,10 +2,9 @@ import {
   createApi,
   fetchBaseQuery
 } from '@reduxjs/toolkit/query/react'
-import {BASE_URL} from '../urls'
 const apiSlice = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL,
+    baseUrl: 'http://localhost:8080',
     prepareHeaders: (
       headers, {
         getState
@@ -16,7 +15,7 @@ const apiSlice = createApi({
         'Authorization',
         `Bearer ${token}`
       )
-    },
+    }
   }),
   tagTypes: [
     'user',
