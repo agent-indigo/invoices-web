@@ -8,7 +8,10 @@ const ConfigStatusFetcher = () => {
   const [getConfigStatusApiCall] = useLazyGetStatusQuery()
   useEffect(() => {(async () => {
     try {
-      dispatch(setConfigStatus(...await getConfigStatusApiCall().unwrap()))
+      const response = await getConfigStatusApiCall().unwrap()
+      dispatch(setConfigStatus({
+        ...response
+      }))
     } catch (error) {
       toast.error(error.toString())
     }

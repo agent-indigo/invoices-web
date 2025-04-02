@@ -24,11 +24,11 @@ const invoicesApiSlice = apiSlice.injectEndpoints({
     editInvoice: builder.mutation({
       query: (
         id,
-        invoice
+        changes
       ) => ({
         url: `${INVOICES_URL}/${id}`,
         method: 'PATCH',
-        body: invoice
+        body: changes
       }),
       invalidatesTags: [
         'invoice'

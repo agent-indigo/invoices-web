@@ -3,10 +3,10 @@ import {
   Outlet
 } from 'react-router-dom'
 import {useSelector} from 'react-redux'
-const SetupRoute = () => {
+const SetRootPasswordRoute = () => {
   const {configStatus} = useSelector(state => state.configStatus)
   const {rootExists} = configStatus
-  return rootExists ? (
+  return configStatus && rootExists ? (
     <Navigate
       to='/home'
       replace
@@ -15,4 +15,4 @@ const SetupRoute = () => {
     <Outlet/>
   )
 }
-export default SetupRoute
+export default SetRootPasswordRoute

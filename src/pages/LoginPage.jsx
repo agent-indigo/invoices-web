@@ -44,7 +44,9 @@ const LoginPage = () => {
     }
   ] = useLoginMutation()
   const {user} = useSelector(state => state.authentication)
-  useEffect(() => user && navigate('/home'), [
+  useEffect(() => {
+    user && navigate('/home')
+  }, [
     user,
     navigate
   ])

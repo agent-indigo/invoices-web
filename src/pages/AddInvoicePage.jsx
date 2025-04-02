@@ -52,16 +52,16 @@ const AddInvoicePage = () => {
   const submitHandler = async event => {
     event.preventDefault()
     try {
-      const response = await addInvoice({
+      await addInvoice({
         vendor,
         date,
         subtotal,
         hst,
         total,
         invoiceId
-      }).unwrap()
+      })
       navigate('/invoices/list')
-      toast.success(response.message)
+      toast.success('Invoice added.')
     } catch (error) {
       toast.error(error.toString())
     }

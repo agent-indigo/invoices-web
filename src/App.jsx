@@ -1,4 +1,8 @@
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from 'react-router-dom'
 import {Container} from 'react-bootstrap'
 import {Provider} from 'react-redux'
 import {ToastContainer} from 'react-toastify'
@@ -32,7 +36,7 @@ const App = () => (
               element={<SetRootPasswordRoute/>}
             >
               <Route
-                path='/rootpw'
+                path='/createRootUserPassword'
                 element={<SetRootPasswordPage/>}
               />
             </Route>

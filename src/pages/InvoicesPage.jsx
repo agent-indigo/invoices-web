@@ -95,16 +95,16 @@ const InvoicesPage = () => {
   const floatify = number => (Math.round(number * 100) / 100).toFixed(2)
   const deleteHandler = async id => {
     try {
-      const response = await deleteInvoice(id).unwrap()
+      await deleteInvoice(id)
       refetch()
-      toast.success(response.message)
+      toast.success('Invoice deleted.')
     } catch (error) {
       toast.error(error.toString())
     }
   }
   const bulkDeleteHandler = async () => {
     try {
-      await Promise.all(selectedInvoices.map(id => deleteInvoice(id).unwrap()))
+      await Promise.all(selectedInvoices.map(async id => await deleteInvoice(id)))
       refetch()
       setSelectedInvoices([])
       toast.success('Invoices deleted.')
@@ -112,10 +112,7 @@ const InvoicesPage = () => {
       toast.error(error.toString())
     }
   }
-  const sortedInvoices = [...invoices].sort((
-    a,
-    b
-  ) => {
+  const sortedInvoices = [...invoices].sort((a, b) => {
     const orderFactor = sortCriteria.order === 'asc' ? 1 : -1
     return a[sortCriteria.field] < b[sortCriteria.field]
     ? orderFactor

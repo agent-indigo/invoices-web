@@ -6,11 +6,11 @@ import {useSelector} from 'react-redux'
 const ProductionRoute = () => {
   const {configStatus} = useSelector(state => state.configStatus)
   const {rootExists} = configStatus
-  return rootExists ? (
+  return configStatus && rootExists ? (
     <Outlet/>
   ) : (
     <Navigate
-      to='/rootpw'
+      to='/createRootUserPassword'
       replace
     />
   )

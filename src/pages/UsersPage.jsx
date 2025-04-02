@@ -90,16 +90,16 @@ const UsersPage = () => {
   }
   const deleteHandler = async id => {
     try {
-      const response = await deleteUser(id).unwrap()
+      await deleteUser(id)
       refetch()
-      toast.success(response.message)
+      toast.success('User deleted.')
     } catch (error) {
       toast.error(error.toString())
     }
   }
   const bulkDeleteHandler = async () => {
     try {
-      await Promise.all(selectedUsers.map(id => deleteUser(id).unwrap()))
+      await Promise.all(selectedUsers.map(async id => await deleteUser(id)))
       refetch()
       setSelectedUsers([])
       toast.success('Users deleted.')
@@ -107,10 +107,7 @@ const UsersPage = () => {
       toast.error(error.toString())
     }
   }
-  const sortedUsers = [...users].sort((
-    a,
-    b
-  ) => {
+  const sortedUsers = [...users].sort((a, b) => {
     const orderFactor = sortCriteria.order === 'asc' ? 1 : -1
     return a[sortCriteria.field] < b[sortCriteria.field]
     ? -orderFactor

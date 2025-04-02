@@ -26,7 +26,7 @@ const Header = () => {
   const [logoutApiCall] = useLazyLogoutQuery()
   const logoutHandler = async () => {
     try {
-      await logoutApiCall().unwrap()
+      await logoutApiCall()
       dispatch(logout())
       navigate('/users/login')
     } catch (error) {

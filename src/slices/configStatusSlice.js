@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit'
 const initialState = {
-  configStatus: JSON.parse(localStorage.getItem('configStatus')) || null
+  configStatus: JSON.parse(localStorage.getItem('configStatus')) ?? null
 }
 const configStatusSlice = createSlice({
   name: 'configStatus',

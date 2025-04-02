@@ -9,10 +9,10 @@ const setupApiSlice = apiSlice.injectEndpoints({
       })
     }),
     setRootPassword: builder.mutation({
-      query: rootpw => ({
-        url: `${CONFIG_URL}/rootpw`,
+      query: password => ({
+        url: `${CONFIG_URL}/rootUserPassword`,
         method: 'POST',
-        body: rootpw
+        body: password
       })
     })
   })

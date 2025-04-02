@@ -13,7 +13,7 @@ import {
 } from 'react-icons/fa'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
-import {useSetRootPasswordMutation} from '../slices/configApiSlice'
+import {useLazyGetStatusQuery, useSetRootPasswordMutation} from '../slices/configApiSlice'
 import {useLoginMutation} from '../slices/usersApiSlice'
 import {setCredentials} from '../slices/authenticationSlice'
 import {setConfigStatus} from '../slices/configStatusSlice'
@@ -21,6 +21,7 @@ import enterKeyHandler from '../enterKeyHandler'
 import {toast} from 'react-toastify'
 import Message from '../components/Message'
 const SetupPage = () => {
+  const [getConfigStatusApiCall] = useLazyGetStatusQuery()
   const [
     password,
     setPassword
@@ -45,13 +46,18 @@ const SetupPage = () => {
       await createRoot({
         password,
         confirmPassword
-      }).unwrap()
-      dispatch(setConfigStatus(false))
-      const response = await login({
+      })
+      const getConfigStatusResponse = await getConfigStatusApiCall().unwrap()
+      dispatch(setConfigStatus({
+        ...getConfigStatusResponse
+      }))
+      const logInResponse = await login({
         name: 'root',
         password
       }).unwrap()
-      dispatch(setCredentials({...response}))
+      dispatch(setCredentials({
+        ...logInResponse
+      }))
       navigate('/home')
     } catch (error) {
       toast.error(error.toString())

@@ -76,12 +76,12 @@ const EditInvoiceModal = ({
         'invoiceId',
         invoiceId
       )
-      const response = await editInvoice(
+      await editInvoice(
         id,
         JSON.stringify(Object.fromEntries(patch.entries()))
-      ).unwrap()
+      )
       closeModal()
-      toast.success(response.message)
+      toast.success('Changes saved.')
     } catch (error) {
       toast.error(error.toString())
     }
