@@ -27,8 +27,8 @@ import {toast} from 'react-toastify'
 import Message from '../components/Message'
 const LoginPage = () => {
   const [
-    name,
-    setName
+    username,
+    setUsername
   ] = useState('')
   const [
     password,
@@ -54,7 +54,7 @@ const LoginPage = () => {
     event.preventDefault()
     try {
       const response = await login({
-        name,
+        username,
         password
       }).unwrap()
       dispatch(setCredentials({...response}))
@@ -92,8 +92,8 @@ const LoginPage = () => {
               <Form.Control
                 type='text'
                 placeholder='Enter user name'
-                value={name}
-                onChange={event => setName(event.target.value)}
+                value={username}
+                onChange={event => setUsername(event.target.value)}
                 autoFocus
               />
             </Form.Group>
@@ -119,7 +119,7 @@ const LoginPage = () => {
               type='submit'
               variant='success'
               className='p-auto text-white'
-              disabled={isLoading || !name || !password}
+              disabled={isLoading || !username || !password}
             >
               Log in <FaArrowRight/>
             </Button>

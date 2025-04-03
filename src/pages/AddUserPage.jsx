@@ -24,8 +24,8 @@ const AddUserPage = () => {
     setPassword
   ] = useState('')
   const [
-    name,
-    setName
+    username,
+    setUsername
   ] = useState('')
   const [
     confirmPassword,
@@ -43,7 +43,7 @@ const AddUserPage = () => {
     event.preventDefault()
     try {
       await addUser({
-        name,
+        username,
         password,
         confirmPassword
       })
@@ -82,8 +82,8 @@ const AddUserPage = () => {
               <Form.Control
                 type='text'
                 placeholder='Enter user name'
-                value={name}
-                onChange={event => setName(event.target.value)}
+                value={username}
+                onChange={event => setUsername(event.target.value)}
                 onKeyDown={event => enterKeyHandler(
                   event,
                   submitHandler
@@ -129,7 +129,7 @@ const AddUserPage = () => {
               className='p-auto text-white'
               disabled={
                 isLoading ||
-                !name ||
+                !username ||
                 !password ||
                 !confirmPassword
               }

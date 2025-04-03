@@ -14,7 +14,7 @@ import {Helmet} from 'react-helmet'
 const HomePage = () => {
   const navigate = useNavigate()
   const {user} = useSelector(state => state.authentication)
-  const {role} = user
+  const {roles} = user
   return (
     <>
       <Helmet>
@@ -49,7 +49,7 @@ const HomePage = () => {
             sm={5}
           />
         </Row>
-        {role === 'root' && (
+        {roles.includes('root') && (
           <Row>
             <div className="py-1"/>
             <Col

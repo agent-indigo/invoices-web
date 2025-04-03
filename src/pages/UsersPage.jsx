@@ -289,7 +289,7 @@ const UsersPage = () => {
                     />
                   </td>
                   <td>
-                    {user.name}
+                    {user.username}
                   </td>
                   <td>
                     {new Date(user.createdAt).toLocaleString()}
