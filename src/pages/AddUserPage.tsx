@@ -24,7 +24,7 @@ import {
 import {toast} from 'react-toastify'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
-import ContextProps from '@/src/types/ContextProps'
+import ContextProps from '@/types/ContextProps'
 import {useGetContext} from '../components/ContextProvider'
 const AddUserPage: FunctionComponent = (): ReactElement => {
   const {

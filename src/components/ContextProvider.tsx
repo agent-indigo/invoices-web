@@ -9,10 +9,10 @@ import {
   useState
 } from 'react'
 import {toast} from 'react-toastify'
-import ContextProps from '@/src/types/ContextProps'
-import User from '@/src/types/User'
-import Invoice from '@/src/types/Invoice'
-import ConfigStatus from '@/src/types/ConfigStatus'
+import ContextProps from '@/types/ContextProps'
+import User from '@/types/User'
+import Invoice from '@/types/Invoice'
+import ConfigStatus from '@/types/ConfigStatus'
 const AppContext: Context<ContextProps> = createContext<ContextProps>({
   users: [],
   setUsers: (): void => {},

@@ -7,7 +7,7 @@ import {
   Outlet
 } from 'react-router-dom'
 import {useGetContext} from '../components/ContextProvider'
-import ContextProps from '@/src/types/ContextProps'
+import ContextProps from '@/types/ContextProps'
 const ProductionRoute: FunctionComponent = (): ReactElement => {
   const {configStatus}: ContextProps = useGetContext()
   const {rootExists} = configStatus

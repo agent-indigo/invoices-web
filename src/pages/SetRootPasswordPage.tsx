@@ -23,7 +23,7 @@ import {toast} from 'react-toastify'
 import FormContainer from '../components/FormContainer'
 import Loader from '../components/Loader'
 import {useGetContext} from '../components/ContextProvider'
-import ContextProps from '@/src/types/ContextProps'
+import ContextProps from '@/types/ContextProps'
 const SetupPage: FunctionComponent = (): ReactElement => {
   const [
     password,

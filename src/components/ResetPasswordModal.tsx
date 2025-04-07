@@ -19,10 +19,10 @@ import {
 import {toast} from 'react-toastify'
 import FormContainer from './FormContainer'
 import Loader from './Loader'
-import ResetPasswordMoadlProps from '@/src/types/ResetPasswordModalProps'
-import ContextProps from '@/src/types/ContextProps'
+import ResetPasswordMoadlProps from '@/types/ResetPasswordModalProps'
+import ContextProps from '@/types/ContextProps'
 import {useGetContext} from './ContextProvider'
-import User from '@/src/types/User'
+import User from '@/types/User'
 const ResetPasswordModal: FunctionComponent<ResetPasswordMoadlProps> = ({
   id,
   closeModal

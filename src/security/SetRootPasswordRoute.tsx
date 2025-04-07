@@ -3,7 +3,7 @@ import {
   Outlet
 } from 'react-router-dom'
 import {useGetContext} from '../components/ContextProvider'
-import ContextProps from '@/src/types/ContextProps'
+import ContextProps from '@/types/ContextProps'
 const SetRootPasswordRoute = () => {
   const {configStatus}: ContextProps = useGetContext()
   const {rootExists} = configStatus

@@ -34,10 +34,10 @@ import {Helmet} from 'react-helmet'
 import Loader from '../components/Loader'
 import EditInvoiceModal from '../components/EditInvoiceModal'
 import {useGetContext} from '../components/ContextProvider'
-import ContextProps from '@/src/types/ContextProps'
-import SortCriteria from '@/src/types/SortCriteria'
-import Invoice from '@/src/types/Invoice'
-import Data from '@/src/types/Data'
+import ContextProps from '@/types/ContextProps'
+import SortCriteria from '@/types/SortCriteria'
+import Invoice from '@/types/Invoice'
+import Data from '@/types/Data'
 const InvoicesPage: FunctionComponent = (): ReactElement => {
   const {
     invoices,

@@ -18,9 +18,9 @@ import {
 import {toast} from 'react-toastify'
 import FormContainer from './FormContainer'
 import Loader from './Loader'
-import EditInvoiceModalProps from '@/src/types/EditInvoiceModalProps'
-import Invoice from '@/src/types/Invoice'
-import ContextProps from '@/src/types/ContextProps'
+import EditInvoiceModalProps from '@/types/EditInvoiceModalProps'
+import Invoice from '@/types/Invoice'
+import ContextProps from '@/types/ContextProps'
 import {useGetContext} from './ContextProvider'
 const EditInvoiceModal: FunctionComponent<EditInvoiceModalProps> = ({
   invoice,

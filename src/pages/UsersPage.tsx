@@ -34,10 +34,10 @@ import {toast} from 'react-toastify'
 import ResetPasswordModal from '../components/ResetPasswordModal'
 import Loader from '../components/Loader'
 import {useGetContext} from '../components/ContextProvider'
-import ContextProps from '@/src/types/ContextProps'
-import SortCriteria from '@/src/types/SortCriteria'
-import User from '@/src/types/User'
-import Data from '@/src/types/Data'
+import ContextProps from '@/types/ContextProps'
+import SortCriteria from '@/types/SortCriteria'
+import User from '@/types/User'
+import Data from '@/types/Data'
 const UsersPage: FunctionComponent = (): ReactElement => {
   const {
     users,

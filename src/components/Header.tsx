@@ -21,7 +21,7 @@ import {
 import {LinkContainer} from 'react-router-bootstrap'
 import {toast} from 'react-toastify'
 import {useGetContext} from './ContextProvider'
-import ContextProps from '@/src/types/ContextProps'
+import ContextProps from '@/types/ContextProps'
 const Header: FunctionComponent = (): ReactElement => {
   const {
     user,
