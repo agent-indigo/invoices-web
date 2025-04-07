@@ -17,7 +17,7 @@ import {
   useNavigate
 } from 'react-router-dom'
 import {Helmet} from 'react-helmet'
-import {useGetContext} from '@/src/components/ContextProvider'
+import {useGetContext} from '../components/ContextProvider'
 import ContextProps from '@/src/types/ContextProps'
 const HomePage: FunctionComponent = (): ReactElement => {
   const navigate: NavigateFunction = useNavigate()

@@ -20,7 +20,7 @@ import {
 } from 'react-router-dom'
 import {LinkContainer} from 'react-router-bootstrap'
 import {toast} from 'react-toastify'
-import {useGetContext} from '@/src/components/ContextProvider'
+import {useGetContext} from './ContextProvider'
 import ContextProps from '@/src/types/ContextProps'
 const Header: FunctionComponent = (): ReactElement => {
   const {

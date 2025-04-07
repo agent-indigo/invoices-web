@@ -22,9 +22,15 @@ import {
   FaUserTag
 } from 'react-icons/fa'
 import {toast} from 'react-toastify'
-import FormContainer from '@/src/components/FormContainer'
-import Loader from '@/src/components/Loader'
+import FormContainer from '../components/FormContainer'
+import Loader from '../components/Loader'
+import ContextProps from '@/src/types/ContextProps'
+import {useGetContext} from '../components/ContextProvider'
 const AddUserPage: FunctionComponent = (): ReactElement => {
+  const {
+    users,
+    setUsers
+  }: ContextProps = useGetContext()
   const [
     password,
     setPassword
@@ -55,6 +61,10 @@ const AddUserPage: FunctionComponent = (): ReactElement => {
       }
     )
     if (response.ok) {
+      setUsers([
+        ...users,
+        await response.json()
+      ])
       navigate('/users/list')
       toast.success('User added.')
     } else {

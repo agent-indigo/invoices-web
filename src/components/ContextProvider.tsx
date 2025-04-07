@@ -46,7 +46,7 @@ const ContextProvider: FunctionComponent<PropsWithChildren> = ({children}): Reac
   useEffect((): void => {(async (): Promise<void> => {
     const response: Response = await fetch('http://localhost:8080/config/status')
     response.ok ? setConfigStatus(await response.json()) : toast.error(await response.text())
-  })()})
+  })()}, [])
   return (
     <AppContext.Provider value={{
       user,

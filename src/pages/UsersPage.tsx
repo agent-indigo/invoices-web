@@ -31,9 +31,9 @@ import {
   FaCheckDouble
 } from 'react-icons/fa'
 import {toast} from 'react-toastify'
-import ResetPasswordModal from '@/src/components/ResetPasswordModal'
-import Loader from '@/src/components/Loader'
-import {useGetContext} from '@/src/components/ContextProvider'
+import ResetPasswordModal from '../components/ResetPasswordModal'
+import Loader from '../components/Loader'
+import {useGetContext} from '../components/ContextProvider'
 import ContextProps from '@/src/types/ContextProps'
 import SortCriteria from '@/src/types/SortCriteria'
 import User from '@/src/types/User'

@@ -16,12 +16,12 @@ import {
   FaTimes
 } from 'react-icons/fa'
 import {toast} from 'react-toastify'
-import FormContainer from '@/src/components/FormContainer'
-import Loader from '@/src/components/Loader'
+import FormContainer from './FormContainer'
+import Loader from './Loader'
 import EditInvoiceModalProps from '@/src/types/EditInvoiceModalProps'
 import Invoice from '@/src/types/Invoice'
 import ContextProps from '@/src/types/ContextProps'
-import {useGetContext} from '@/src/components/ContextProvider'
+import {useGetContext} from './ContextProvider'
 const EditInvoiceModal: FunctionComponent<EditInvoiceModalProps> = ({
   invoice,
   closeModal

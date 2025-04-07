@@ -20,9 +20,15 @@ import {
 } from 'react-icons/fa'
 import {Helmet} from 'react-helmet'
 import {toast} from 'react-toastify'
-import FormContainer from '@/src/components/FormContainer'
-import Loader from '@/src/components/Loader'
+import FormContainer from '../components/FormContainer'
+import Loader from '../components/Loader'
+import ContextProps from '@/src/types/ContextProps'
+import {useGetContext} from '../components/ContextProvider'
 const AddInvoicePage: FunctionComponent = (): ReactElement => {
+  const {
+    invoices,
+    setInvoices
+  }: ContextProps = useGetContext()
   const [
     vendor,
     setVendor
@@ -68,6 +74,10 @@ const AddInvoicePage: FunctionComponent = (): ReactElement => {
       }
     )
     if (response.ok) {
+      setInvoices([
+        ...invoices,
+        await response.json()
+      ])
       navigate('/invoices/list')
       toast.success('Invoice added.')
     } else {

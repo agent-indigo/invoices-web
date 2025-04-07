@@ -22,9 +22,9 @@ import {
   FaUserTag
 } from 'react-icons/fa'
 import {toast} from 'react-toastify'
-import FormContainer from '@/src/components/FormContainer'
-import Loader from '@/src/components/Loader'
-import {useGetContext} from '@/src/components/ContextProvider'
+import FormContainer from '../components/FormContainer'
+import Loader from '../components/Loader'
+import {useGetContext} from '../components/ContextProvider'
 import ContextProps from '@/src/types/ContextProps'
 const LoginPage: FunctionComponent = (): ReactElement => {
   const [

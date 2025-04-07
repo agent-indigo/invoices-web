@@ -3,7 +3,7 @@ import {
   Outlet
 } from 'react-router-dom'
 import {toast} from 'react-toastify'
-import {useGetContext} from '@/src/components/ContextProvider'
+import {useGetContext} from '../components/ContextProvider'
 import ContextProps from '@/src/types/ContextProps'
 const RootRoute = () => {
   const {user}: ContextProps = useGetContext()

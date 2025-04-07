@@ -17,11 +17,11 @@ import {
   FaEdit
 } from 'react-icons/fa'
 import {toast} from 'react-toastify'
-import FormContainer from '@/src/components/FormContainer'
-import Loader from '@/src/components/Loader'
+import FormContainer from './FormContainer'
+import Loader from './Loader'
 import ResetPasswordMoadlProps from '@/src/types/ResetPasswordModalProps'
 import ContextProps from '@/src/types/ContextProps'
-import {useGetContext} from '@/src/components/ContextProvider'
+import {useGetContext} from './ContextProvider'
 import User from '@/src/types/User'
 const ResetPasswordModal: FunctionComponent<ResetPasswordMoadlProps> = ({
   id,

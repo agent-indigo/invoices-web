@@ -21,9 +21,16 @@ import {
   FaEdit
 } from 'react-icons/fa'
 import {toast} from 'react-toastify'
-import FormContainer from '@/src/components/FormContainer'
-import Loader from '@/src/components/Loader'
+import FormContainer from '../components/FormContainer'
+import Loader from '../components/Loader'
+import ContextProps from '@/src/types/ContextProps'
+import {useGetContext} from '../components/ContextProvider'
+import User from '@/src/types/User'
 const ChangePasswordPage: FunctionComponent = (): ReactElement => {
+  const {
+    users,
+    setUsers
+  }: ContextProps = useGetContext()
   const [
     currentPassword,
     setCurrentPassword
@@ -54,6 +61,12 @@ const ChangePasswordPage: FunctionComponent = (): ReactElement => {
       }
     )
     if (response.ok) {
+      const updatedUser: User = await response.json()
+      setUsers(users.filter((user: User): boolean => user.id !== updatedUser.id))
+      setUsers([
+        ...users,
+        updatedUser
+      ])
       toast.success('Password changed.')
       navigate('/home')
     } else {
