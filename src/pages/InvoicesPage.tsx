@@ -1,8 +1,13 @@
 import {
   useState,
-  useEffect
+  useEffect,
+  FunctionComponent,
+  ReactElement,
+  ChangeEventHandler,
+  ChangeEvent
 } from 'react'
 import {
+  Alert,
   Button,
   Col,
   Form,
@@ -11,6 +16,7 @@ import {
 } from 'react-bootstrap'
 import {
   Link,
+  NavigateFunction,
   useNavigate
 } from 'react-router-dom'
 import {
@@ -24,128 +30,149 @@ import {
   FaCheckDouble
 } from 'react-icons/fa'
 import {toast} from 'react-toastify'
-import Loader from '../components/Loader'
-import Message from '../components/Message'
-import {
-  useListInvoicesQuery,
-  useDeleteInvoiceMutation
-} from '../slices/invoicesApiSlice'
-import EditInvoiceModal from '../components/EditInvoiceModal'
 import {Helmet} from 'react-helmet'
-const InvoicesPage = () => {
+import Loader from '@/src/components/Loader'
+import EditInvoiceModal from '@/src/components/EditInvoiceModal'
+import {useGetContext} from '@/src/components/ContextProvider'
+import ContextProps from '@/src/types/ContextProps'
+import SortCriteria from '@/src/types/SortCriteria'
+import Invoice from '@/src/types/Invoice'
+import Data from '@/src/types/Data'
+const InvoicesPage: FunctionComponent = (): ReactElement => {
   const {
-    data: invoices,
-    isLoading,
-    isError,
+    invoices,
+    setInvoices
+  }: ContextProps = useGetContext()
+  const [
+    loading,
+    setLoading
+  ] = useState<boolean>(false)
+  const [
+    deleting,
+    setDeleting
+  ] = useState<boolean>(false)
+  const [
+    errorOccured,
+    setErrorOccured
+  ] = useState<boolean>(false)
+  const [
     error,
-    refetch
-  } = useListInvoicesQuery()
-  const navigate = useNavigate()
+    setError
+  ] = useState<string>('')
+  const deleteHandler: Function = async (id: string): Promise<void> => {
+    setDeleting(true)
+    const response: Response = await fetch(
+      `http://localhost:8080/invoices${id}`, {
+        method: 'DELETE'
+      }
+    )
+    if (response.ok) {
+      toast.success('Invoice deleted.')
+      setInvoices(invoices.filter((invoice: Invoice): boolean => invoice.id !== id))
+    } else {
+      toast.error(await response.text())
+    }
+    setDeleting(false)
+  }
+  const navigate: NavigateFunction = useNavigate()
   const [
     searchTerm,
     setSearchTerm
-  ] = useState('')
+  ] = useState<string>('')
   const [
     searchDate,
     setSearchDate
-  ] = useState('')
+  ] = useState<string>('')
   const [
     showEditInvoiceModal,
     setShowEditInvoiceModal
-  ] = useState(false)
+  ] = useState<boolean>(false)
   const [
     selectedInvoice,
     setSelectedInvoice
-  ] = useState(null)
+  ] = useState<Invoice | undefined>(undefined)
   const [
     selectedInvoices,
     setSelectedInvoices
-  ] = useState([])
-  const [
-    allInvoices,
-    setAllInvoices
-  ] = useState([])
+  ] = useState<string[]>([])
   const [
     sortCriteria,
     setSortCriteria
-  ] = useState({
-    field: 'vendor',
+  ] = useState<SortCriteria>({
+    field: 'id',
     order: 'asc'
   })
-  const [
-    deleteInvoice, {
-      isLoading: deleting
-    }
-  ] = useDeleteInvoiceMutation()
-  const sortHandler = (
-    field,
-    order
-  ) => setSortCriteria({
+  const sortHandler: Function = (
+    field: keyof Data,
+    order: 'asc' | 'desc'
+  ): void => setSortCriteria({
     field,
     order
   })
-  const openEditInvoiceModal = invoice => {
+  const openEditInvoiceModal: Function = (invoice: Invoice): void => {
     setSelectedInvoice(invoice)
     setShowEditInvoiceModal(true)
   }
-  const closeEditInvoiceModal = () => {
-    setSelectedInvoice(null)
+  const closeEditInvoiceModal: Function = (): void => {
+    setSelectedInvoice(undefined)
     setShowEditInvoiceModal(false)
   }
-  const floatify = number => (Math.round(number * 100) / 100).toFixed(2)
-  const deleteHandler = async id => {
-    try {
-      await deleteInvoice(id)
-      refetch()
-      toast.success('Invoice deleted.')
-    } catch (error) {
-      toast.error(error.toString())
-    }
+  const floatify: Function = (value: number): string => (Math.round(value * 100) / 100).toFixed(2)
+  const bulkDeleteHandler: Function = async (): Promise<void> => {
+    await Promise.all(selectedInvoices.map(async (id: string): Promise<void> => await deleteHandler(id)))
+    setSelectedInvoices([])
+    toast.success('Invoices deleted.')
   }
-  const bulkDeleteHandler = async () => {
-    try {
-      await Promise.all(selectedInvoices.map(async id => await deleteInvoice(id)))
-      refetch()
-      setSelectedInvoices([])
-      toast.success('Invoices deleted.')
-    } catch (error) {
-      toast.error(error.toString())
-    }
-  }
-  const sortedInvoices = [...invoices].sort((a, b) => {
-    const orderFactor = sortCriteria.order === 'asc' ? 1 : -1
-    return a[sortCriteria.field] < b[sortCriteria.field]
-    ? orderFactor
-    : a[sortCriteria.field] > b[sortCriteria.field]
-    ? -orderFactor
-    : 0
+  const sortedInvoices: Invoice[] = [...invoices].sort((
+    a: Invoice,
+    b: Invoice
+  ): number => {
+    const orderFactor: number = sortCriteria.order === 'asc' ? 1 : -1
+    const {field}: SortCriteria = sortCriteria
+    return (
+      a[field] < b[field]
+      ? orderFactor
+      : a[field] > b[field]
+      ? -orderFactor
+      : 0
+    )
   })
-  const filteredInvoices = sortedInvoices.filter(invoice =>
+  const filteredInvoices: Invoice[] = sortedInvoices.filter((invoice: Invoice): boolean => (
     invoice.vendor.toLowerCase().includes(searchTerm.toLowerCase()) ||
     invoice.invoiceId.toLowerCase().includes(searchTerm.toLowerCase()) ||
     new Date(invoice.date).toLocaleDateString() === searchDate
+  ))
+  const checkAllHandler: ChangeEventHandler = (event: ChangeEvent<HTMLInputElement>): void => (
+    event.target.checked
+    ? setSelectedInvoices(invoices.map((invoice: Invoice): string => invoice.id))
+    : setSelectedInvoices([])
   )
-  const checkAllHandler = event => event.target.checked
-  ? setSelectedInvoices(allInvoices.map(invoice => invoice.id))
-  : setSelectedInvoices([])
-  useEffect(() => {
-    setAllInvoices(invoices ?? [])
-  }, [
-    invoices
+  useEffect((): void => {(async (): Promise<void> => {
+    setLoading(true)
+    const response: Response = await fetch('http://localhost:8080/invoices')
+    if (response.ok) {
+      setInvoices(await response.json())
+    } else {
+      setErrorOccured(true)
+      setError(await response.text())
+    }
+    setLoading(false)
+  })()}, [
+    setInvoices
   ])
   return (
     <>
       <Helmet>
         <title>
-          {isLoading ? 'Loading...' : isError ? 'Error' : 'Invoices'} | Invoices
+          {loading ? 'Loading...' : errorOccured ? 'Error' : 'Invoices'} | Invoices
         </title>
       </Helmet>
-      {isLoading ? (
+      {loading ? (
         <Loader/>
-      ) : isError ? (
-        <Message variant='danger'>
-          {error.toString()}
-        </Message>
+      ) : errorOccured ? (
+        <Alert variant='danger'>
+          {error}
+        </Alert>
       ) : (
         <>
           <h1>
@@ -161,7 +188,7 @@ const InvoicesPage = () => {
                 type='text'
                 placeholder='Search invoices'
                 value={searchTerm}
-                onChange={event => setSearchTerm(event.target.value)}
+                onChange={(event: ChangeEvent<HTMLInputElement>): void => setSearchTerm(event.target.value)}
               />
             </Col>
             <Col
@@ -171,14 +198,14 @@ const InvoicesPage = () => {
               <Form.Control
                 type='date'
                 value={searchDate}
-                onChange={event => setSearchDate(event.target.value)}
+                onChange={(event: ChangeEvent<HTMLInputElement>): void => setSearchDate(event.target.value)}
               />
             </Col>
             <Col sm={2}>
               <Button
                 type='button'
                 variant='primary'
-                onClick={() => navigate('/invoices/add')}
+                onClick={(): void => navigate('/invoices/add')}
               >
                 <FaPlus/> Add invoice
               </Button>
@@ -188,7 +215,7 @@ const InvoicesPage = () => {
                 type='button'
                 variant='danger'
                 disabled={selectedInvoices.length === 0}
-                onClick={bulkDeleteHandler}
+                onClick={async (): Promise<void> => await bulkDeleteHandler()}
               >
                 <FaTrash/> Delete selected
               </Button>
@@ -209,7 +236,7 @@ const InvoicesPage = () => {
                       filteredInvoices.length > 0 &&
                       filteredInvoices.length === selectedInvoices.length
                     }
-                    onChange={event => checkAllHandler(event)}
+                    onChange={(event: ChangeEvent<HTMLInputElement>): void => checkAllHandler(event)}
                   />
                 </th>
                 <th>
@@ -217,7 +244,7 @@ const InvoicesPage = () => {
                   <div className="d-flex">
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'vendor',
                         'asc'
                       )}
@@ -226,7 +253,7 @@ const InvoicesPage = () => {
                     </Link>
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'vendor',
                         'desc'
                       )}
@@ -240,7 +267,7 @@ const InvoicesPage = () => {
                   <div className="d-flex">
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'subtotal',
                         'asc'
                       )}
@@ -249,7 +276,7 @@ const InvoicesPage = () => {
                     </Link>
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'subtotal',
                         'desc'
                       )}
@@ -263,7 +290,7 @@ const InvoicesPage = () => {
                   <div className="d-flex">
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'hst',
                         'asc'
                       )}
@@ -272,7 +299,7 @@ const InvoicesPage = () => {
                     </Link>
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'hst',
                         'desc'
                       )}
@@ -286,7 +313,7 @@ const InvoicesPage = () => {
                   <div className="d-flex">
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'total',
                         'asc'
                       )}
@@ -295,7 +322,7 @@ const InvoicesPage = () => {
                     </Link>
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'total',
                         'desc'
                       )}
@@ -309,7 +336,7 @@ const InvoicesPage = () => {
                   <div className="d-flex">
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'invoiceId',
                         'asc'
                       )}
@@ -318,7 +345,7 @@ const InvoicesPage = () => {
                     </Link>
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'invoiceId',
                         'desc'
                       )}
@@ -332,7 +359,7 @@ const InvoicesPage = () => {
                   <div className="d-flex">
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'date',
                         'asc'
                       )}
@@ -341,7 +368,7 @@ const InvoicesPage = () => {
                     </Link>
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'date',
                         'desc'
                       )}
@@ -355,7 +382,7 @@ const InvoicesPage = () => {
                   <div className="d-flex">
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'createdAt',
                         'asc'
                       )}
@@ -364,7 +391,7 @@ const InvoicesPage = () => {
                     </Link>
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'createdAt',
                         'desc'
                       )}
@@ -378,7 +405,7 @@ const InvoicesPage = () => {
                   <div className="d-flex">
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'updatedAt',
                         'asc'
                       )}
@@ -387,7 +414,7 @@ const InvoicesPage = () => {
                     </Link>
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'updatedAt',
                         'desc'
                       )}
@@ -402,18 +429,18 @@ const InvoicesPage = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredInvoices.map(invoice => (
+              {filteredInvoices.map((invoice: Invoice): ReactElement => (
                 <tr key={invoice.id}>
                   <td>
                     <Form.Check
                       type='checkbox'
                       checked={selectedInvoices.includes(invoice.id)}
-                      onChange={event => {
-                        const id = invoice.id
+                      onChange={(event: ChangeEvent<HTMLInputElement>): void => {
+                        const id: string = invoice.id
                         event.target.checked ? setSelectedInvoices([
                           ...selectedInvoices,
                           id
-                        ]) : setSelectedInvoices(selectedInvoices.filter(pk => pk !== id))
+                        ]) : setSelectedInvoices(selectedInvoices.filter((pk: string): boolean => pk !== id))
                       }}
                     />
                   </td>
@@ -446,7 +473,7 @@ const InvoicesPage = () => {
                       type='button'
                       variant='primary'
                       className='p-auto text-white'
-                      onClick={() => openEditInvoiceModal(invoice)}
+                      onClick={(): void => openEditInvoiceModal(invoice)}
                     >
                       <FaEdit/> Edit
                     </Button>
@@ -457,7 +484,7 @@ const InvoicesPage = () => {
                       variant='danger'
                       className='p-auto text-white'
                       disabled={deleting}
-                      onClick={() => deleteHandler(invoice.id)}
+                      onClick={async (): Promise<void> => await deleteHandler(invoice.id)}
                     >
                       <FaTrash/> Delete
                     </Button>
@@ -466,7 +493,7 @@ const InvoicesPage = () => {
               ))}
             </tbody>
           </Table>
-          {showEditInvoiceModal && (
+          {showEditInvoiceModal && selectedInvoice && (
             <EditInvoiceModal
               invoice={selectedInvoice}
               closeModal={closeEditInvoiceModal}

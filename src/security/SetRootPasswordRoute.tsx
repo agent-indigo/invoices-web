@@ -2,11 +2,12 @@ import {
   Navigate,
   Outlet
 } from 'react-router-dom'
-import {useSelector} from 'react-redux'
+import {useGetContext} from '@/src/components/ContextProvider'
+import ContextProps from '@/src/types/ContextProps'
 const SetRootPasswordRoute = () => {
-  const {configStatus} = useSelector(state => state.configStatus)
+  const {configStatus}: ContextProps = useGetContext()
   const {rootExists} = configStatus
-  return configStatus && rootExists ? (
+  return rootExists ? (
     <Navigate
       to='/home'
       replace

@@ -2,7 +2,7 @@
 
 ## Description
 
-A simple invoice manager using React.js, Bootstrap, and Redux Toolkit.
+A simple invoice management web interface built using React, Bootswatch, and TypeScript.
 
 The API is available [here](https://github.com/agent-indigo/invoices-api-js).
 

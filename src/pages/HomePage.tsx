@@ -1,4 +1,8 @@
 import {
+  FunctionComponent,
+  ReactElement
+} from 'react'
+import {
   Button,
   Card,
   Col,
@@ -8,13 +12,16 @@ import {
   FaFileInvoiceDollar,
   FaUsers
 } from 'react-icons/fa'
-import {useNavigate} from 'react-router-dom'
-import {useSelector} from 'react-redux'
+import {
+  NavigateFunction,
+  useNavigate
+} from 'react-router-dom'
 import {Helmet} from 'react-helmet'
-const HomePage = () => {
-  const navigate = useNavigate()
-  const {user} = useSelector(state => state.authentication)
-  const {roles} = user
+import {useGetContext} from '@/src/components/ContextProvider'
+import ContextProps from '@/src/types/ContextProps'
+const HomePage: FunctionComponent = (): ReactElement => {
+  const navigate: NavigateFunction = useNavigate()
+  const {user}: ContextProps = useGetContext()
   return (
     <>
       <Helmet>
@@ -49,7 +56,7 @@ const HomePage = () => {
             sm={5}
           />
         </Row>
-        {roles.includes('root') && (
+        {user?.roles?.includes('root') || user?.authorities?.includes('root') ? (
           <Row>
             <div className="py-1"/>
             <Col
@@ -74,7 +81,7 @@ const HomePage = () => {
               sm={5}
             />
           </Row>
-        )}
+        ) : null}
       </Card>
     </>
   )

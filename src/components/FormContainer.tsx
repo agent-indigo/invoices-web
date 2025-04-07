@@ -1,9 +1,14 @@
 import {
+  FunctionComponent,
+  PropsWithChildren,
+  ReactElement
+} from 'react'
+import {
   Container,
   Row,
   Col
 } from 'react-bootstrap'
-const FormContainer = ({children}) => (
+const FormContainer: FunctionComponent<PropsWithChildren> = ({children}): ReactElement => (
   <Container>
     <Row className='justify-content-md-center'>
       <Col

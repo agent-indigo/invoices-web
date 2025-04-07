@@ -1,5 +1,9 @@
+import {
+  FunctionComponent,
+  ReactElement
+} from 'react'
 import {Spinner} from 'react-bootstrap'
-const Loader = () => (
+const Loader: FunctionComponent = (): ReactElement => (
   <Spinner
     animation='border'
     role='status'

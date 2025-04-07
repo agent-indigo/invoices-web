@@ -1,12 +1,15 @@
 import {
   useState,
-  useEffect
+  useEffect,
+  FunctionComponent,
+  ReactElement,
+  ChangeEvent,
+  KeyboardEvent
 } from 'react'
-import {useNavigate} from 'react-router-dom'
 import {
-  useDispatch,
-  useSelector
-} from 'react-redux'
+  NavigateFunction,
+  useNavigate
+} from 'react-router-dom'
 import {
   Form,
   Button
@@ -18,70 +21,69 @@ import {
   FaUser,
   FaUserTag
 } from 'react-icons/fa'
-import FormContainer from '../components/FormContainer'
-import Loader from '../components/Loader'
-import {useLoginMutation} from '../slices/usersApiSlice'
-import {setCredentials} from '../slices/authenticationSlice'
-import enterKeyHandler from '../enterKeyHandler'
 import {toast} from 'react-toastify'
-import Message from '../components/Message'
-const LoginPage = () => {
+import FormContainer from '@/src/components/FormContainer'
+import Loader from '@/src/components/Loader'
+import {useGetContext} from '@/src/components/ContextProvider'
+import ContextProps from '@/src/types/ContextProps'
+const LoginPage: FunctionComponent = (): ReactElement => {
   const [
     username,
     setUsername
-  ] = useState('')
+  ] = useState<string>('')
   const [
     password,
     setPassword
-  ] = useState('')
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  ] = useState<string>('')
   const [
-    login, {
-      isLoading,
-      isError,
-      error
-    }
-  ] = useLoginMutation()
-  const {user} = useSelector(state => state.authentication)
-  useEffect(() => {
+    loading,
+    setLoading
+  ] = useState<boolean>(false)
+  const navigate: NavigateFunction = useNavigate()
+  const {
+    user,
+    setUser
+  }: ContextProps = useGetContext()
+  useEffect((): void => {
     user && navigate('/home')
   }, [
     user,
     navigate
   ])
-  const submitHandler = async event => {
-    event.preventDefault()
-    try {
-      const response = await login({
-        username,
-        password
-      }).unwrap()
-      dispatch(setCredentials({...response}))
+  const submitHandler: Function = async (): Promise<void> => {
+    setLoading(true)
+    const response: Response = await fetch(
+      'http://localhost:8080/users/login', {
+        method: 'POST',
+        body: JSON.stringify({
+          username,
+          password
+        })
+      }
+    )
+    if (response.ok) {
+      setUser(await response.json())
       navigate('/home')
-    } catch (error) {
-      toast.error(error.toString())
+    } else {
+      toast.error(await response.text())
     }
+    setLoading(false)
   }
   return (
     <>
       <Helmet>
         <title>
-          {isLoading ? 'Processing...' : isError ? 'Error' : 'Log In'} | Invoices
+          {loading ? 'Processing...' : 'Log In'} | Invoices
         </title>
       </Helmet>
-      {isLoading ? (
+      {loading ? (
         <Loader/>
-      ) : isError ? (
-        <Message variant='danger'>
-          {error.toString()}
-        </Message>
       ) : (
         <FormContainer>
           <h1>
             <FaUser/> Log in
           </h1>
-          <Form onSubmit={submitHandler}>
+          <Form action={submitHandler.bind(null)}>
             <Form.Group
               controlId='name'
               className='my-3'
@@ -93,7 +95,7 @@ const LoginPage = () => {
                 type='text'
                 placeholder='Enter user name'
                 value={username}
-                onChange={event => setUsername(event.target.value)}
+                onChange={(event: ChangeEvent<HTMLInputElement>): void => setUsername(event.target.value)}
                 autoFocus
               />
             </Form.Group>
@@ -108,22 +110,18 @@ const LoginPage = () => {
                 type='password'
                 placeholder='Enter password'
                 value={password}
-                onChange={event => setPassword(event.target.value)}
-                onKeyDown={event => enterKeyHandler(
-                  event,
-                  submitHandler
-                )}
+                onChange={(event: ChangeEvent<HTMLInputElement>): void => setPassword(event.target.value)}
+                onKeyDown={(event: KeyboardEvent<HTMLInputElement>): void => event.key === 'Enter' && submitHandler()}
               />
             </Form.Group>
             <Button
               type='submit'
               variant='success'
               className='p-auto text-white'
-              disabled={isLoading || !username || !password}
+              disabled={loading || !username || !password}
             >
               Log in <FaArrowRight/>
             </Button>
-            {isLoading && <Loader/>}
           </Form>
         </FormContainer>
       )}

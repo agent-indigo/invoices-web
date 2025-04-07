@@ -1,4 +1,8 @@
 import {
+  FunctionComponent,
+  ReactElement
+} from 'react'
+import {
   Navbar,
   Nav,
   Container,
@@ -10,27 +14,32 @@ import {
   FaArrowLeft,
   FaFileInvoiceDollar
 } from 'react-icons/fa'
-import {useNavigate} from 'react-router-dom'
-import {LinkContainer} from 'react-router-bootstrap'
 import {
-  useSelector,
-  useDispatch
-} from 'react-redux'
+  NavigateFunction,
+  useNavigate
+} from 'react-router-dom'
+import {LinkContainer} from 'react-router-bootstrap'
 import {toast} from 'react-toastify'
-import {useLazyLogoutQuery} from '../slices/usersApiSlice'
-import {logout} from '../slices/authenticationSlice'
-const Header = () => {
-  const {user} = useSelector(state => state.authentication)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const [logoutApiCall] = useLazyLogoutQuery()
-  const logoutHandler = async () => {
-    try {
-      await logoutApiCall()
-      dispatch(logout())
+import {useGetContext} from '@/src/components/ContextProvider'
+import ContextProps from '@/src/types/ContextProps'
+const Header: FunctionComponent = (): ReactElement => {
+  const {
+    user,
+    setUser,
+    setUsers,
+    setInvoices
+  }: ContextProps = useGetContext()
+  const navigate: NavigateFunction = useNavigate()
+  const logoutHandler: Function = async (): Promise<void> => {
+    const response: Response = await fetch('http://localhost:8080/users/logout')
+    if (response.ok) {
+      setUser(undefined)
+      setUsers([])
+      setInvoices([])
       navigate('/users/login')
-    } catch (error) {
-      toast.error(error.toString())
+      toast.success('Logged out.')
+    } else {
+      toast.error(await response.text())
     }
   }
   return (
@@ -53,13 +62,13 @@ const Header = () => {
               <Navbar.Collapse id='basic-navbar-nav'>
                 <Nav className='ms-auto'>
                   <Navbar.Brand className='text-white'>
-                    <FaUser/> {user.name}
+                    <FaUser/> {user.username}
                   </Navbar.Brand>
                   <Button
                     type='button'
                     variant='primary'
                     className='p-auto text-white'
-                    onClick={() => navigate('/users/changePassword')}
+                    onClick={(): void => navigate('/users/changePassword')}
                   >
                     <FaKey/> Change password
                   </Button>
@@ -68,7 +77,7 @@ const Header = () => {
                     type='button'
                     variant='primary'
                     className='p-auto text-white'
-                    onClick={logoutHandler}
+                    onClick={(): void => logoutHandler()}
                   >
                     <FaArrowLeft/> Log out
                   </Button>

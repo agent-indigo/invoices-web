@@ -1,9 +1,14 @@
 import {
   useState,
-  useEffect
+  useEffect,
+  FunctionComponent,
+  ReactElement,
+  ChangeEventHandler,
+  ChangeEvent
 } from 'react'
 import {
   Link,
+  NavigateFunction,
   useNavigate
 } from 'react-router-dom'
 import {Helmet} from 'react-helmet'
@@ -12,7 +17,8 @@ import {
   Form,
   Button,
   Row,
-  Col
+  Col,
+  Alert
 } from 'react-bootstrap'
 import {
   FaKey,
@@ -25,122 +31,143 @@ import {
   FaCheckDouble
 } from 'react-icons/fa'
 import {toast} from 'react-toastify'
-import {
-  useListUsersQuery,
-  useDeleteUserMutation
-} from '../slices/usersApiSlice'
-import ResetPasswordModal from '../components/ResetPasswordModal'
-import Loader from '../components/Loader'
-import Message from '../components/Message'
-const UsersPage = () => {
+import ResetPasswordModal from '@/src/components/ResetPasswordModal'
+import Loader from '@/src/components/Loader'
+import {useGetContext} from '@/src/components/ContextProvider'
+import ContextProps from '@/src/types/ContextProps'
+import SortCriteria from '@/src/types/SortCriteria'
+import User from '@/src/types/User'
+import Data from '@/src/types/Data'
+const UsersPage: FunctionComponent = (): ReactElement => {
   const {
-    data: users,
-    isLoading,
-    isError,
-    error,
-    refetch
-  } = useListUsersQuery()
+    users,
+    setUsers
+  }: ContextProps = useGetContext()
   const [
     searchTerm,
     setSearchTerm
-  ] = useState('')
+  ] = useState<string>('')
   const [
     showResetPasswordModal,
     setShowResetPasswordModal
-  ] = useState(false)
+  ] = useState<boolean>(false)
   const [
-    selectedUserPk,
-    setSelectedUserPk
-  ] = useState(null)
+    selectedUserId,
+    setSelectedUserId
+  ] = useState<string>('')
   const [
     selectedUsers,
     setSelectedUsers
-  ] = useState([])
-  const [
-    allUsers,
-    setAllUsers
-  ] = useState([])
+  ] = useState<string[]>([])
   const [
     sortCriteria,
     setSortCriteria
-  ] = useState({
-    field: 'name',
+  ] = useState<SortCriteria>({
+    field: 'id',
     order: 'asc'
   })
   const [
-    deleteUser, {
-      isLoading: deleting
-    }
-  ] = useDeleteUserMutation()
-  const navigate = useNavigate()
-  const sortHandler = (
-    field,
-    order
-  ) => setSortCriteria({
+    loading,
+    setLoading
+  ] = useState<boolean>(false)
+  const [
+    deleting,
+    setDeleting
+  ] = useState<boolean>(false)
+  const [
+    errorOccured,
+    setErrorOccured
+  ] = useState<boolean>(false)
+  const [
+    error,
+    setError
+  ] = useState<string>('')
+  const navigate: NavigateFunction = useNavigate()
+  const sortHandler: Function = (
+    field: keyof Data,
+    order: 'asc' | 'desc'
+  ): void => setSortCriteria({
     field,
     order
   })
-  const openResetPasswordModal = id => {
-    setSelectedUserPk(id)
+  const openResetPasswordModal: Function = (id: string): void => {
+    setSelectedUserId(id)
     setShowResetPasswordModal(true)
   }
-  const closeResetPasswordModal = () => {
-    setSelectedUserPk(null)
+  const closeResetPasswordModal: Function = (): void => {
+    setSelectedUserId('')
     setShowResetPasswordModal(false)
   }
-  const deleteHandler = async id => {
-    try {
-      await deleteUser(id)
-      refetch()
+  const deleteHandler: Function = async (id: string): Promise<void> => {
+    setDeleting(true)
+    const response: Response = await fetch(
+      `http://localhost:8080/users/${id}`, {
+        method: 'DELETE'
+      }
+    )
+    if (response.ok) {
       toast.success('User deleted.')
-    } catch (error) {
-      toast.error(error.toString())
+      setUsers(users.filter((user: User): boolean => user.id !== id))
+    } else {
+      toast.error(await response.text())
     }
+    setDeleting(false)
   }
-  const bulkDeleteHandler = async () => {
-    try {
-      await Promise.all(selectedUsers.map(async id => await deleteUser(id)))
-      refetch()
-      setSelectedUsers([])
-      toast.success('Users deleted.')
-    } catch (error) {
-      toast.error(error.toString())
-    }
+  const bulkDeleteHandler: Function = async (): Promise<void> => {
+    await Promise.all(selectedUsers.map(async (user): Promise<void> => await deleteHandler(user)))
+    setSelectedUsers([])
+    toast.success('Users deleted.')
   }
-  const sortedUsers = [...users].sort((a, b) => {
-    const orderFactor = sortCriteria.order === 'asc' ? 1 : -1
-    return a[sortCriteria.field] < b[sortCriteria.field]
-    ? -orderFactor
-    : a[sortCriteria.field] > b[sortCriteria.field]
-    ? orderFactor
-    : 0
+  const sortedUsers: User[] = [...users].sort((
+    a: User,
+    b: User
+  ): number => {
+    const orderFactor: number = sortCriteria.order === 'asc' ? 1 : -1
+    const {field}: SortCriteria = sortCriteria
+    return (
+      a[field] < b[field]
+      ? -orderFactor
+      : a[field] > b[field]
+      ? orderFactor
+      : 0
+    )
   })
-  const filteredUsers = sortedUsers.filter(user => user.name.toLowerCase().includes(searchTerm.toLowerCase()))
-  const userIsRoot = id => {
-    const user = allUsers.find(user => user.id === id)
-    return user && user.role === 'root'
+  const filteredUsers: User[] = sortedUsers.filter((user: User): boolean => user.username.toLowerCase().includes(searchTerm.toLowerCase()))
+  const userIsRoot: Function = (id: string): boolean => {
+    const user: User | undefined = users.find((user: User): boolean => user.id === id)
+    return user?.roles?.includes('root') || user?.authorities?.includes('root') ? true : false
   }
-  const checkAllHandler = event => event.target.checked
-  ? setSelectedUsers(allUsers.filter(user => !userIsRoot(user.id)).map(user => user.id))
-  : setSelectedUsers([])
-  useEffect(() => {
-    setAllUsers(users ?? [])
-  }, [
-    users
+  const checkAllHandler: ChangeEventHandler = (event: ChangeEvent<HTMLInputElement>): void => (
+    event.target.checked
+    ? setSelectedUsers(users.filter(user => !userIsRoot(user.id)).map(user => user.id))
+    : setSelectedUsers([])
+  )
+  useEffect((): void => {(async (): Promise<void> => {
+    setLoading(true)
+    const response: Response = await fetch('http://localhost:8080/users')
+    if (response.ok) {
+      setUsers(await response.json())
+    } else {
+      setErrorOccured(true)
+      setError(await response.text())
+    }
+    setLoading(false)
+  })()}, [
+    setUsers
   ])
   return (
     <>
       <Helmet>
         <title>
-          {isLoading ? 'Loading...' : isError ? 'Error' : 'Users'} | Invoices
+          {loading ? 'Loading...' : errorOccured ? 'Error' : 'Users'} | Invoices
         </title>
       </Helmet>
-      {isLoading ? (
+      {loading ? (
         <Loader/>
-      ) : isError ? (
-        <Message variant='danger'>
-          {error.toString()}
-        </Message>
+      ) : errorOccured ? (
+        <Alert variant='danger'>
+          {error}
+        </Alert>
       ) : (
         <>
           <h1>
@@ -156,14 +183,14 @@ const UsersPage = () => {
                 type="text"
                 placeholder="Search users"
                 value={searchTerm}
-                onChange={event => setSearchTerm(event.target.value)}
+                onChange={(event: ChangeEvent<HTMLInputElement>): void => setSearchTerm(event.target.value)}
               />
             </Col>
             <Col sm={2}>
               <Button
                 type='button'
                 variant='primary'
-                onClick={() => navigate('/users/add')}
+                onClick={(): void => navigate('/users/add')}
               >
                 <FaPlus/> Add user
               </Button>
@@ -173,7 +200,7 @@ const UsersPage = () => {
                 type='button'
                 variant="danger"
                 disabled={selectedUsers.length === 0}
-                onClick={bulkDeleteHandler}
+                onClick={async (): Promise<void> => await bulkDeleteHandler()}
               >
                 <FaTrash/> Delete selected
               </Button>
@@ -192,9 +219,9 @@ const UsersPage = () => {
                     type="checkbox"
                     checked={
                       filteredUsers.length > 0 &&
-                      selectedUsers.length === filteredUsers.filter(user => !userIsRoot(user.id)).length
+                      selectedUsers.length === filteredUsers.filter((user: User): boolean => !userIsRoot(user.id)).length
                     }
-                    onChange={event => checkAllHandler(event)}
+                    onChange={(event: ChangeEvent<HTMLInputElement>): void => checkAllHandler(event)}
                   />
                 </th>
                 <th>
@@ -202,7 +229,7 @@ const UsersPage = () => {
                   <div className="d-flex">
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'name',
                         'asc'
                       )}
@@ -211,7 +238,7 @@ const UsersPage = () => {
                     </Link>
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'name',
                         'desc'
                       )}
@@ -225,7 +252,7 @@ const UsersPage = () => {
                   <div className="d-flex">
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'createdAt',
                         'asc'
                       )}
@@ -234,7 +261,7 @@ const UsersPage = () => {
                     </Link>
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'createdAt',
                         'desc'
                       )}
@@ -248,7 +275,7 @@ const UsersPage = () => {
                   <div className="d-flex">
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'updatedAt',
                         'asc'
                       )}
@@ -257,7 +284,7 @@ const UsersPage = () => {
                     </Link>
                     <Link
                       to={'#'}
-                      onClick={() => sortHandler(
+                      onClick={(): void => sortHandler(
                         'updatedAt',
                         'desc'
                       )}
@@ -272,19 +299,19 @@ const UsersPage = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredUsers.map(user => (
+              {filteredUsers.map((user: User): ReactElement => (
                 <tr key={user.id}>
                   <td>
                     <Form.Check
                       type="checkbox"
                       checked={selectedUsers.includes(user.id)}
-                      disabled={user.role === 'root'}
-                      onChange={event => {
-                        const id = user.id
+                      disabled={user.roles?.includes('root') || user.authorities?.includes('root')}
+                      onChange={(event: ChangeEvent<HTMLInputElement>): void => {
+                        const id: string = user.id
                         event.target.checked ? setSelectedUsers([
                           ...selectedUsers,
                           id
-                        ]) : setSelectedUsers(selectedUsers.filter(pk => pk !== id))
+                        ]) : setSelectedUsers(selectedUsers.filter((pk: string): boolean => pk !== id))
                       }}
                     />
                   </td>
@@ -302,8 +329,8 @@ const UsersPage = () => {
                       type='button'
                       variant='primary'
                       className='p-auto text-white'
-                      disabled={user.role === 'root'}
-                      onClick={() => openResetPasswordModal(user.id)}
+                      disabled={user.roles?.includes('root') || user.authorities?.includes('root')}
+                      onClick={(): void => openResetPasswordModal(user.id)}
                     >
                       <FaKey/> Reset password
                     </Button>
@@ -313,8 +340,8 @@ const UsersPage = () => {
                       type='button'
                       variant='danger'
                       className='p-auto text-white'
-                      onClick={() => deleteHandler(user.id)}
-                      disabled={deleting || user.role === 'root'}
+                      onClick={async (): Promise<void> => await deleteHandler(user.id)}
+                      disabled={deleting || user.roles?.includes('root') || user.authorities?.includes('root')}
                     >
                       <FaTrash/> Delete
                     </Button>
@@ -325,7 +352,7 @@ const UsersPage = () => {
           </Table>
           {showResetPasswordModal && (
             <ResetPasswordModal
-              id={selectedUserPk}
+              id={selectedUserId}
               closeModal={closeResetPasswordModal}
             />
           )}

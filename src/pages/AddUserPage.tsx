@@ -1,5 +1,14 @@
-import {useState} from 'react'
-import {useNavigate} from 'react-router-dom'
+import {
+  ChangeEvent,
+  FunctionComponent,
+  KeyboardEvent,
+  ReactElement,
+  useState
+} from 'react'
+import {
+  NavigateFunction,
+  useNavigate
+} from 'react-router-dom'
 import {
   Form,
   Button
@@ -12,66 +21,62 @@ import {
   FaCheck,
   FaUserTag
 } from 'react-icons/fa'
-import FormContainer from '../components/FormContainer'
-import Loader from '../components/Loader'
-import {useAddUserMutation} from '../slices/usersApiSlice'
-import enterKeyHandler from '../enterKeyHandler'
 import {toast} from 'react-toastify'
-import Message from '../components/Message'
-const AddUserPage = () => {
+import FormContainer from '@/src/components/FormContainer'
+import Loader from '@/src/components/Loader'
+const AddUserPage: FunctionComponent = (): ReactElement => {
   const [
     password,
     setPassword
-  ] = useState('')
+  ] = useState<string>('')
   const [
     username,
     setUsername
-  ] = useState('')
+  ] = useState<string>('')
   const [
     confirmPassword,
     setConfirmPassword
-  ] = useState('')
-  const navigate = useNavigate()
+  ] = useState<string>('')
   const [
-    addUser, {
-      isLoading,
-      isError,
-      error
-    }
-  ] = useAddUserMutation()
-  const submitHandler = async event => {
-    event.preventDefault()
-    try {
-      await addUser({
-        username,
-        password,
-        confirmPassword
-      })
+    loading,
+    setLoading
+  ] = useState<boolean>(false)
+  const navigate: NavigateFunction = useNavigate()
+  const submitHandler: Function = async (): Promise<void> => {
+    setLoading(true)
+    const response: Response = await fetch(
+      'http://localhost:8080/users', {
+        method: 'POST',
+        body: JSON.stringify({
+          username,
+          password,
+          confirmPassword
+        })
+      }
+    )
+    if (response.ok) {
       navigate('/users/list')
       toast.success('User added.')
-    } catch (error) {
-      toast.error(error.toString())
+    } else {
+      toast.error(await response.text())
     }
+    setLoading(false)
   }
   return (
     <>
       <Helmet>
         <title>
-          {isLoading ? 'Processing...' : isError ? 'Error' : 'Add User'} | Invoices
+          {loading ? 'Processing...' : 'Add User'} | Invoices
         </title>
       </Helmet>
-      {isLoading ? (
+      {loading ? (
         <Loader/>
-      ) : isError ? (
-        <Message variant='danger'>
-          {error.toString()}
-        </Message>
       ) : (
         <FormContainer>
           <h1>
             <FaUser/> Add user
           </h1>
-          <Form onSubmit={submitHandler}>
+          <Form action={submitHandler.bind(null)}>
             <Form.Group
               controlId='name'
               className='my-3'
@@ -83,11 +88,8 @@ const AddUserPage = () => {
                 type='text'
                 placeholder='Enter user name'
                 value={username}
-                onChange={event => setUsername(event.target.value)}
-                onKeyDown={event => enterKeyHandler(
-                  event,
-                  submitHandler
-                )}
+                onChange={(event: ChangeEvent<HTMLInputElement>): void => setUsername(event.target.value)}
+                onKeyDown={(event: KeyboardEvent<HTMLInputElement>): void => event.key === 'Enter' && submitHandler()}
                 autoFocus
               />
             </Form.Group>
@@ -102,7 +104,7 @@ const AddUserPage = () => {
                 type='password'
                 placeholder='Enter password'
                 value={password}
-                onChange={event => setPassword(event.target.value)}
+                onChange={(event: ChangeEvent<HTMLInputElement>): void => setPassword(event.target.value)}
               />
             </Form.Group>
             <Form.Group
@@ -116,11 +118,8 @@ const AddUserPage = () => {
                 type='password'
                 placeholder='Confirm password'
                 value={confirmPassword}
-                onChange={event => setConfirmPassword(event.target.value)}
-                onKeyDown={event => enterKeyHandler(
-                  event,
-                  submitHandler
-                )}
+                onChange={(event: ChangeEvent<HTMLInputElement>): void => setConfirmPassword(event.target.value)}
+                onKeyDown={(event: KeyboardEvent<HTMLInputElement>): void => event.key === 'Enter' && submitHandler()}
               />
             </Form.Group>
             <Button
@@ -128,7 +127,7 @@ const AddUserPage = () => {
               variant='success'
               className='p-auto text-white'
               disabled={
-                isLoading ||
+                loading ||
                 !username ||
                 !password ||
                 !confirmPassword
@@ -139,12 +138,11 @@ const AddUserPage = () => {
               type='button'
               variant='danger'
               className='p-auto text-white'
-              disabled={isLoading}
+              disabled={loading}
               onClick={() => navigate('/users/list')}
             >
               <FaTimes/> Cancel
             </Button>
-            {isLoading && <Loader/>}
           </Form>
         </FormContainer>
       )}
