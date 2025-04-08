@@ -127,8 +127,11 @@ const InvoicesPage: FunctionComponent = (): ReactElement => {
     a: Invoice,
     b: Invoice
   ): number => {
-    const orderFactor: number = sortCriteria.order === 'asc' ? 1 : -1
-    const {field}: SortCriteria = sortCriteria
+    const {
+      field,
+      order
+    }: SortCriteria = sortCriteria
+    const orderFactor: number = order === 'asc' ? 1 : -1
     return (
       a[field] < b[field]
       ? orderFactor

@@ -122,8 +122,11 @@ const UsersPage: FunctionComponent = (): ReactElement => {
     a: User,
     b: User
   ): number => {
-    const orderFactor: number = sortCriteria.order === 'asc' ? 1 : -1
-    const {field}: SortCriteria = sortCriteria
+    const {
+      field,
+      order
+    }: SortCriteria = sortCriteria
+    const orderFactor: number = order === 'asc' ? 1 : -1
     return (
       a[field] < b[field]
       ? -orderFactor
@@ -135,7 +138,7 @@ const UsersPage: FunctionComponent = (): ReactElement => {
   const filteredUsers: User[] = sortedUsers.filter((user: User): boolean => user.username.toLowerCase().includes(searchTerm.toLowerCase()))
   const userIsRoot: Function = (id: string): boolean => {
     const user: User | undefined = users.find((user: User): boolean => user.id === id)
-    return user?.roles?.includes('root') || user?.authorities?.includes('root') ? true : false
+    return user?.role === 'root'
   }
   const checkAllHandler: ChangeEventHandler = (event: ChangeEvent<HTMLInputElement>): void => (
     event.target.checked
@@ -305,7 +308,7 @@ const UsersPage: FunctionComponent = (): ReactElement => {
                     <Form.Check
                       type="checkbox"
                       checked={selectedUsers.includes(user.id)}
-                      disabled={user.roles?.includes('root') || user.authorities?.includes('root')}
+                      disabled={user.role === 'root'}
                       onChange={(event: ChangeEvent<HTMLInputElement>): void => {
                         const id: string = user.id
                         event.target.checked ? setSelectedUsers([
@@ -329,7 +332,7 @@ const UsersPage: FunctionComponent = (): ReactElement => {
                       type='button'
                       variant='primary'
                       className='p-auto text-white'
-                      disabled={user.roles?.includes('root') || user.authorities?.includes('root')}
+                      disabled={user.role === 'root'}
                       onClick={(): void => openResetPasswordModal(user.id)}
                     >
                       <FaKey/> Reset password
@@ -341,7 +344,7 @@ const UsersPage: FunctionComponent = (): ReactElement => {
                       variant='danger'
                       className='p-auto text-white'
                       onClick={async (): Promise<void> => await deleteHandler(user.id)}
-                      disabled={deleting || user.roles?.includes('root') || user.authorities?.includes('root')}
+                      disabled={deleting || user.role === 'root'}
                     >
                       <FaTrash/> Delete
                     </Button>

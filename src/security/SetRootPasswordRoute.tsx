@@ -1,12 +1,17 @@
 import {
+  FunctionComponent,
+  ReactElement
+} from 'react'
+import {
   Navigate,
   Outlet
 } from 'react-router-dom'
 import {useGetContext} from '../components/ContextProvider'
 import ContextProps from '@/types/ContextProps'
-const SetRootPasswordRoute = () => {
+import ConfigStatus from '@/types/ConfigStatus'
+const SetRootPasswordRoute: FunctionComponent = (): ReactElement => {
   const {configStatus}: ContextProps = useGetContext()
-  const {rootExists} = configStatus
+  const {rootExists}: ConfigStatus = configStatus
   return rootExists ? (
     <Navigate
       to='/home'

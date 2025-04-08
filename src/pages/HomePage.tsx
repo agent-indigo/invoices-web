@@ -56,7 +56,7 @@ const HomePage: FunctionComponent = (): ReactElement => {
             sm={5}
           />
         </Row>
-        {user?.roles?.includes('root') || user?.authorities?.includes('root') ? (
+        {user?.role === 'root' && (
           <Row>
             <div className="py-1"/>
             <Col
@@ -81,7 +81,7 @@ const HomePage: FunctionComponent = (): ReactElement => {
               sm={5}
             />
           </Row>
-        ) : null}
+        )}
       </Card>
     </>
   )
