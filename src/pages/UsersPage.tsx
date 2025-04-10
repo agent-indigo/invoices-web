@@ -63,7 +63,7 @@ const UsersPage: FunctionComponent = (): ReactElement => {
     sortCriteria,
     setSortCriteria
   ] = useState<SortCriteria>({
-    field: 'id',
+    field: 'updatedAt',
     order: 'asc'
   })
   const [
