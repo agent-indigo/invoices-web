@@ -16,6 +16,7 @@ import SetRootPasswordRoute from './security/SetRootPasswordRoute'
 import ProductionRoute from './security/ProductionRoute'
 import PrivateRoute from './security/PrivateRoute'
 import RootRoute from './security/RootRoute'
+import LoginRoute from './security/LoginRoute'
 import SetRootPasswordPage from './pages/SetRootPasswordPage'
 import LoginPage from './pages/LoginPage'
 import HomePage from './pages/HomePage'
@@ -47,9 +48,14 @@ const App: FunctionComponent = (): ReactElement => (
               element={<ProductionRoute/>}
             >
               <Route
-                path='/users/login'
-                element={<LoginPage/>}
-              />
+                path=''
+                element={<LoginRoute/>}
+              >
+                <Route
+                  path='/users/login'
+                  element={<LoginPage/>}
+                />
+              </Route>
               <Route
                 path=''
                 element={<PrivateRoute/>}

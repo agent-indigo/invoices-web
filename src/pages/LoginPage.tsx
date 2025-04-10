@@ -1,6 +1,5 @@
 import {
   useState,
-  useEffect,
   FunctionComponent,
   ReactElement,
   ChangeEvent,
@@ -27,6 +26,8 @@ import Loader from '../components/Loader'
 import {useGetContext} from '../components/ContextProvider'
 import ContextProps from '@/types/ContextProps'
 const LoginPage: FunctionComponent = (): ReactElement => {
+  const {setUser}: ContextProps = useGetContext()
+  const navigate: NavigateFunction = useNavigate()
   const [
     username,
     setUsername
@@ -39,17 +40,6 @@ const LoginPage: FunctionComponent = (): ReactElement => {
     loading,
     setLoading
   ] = useState<boolean>(false)
-  const navigate: NavigateFunction = useNavigate()
-  const {
-    user,
-    setUser
-  }: ContextProps = useGetContext()
-  useEffect((): void => {
-    user && navigate('/home')
-  }, [
-    user,
-    navigate
-  ])
   const submitHandler: Function = async (): Promise<void> => {
     setLoading(true)
     const response: Response = await fetch(
