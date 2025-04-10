@@ -12,7 +12,7 @@ const LoginRoute: FunctionComponent = (): ReactElement => {
   const {user}: ContextProps = useGetContext()
   return user ? (
     <Navigate
-      to='/home'
+      to='/'
       replace
     />
   ) : (

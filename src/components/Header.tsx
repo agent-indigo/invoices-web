@@ -51,7 +51,7 @@ const Header: FunctionComponent = (): ReactElement => {
         className='text-center'
       >
         <Container className='justify-content-center'>
-          <LinkContainer to='/home'>
+          <LinkContainer to='/'>
             <Navbar.Brand className='text-white'>
               <FaFileInvoiceDollar/> Invoices
             </Navbar.Brand>

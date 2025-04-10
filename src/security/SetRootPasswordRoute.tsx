@@ -14,7 +14,7 @@ const SetRootPasswordRoute: FunctionComponent = (): ReactElement => {
   const {rootExists}: ConfigStatus = configStatus
   return rootExists ? (
     <Navigate
-      to='/home'
+      to='/'
       replace
     />
   ) : (

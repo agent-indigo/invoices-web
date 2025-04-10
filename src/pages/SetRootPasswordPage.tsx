@@ -68,7 +68,7 @@ const SetupPage: FunctionComponent = (): ReactElement => {
       )
       if (response.ok) {
         setUser(await response.json())
-        navigate('/home')
+        navigate('/')
       } else {
         toast.error(await response.text())
       }

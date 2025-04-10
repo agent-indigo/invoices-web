@@ -66,7 +66,7 @@ const App: FunctionComponent = (): ReactElement => (
                 />
                 <Route
                   index={true}
-                  path='/home'
+                  path='/'
                   element={<HomePage/>}
                 />
                 <Route

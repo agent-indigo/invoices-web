@@ -16,7 +16,7 @@ const RootRoute: FunctionComponent = (): ReactElement => {
     <Outlet/>
   ) : (
     <Navigate
-      to='/home'
+      to='/'
       replace
     />
   )

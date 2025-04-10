@@ -68,7 +68,7 @@ const ChangePasswordPage: FunctionComponent = (): ReactElement => {
         updatedUser
       ])
       toast.success('Password changed.')
-      navigate('/home')
+      navigate('/')
     } else {
       toast.error(await response.text())
     }
@@ -145,7 +145,7 @@ const ChangePasswordPage: FunctionComponent = (): ReactElement => {
               variant='danger'
               className='p-auto text-white'
               disabled={loading}
-              onClick={() => navigate('/home')}
+              onClick={() => navigate('/')}
             >
               <FaTimes/> Cancel
             </Button>
