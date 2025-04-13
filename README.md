@@ -1,10 +1,10 @@
-# Invoices Web
+# Invoices Web Client
 
 ## Description
 
 Simple invoice management web interface
 
-The API is available [here](https://github.com/agent-indigo/invoices-api-express).
+RESTful API: [repo](https://github.com/agent-indigo/invoices-api-express)
 
 ## User Roles
 
