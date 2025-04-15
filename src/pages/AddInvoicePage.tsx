@@ -26,6 +26,7 @@ import ContextProps from '@/types/ContextProps'
 import {useGetContext} from '../components/ContextProvider'
 const AddInvoicePage: FunctionComponent = (): ReactElement => {
   const {
+    user,
     invoices,
     setInvoices
   }: ContextProps = useGetContext()
@@ -70,7 +71,11 @@ const AddInvoicePage: FunctionComponent = (): ReactElement => {
           hst,
           total,
           invoiceId
-        })
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user?.token}`
+        }
       }
     )
     if (response.ok) {

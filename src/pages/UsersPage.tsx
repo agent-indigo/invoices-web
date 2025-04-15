@@ -40,6 +40,7 @@ import User from '@/types/User'
 import Data from '@/types/Data'
 const UsersPage: FunctionComponent = (): ReactElement => {
   const {
+    user,
     users,
     setUsers
   }: ContextProps = useGetContext()
@@ -102,7 +103,11 @@ const UsersPage: FunctionComponent = (): ReactElement => {
     setDeleting(true)
     const response: Response = await fetch(
       `http://localhost:8080/users/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user?.token}`
+        }
       }
     )
     if (response.ok) {

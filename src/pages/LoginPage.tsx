@@ -48,7 +48,10 @@ const LoginPage: FunctionComponent = (): ReactElement => {
         body: JSON.stringify({
           username,
           password
-        })
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
       }
     )
     if (response.ok) {

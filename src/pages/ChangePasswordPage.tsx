@@ -28,6 +28,7 @@ import {useGetContext} from '../components/ContextProvider'
 import User from '@/types/User'
 const ChangePasswordPage: FunctionComponent = (): ReactElement => {
   const {
+    user,
     users,
     setUsers
   }: ContextProps = useGetContext()
@@ -57,7 +58,11 @@ const ChangePasswordPage: FunctionComponent = (): ReactElement => {
           currentPassword,
           newPassword,
           confirmNewPassword
-        })
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user?.token}`
+        }
       }
     )
     if (response.ok) {

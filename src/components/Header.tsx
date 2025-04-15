@@ -31,7 +31,11 @@ const Header: FunctionComponent = (): ReactElement => {
   }: ContextProps = useGetContext()
   const navigate: NavigateFunction = useNavigate()
   const logoutHandler: Function = async (): Promise<void> => {
-    const response: Response = await fetch('http://localhost:8080/users/logout')
+    const response: Response = await fetch('http://localhost:8080/users/logout', {
+      headers: {
+        'Authorization': `Bearer ${user?.token}`
+      }
+    })
     if (response.ok) {
       setUser(undefined)
       setUsers([])

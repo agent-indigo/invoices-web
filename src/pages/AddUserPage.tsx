@@ -28,6 +28,7 @@ import ContextProps from '@/types/ContextProps'
 import {useGetContext} from '../components/ContextProvider'
 const AddUserPage: FunctionComponent = (): ReactElement => {
   const {
+    user,
     users,
     setUsers
   }: ContextProps = useGetContext()
@@ -57,7 +58,11 @@ const AddUserPage: FunctionComponent = (): ReactElement => {
           username,
           password,
           confirmPassword
-        })
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user?.token}`
+        }
       }
     )
     if (response.ok) {

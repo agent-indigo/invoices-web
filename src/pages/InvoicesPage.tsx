@@ -40,6 +40,7 @@ import Invoice from '@/types/Invoice'
 import Data from '@/types/Data'
 const InvoicesPage: FunctionComponent = (): ReactElement => {
   const {
+    user,
     invoices,
     setInvoices
   }: ContextProps = useGetContext()
@@ -63,7 +64,11 @@ const InvoicesPage: FunctionComponent = (): ReactElement => {
     setDeleting(true)
     const response: Response = await fetch(
       `http://localhost:8080/invoices${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user?.token}`
+        }
       }
     )
     if (response.ok) {

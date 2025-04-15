@@ -63,7 +63,10 @@ const SetRootPasswordPage: FunctionComponent = (): ReactElement => {
           body: JSON.stringify({
             username: 'root',
             password
-          })
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }
       )
       if (response.ok) {

@@ -28,6 +28,7 @@ const ResetPasswordModal: FunctionComponent<ResetPasswordMoadlProps> = ({
   closeModal
 }): ReactElement => {
   const {
+    user,
     users,
     setUsers
   }: ContextProps = useGetContext()
@@ -55,7 +56,12 @@ const ResetPasswordModal: FunctionComponent<ResetPasswordMoadlProps> = ({
       }
     )
     if (response.ok) {
-      const response: Response = await fetch(`http://localhost:8080/users/${id}`)
+      const response: Response = await fetch(`http://localhost:8080/users/${id}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user?.token}`
+        }
+      })
       if (response.ok) {
         setUsers(users.filter((user: User): boolean => user.id !== id))
         setUsers([

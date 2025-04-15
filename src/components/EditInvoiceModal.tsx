@@ -28,6 +28,7 @@ const EditInvoiceModal: FunctionComponent<EditInvoiceModalProps> = ({
 }): ReactElement => {
   const {id}: Invoice = invoice
   const {
+    user,
     invoices,
     setInvoices
   }: ContextProps = useGetContext()
@@ -89,7 +90,11 @@ const EditInvoiceModal: FunctionComponent<EditInvoiceModalProps> = ({
     const response: Response = await fetch(
       `http://localhost:8080/invoices/${id}`, {
         method: 'PATCH',
-        body: JSON.stringify(Object.fromEntries(patch.entries()))
+        body: JSON.stringify(Object.fromEntries(patch.entries())),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${user?.token}`
+        }
       }
     )
     if (response.ok) {
