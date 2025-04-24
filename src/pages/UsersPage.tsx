@@ -105,7 +105,6 @@ const UsersPage: FunctionComponent = (): ReactElement => {
       `http://localhost:8080/users/${id}`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${user?.token}`
         }
       }

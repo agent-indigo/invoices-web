@@ -50,34 +50,22 @@ const SetRootPasswordPage: FunctionComponent = (): ReactElement => {
         body: JSON.stringify({
           password,
           confirmPassword
-        })
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
       }
     )
     if (response.ok) {
       setConfigStatus({
         rootExists: true
       })
-      const response: Response = await fetch(
-        'http://localhost:8080/users/login', {
-          method: 'POST',
-          body: JSON.stringify({
-            username: 'root',
-            password
-          }),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      )
-      if (response.ok) {
-        setUser(await response.json())
-        navigate('/')
-      } else {
-        toast.error(await response.text())
-      }
+      setUser(await response.json())
+      navigate('/')
     } else {
       toast.error(await response.text())
     }
+    setLoading(false)
   }
   return (
     <>

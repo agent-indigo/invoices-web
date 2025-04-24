@@ -63,10 +63,9 @@ const InvoicesPage: FunctionComponent = (): ReactElement => {
   const deleteHandler: Function = async (id: string): Promise<void> => {
     setDeleting(true)
     const response: Response = await fetch(
-      `http://localhost:8080/invoices${id}`, {
+      `http://localhost:8080/invoices/${id}`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${user?.token}`
         }
       }

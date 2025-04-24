@@ -98,18 +98,13 @@ const EditInvoiceModal: FunctionComponent<EditInvoiceModalProps> = ({
       }
     )
     if (response.ok) {
-      const response: Response = await fetch(`http://localhost:8080/invoices/${id}`)
-      if (response.ok) {
-        setInvoices(invoices.filter((invoice: Invoice): boolean => invoice.id !== id))
-        setInvoices([
-          ...invoices,
-          await response.json()
-        ])
-        closeModal()
-        toast.success('Changes saved.')
-      } else {
-        toast.error(await response.text())
-      }
+      setInvoices(invoices.filter((invoice: Invoice): boolean => invoice.id !== id))
+      setInvoices([
+        ...invoices,
+        await response.json()
+      ])
+      closeModal()
+      toast.success('Changes saved.')
     } else {
       toast.error(await response.text())
     }

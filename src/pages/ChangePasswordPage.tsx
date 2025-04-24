@@ -52,7 +52,7 @@ const ChangePasswordPage: FunctionComponent = (): ReactElement => {
   const submitHandler: Function = async (): Promise<void> => {
     setLoading(true)
     const response: Response = await fetch(
-      'http://localhost:8080', {
+      'http://localhost:8080/users/changePassword', {
         method: 'PATCH',
         body: JSON.stringify({
           currentPassword,
